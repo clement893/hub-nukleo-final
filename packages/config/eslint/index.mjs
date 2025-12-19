@@ -1,7 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import prettier from "eslint-config-prettier";
-import nextPlugin from "@next/eslint-plugin-next";
+import prettierConfig from "eslint-config-prettier";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -10,11 +9,8 @@ const compat = new FlatCompat({
 export default [
   js.configs.recommended,
   ...compat.extends("next/core-web-vitals", "next"),
-  prettier,
+  prettierConfig,
   {
-    plugins: {
-      "@next/next": nextPlugin,
-    },
     rules: {
       "@next/next/no-html-link-for-pages": "off",
     },
