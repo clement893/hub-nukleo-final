@@ -20,10 +20,12 @@ import {
 import {
   CompanyModal,
   type CompanyFormData,
-  getAllCompanies,
-  createCompany,
-  updateCompany,
 } from "@nukleo/commercial";
+import {
+  getCompaniesListAction,
+  createCompanyAction,
+  updateCompanyAction,
+} from "./actions";
 
 interface Company {
   id: string;
@@ -47,19 +49,11 @@ export default function CompaniesPage() {
   React.useEffect(() => {
     async function loadData() {
       try {
-        const companiesData = await getAllCompanies();
+        const result = await getCompaniesListAction();
 
-        setCompanies(
-          companiesData.map((company) => ({
-            id: company.id,
-            name: company.name,
-            industry: company.industry,
-            website: company.website,
-            phone: company.phone,
-            city: company.city,
-            country: company.country,
-          }))
-        );
+        if (result.success && result.data) {
+          setCompanies(result.data);
+        }
       } catch (error) {
         console.error("Error loading data:", error);
       } finally {
@@ -89,11 +83,8 @@ export default function CompaniesPage() {
 
   const handleModalSubmit = async (data: CompanyFormData) => {
     try {
-      // TODO: Get current user ID from auth context
-      const ownerId = "temp-user-id"; // Replace with actual user ID
-
       if (editingCompany) {
-        await updateCompany(editingCompany.id, {
+        const result = await updateCompanyAction(editingCompany.id, {
           name: data.name,
           industry: data.industry,
           website: data.website,
@@ -103,23 +94,25 @@ export default function CompaniesPage() {
           country: data.country,
         });
 
-        setCompanies((prev) =>
-          prev.map((company) =>
-            company.id === editingCompany.id
-              ? {
-                  ...company,
-                  name: data.name,
-                  industry: data.industry || null,
-                  website: data.website || null,
-                  phone: data.phone || null,
-                  city: data.city || null,
-                  country: data.country || null,
-                }
-              : company
-          )
-        );
+        if (result.success && result.data) {
+          setCompanies((prev) =>
+            prev.map((company) =>
+              company.id === editingCompany.id
+                ? {
+                    ...company,
+                    name: data.name,
+                    industry: data.industry || null,
+                    website: data.website || null,
+                    phone: data.phone || null,
+                    city: data.city || null,
+                    country: data.country || null,
+                  }
+                : company
+            )
+          );
+        }
       } else {
-        const newCompany = await createCompany({
+        const result = await createCompanyAction({
           name: data.name,
           industry: data.industry,
           website: data.website,
@@ -127,21 +120,22 @@ export default function CompaniesPage() {
           address: data.address,
           city: data.city,
           country: data.country,
-          ownerId,
         });
 
-        setCompanies((prev) => [
-          {
-            id: newCompany.id,
-            name: newCompany.name,
-            industry: newCompany.industry,
-            website: newCompany.website,
-            phone: newCompany.phone,
-            city: newCompany.city,
-            country: newCompany.country,
-          },
-          ...prev,
-        ]);
+        if (result.success && result.data) {
+          setCompanies((prev) => [
+            {
+              id: result.data!.id,
+              name: result.data!.name,
+              industry: result.data!.industry,
+              website: result.data!.website,
+              phone: result.data!.phone,
+              city: result.data!.city,
+              country: result.data!.country,
+            },
+            ...prev,
+          ]);
+        }
       }
 
       setIsModalOpen(false);

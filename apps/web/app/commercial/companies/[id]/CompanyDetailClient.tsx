@@ -13,9 +13,11 @@ import Link from "next/link";
 import {
   CompanyModal,
   type CompanyFormData,
-  updateCompany,
-  deleteCompany,
 } from "@nukleo/commercial";
+import {
+  updateCompanyAction,
+  deleteCompanyAction,
+} from "../actions";
 import { useRouter } from "next/navigation";
 
 interface CompanyDetailClientProps {
@@ -61,8 +63,12 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
 
     setIsDeleting(true);
     try {
-      await deleteCompany(company.id);
-      router.push("/commercial/companies");
+      const result = await deleteCompanyAction(company.id);
+      if (result.success) {
+        router.push("/commercial/companies");
+      } else {
+        setIsDeleting(false);
+      }
     } catch (error) {
       console.error("Error deleting company:", error);
       setIsDeleting(false);
@@ -71,7 +77,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
 
   const handleModalSubmit = async (data: CompanyFormData) => {
     try {
-      await updateCompany(company.id, {
+      const result = await updateCompanyAction(company.id, {
         name: data.name,
         industry: data.industry,
         website: data.website,
@@ -81,8 +87,10 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
         country: data.country,
       });
 
-      setIsModalOpen(false);
-      router.refresh();
+      if (result.success) {
+        setIsModalOpen(false);
+        router.refresh();
+      }
     } catch (error) {
       console.error("Error updating company:", error);
     }

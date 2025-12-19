@@ -37,13 +37,13 @@ import {
 } from "@nukleo/commercial";
 import type { OpportunityStage } from "@nukleo/db";
 import {
-  getAllOpportunities,
-  updateOpportunityStage,
-  createOpportunity,
-  updateOpportunity,
-  getAllCompanies,
-  getAllContacts,
-} from "@nukleo/commercial";
+  getOpportunitiesAction,
+  getCompaniesForOpportunitiesAction,
+  getContactsForOpportunitiesAction,
+  updateOpportunityStageAction,
+  createOpportunityAction,
+  updateOpportunityAction,
+} from "./actions";
 
 const stages: OpportunityStage[] = [
   "NEW",
@@ -212,34 +212,23 @@ export default function OpportunitiesPage() {
   React.useEffect(() => {
     async function loadData() {
       try {
-        const [opps, comps, conts] = await Promise.all([
-          getAllOpportunities(),
-          getAllCompanies(),
-          getAllContacts(),
+        const [oppsResult, compsResult, contsResult] = await Promise.all([
+          getOpportunitiesAction(),
+          getCompaniesForOpportunitiesAction(),
+          getContactsForOpportunitiesAction(),
         ]);
 
-        setOpportunities(
-          opps.map((opp) => ({
-            id: opp.id,
-            title: opp.title,
-            description: opp.description,
-            value: opp.value ? Number(opp.value) : null,
-            stage: opp.stage,
-            probability: opp.probability,
-            expectedCloseDate: opp.expectedCloseDate,
-            company: opp.company,
-            contact: opp.contact,
-          }))
-        );
+        if (oppsResult.success && oppsResult.data) {
+          setOpportunities(oppsResult.data);
+        }
 
-        setCompanies(comps.map((c) => ({ id: c.id, name: c.name })));
-        setContacts(
-          conts.map((c) => ({
-            id: c.id,
-            firstName: c.firstName,
-            lastName: c.lastName,
-          }))
-        );
+        if (compsResult.success && compsResult.data) {
+          setCompanies(compsResult.data);
+        }
+
+        if (contsResult.success && contsResult.data) {
+          setContacts(contsResult.data);
+        }
       } catch (error) {
         console.error("Error loading data:", error);
       } finally {
@@ -272,12 +261,14 @@ export default function OpportunitiesPage() {
     if (targetStage && activeOpportunity.stage !== targetStage) {
       // Update the stage
       try {
-        await updateOpportunityStage(activeId, targetStage);
-        setOpportunities((prev) =>
-          prev.map((opp) =>
-            opp.id === activeId ? { ...opp, stage: targetStage } : opp
-          )
-        );
+        const result = await updateOpportunityStageAction(activeId, targetStage);
+        if (result.success) {
+          setOpportunities((prev) =>
+            prev.map((opp) =>
+              opp.id === activeId ? { ...opp, stage: targetStage } : opp
+            )
+          );
+        }
       } catch (error) {
         console.error("Error updating opportunity stage:", error);
       }
@@ -307,104 +298,101 @@ export default function OpportunitiesPage() {
 
   const handleModalSubmit = async (data: OpportunityFormData) => {
     try {
-      // TODO: Get current user ID from auth context
-      const ownerId = "temp-user-id"; // Replace with actual user ID
-
       if (editingOpportunity) {
-        await updateOpportunity(editingOpportunity.id, {
+        const result = await updateOpportunityAction(editingOpportunity.id, {
           title: data.title,
           description: data.description,
           value: data.value,
           stage: data.stage,
           probability: data.probability,
-          expectedCloseDate: data.expectedCloseDate
-            ? new Date(data.expectedCloseDate)
-            : undefined,
+          expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
           contactId: data.contactId,
         });
 
-        setOpportunities((prev) =>
-          prev.map((opp) =>
-            opp.id === editingOpportunity.id
-              ? {
-                  ...opp,
-                  title: data.title,
-                  description: data.description,
-                  value: data.value ?? null,
-                  stage: data.stage,
-                  probability: data.probability,
-                  expectedCloseDate: data.expectedCloseDate
-                    ? new Date(data.expectedCloseDate)
-                    : null,
-                  company: companies.find((c) => c.id === data.companyId)
-                    ? {
-                        id: data.companyId!,
-                        name:
-                          companies.find((c) => c.id === data.companyId)?.name ||
-                          "",
-                      }
-                    : null,
-                  contact: contacts.find((c) => c.id === data.contactId)
-                    ? {
-                        id: data.contactId!,
-                        firstName:
-                          contacts.find((c) => c.id === data.contactId)
-                            ?.firstName || "",
-                        lastName:
-                          contacts.find((c) => c.id === data.contactId)
-                            ?.lastName || "",
-                      }
-                    : null,
-                }
-              : opp
-          )
-        );
+        if (result.success) {
+          setOpportunities((prev) =>
+            prev.map((opp) =>
+              opp.id === editingOpportunity.id
+                ? {
+                    ...opp,
+                    title: data.title,
+                    description: data.description,
+                    value: data.value ?? null,
+                    stage: data.stage,
+                    probability: data.probability,
+                    expectedCloseDate: data.expectedCloseDate
+                      ? new Date(data.expectedCloseDate)
+                      : null,
+                    company: companies.find((c) => c.id === data.companyId)
+                      ? {
+                          id: data.companyId!,
+                          name:
+                            companies.find((c) => c.id === data.companyId)
+                              ?.name || "",
+                        }
+                      : null,
+                    contact: contacts.find((c) => c.id === data.contactId)
+                      ? {
+                          id: data.contactId!,
+                          firstName:
+                            contacts.find((c) => c.id === data.contactId)
+                              ?.firstName || "",
+                          lastName:
+                            contacts.find((c) => c.id === data.contactId)
+                              ?.lastName || "",
+                        }
+                      : null,
+                  }
+                : opp
+            )
+          );
+        }
       } else {
-        const newOpp = await createOpportunity({
+        const result = await createOpportunityAction({
           title: data.title,
           description: data.description,
           value: data.value,
           stage: data.stage,
           probability: data.probability,
-          expectedCloseDate: data.expectedCloseDate
-            ? new Date(data.expectedCloseDate)
-            : undefined,
+          expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
           contactId: data.contactId,
-          ownerId,
         });
 
-        setOpportunities((prev) => [
-          {
-            id: newOpp.id,
-            title: newOpp.title,
-            description: newOpp.description,
-            value: newOpp.value ? Number(newOpp.value) : null,
-            stage: newOpp.stage,
-            probability: newOpp.probability,
-            expectedCloseDate: newOpp.expectedCloseDate,
-            company: companies.find((c) => c.id === data.companyId)
-              ? {
-                  id: data.companyId!,
-                  name:
-                    companies.find((c) => c.id === data.companyId)?.name || "",
-                }
-              : null,
-            contact: contacts.find((c) => c.id === data.contactId)
-              ? {
-                  id: data.contactId!,
-                  firstName:
-                    contacts.find((c) => c.id === data.contactId)?.firstName ||
-                    "",
-                  lastName:
-                    contacts.find((c) => c.id === data.contactId)?.lastName ||
-                    "",
-                }
-              : null,
-          },
-          ...prev,
-        ]);
+        if (result.success && result.data) {
+          setOpportunities((prev) => [
+            {
+              id: result.data!.id,
+              title: result.data!.title,
+              description: result.data!.description,
+              value: result.data!.value ? Number(result.data!.value) : null,
+              stage: result.data!.stage,
+              probability: result.data!.probability,
+              expectedCloseDate: result.data!.expectedCloseDate,
+              company: companies.find((c) => c.id === data.companyId)
+                ? {
+                    id: data.companyId!,
+                    name:
+                      companies.find((c) => c.id === data.companyId)?.name ||
+                      "",
+                  }
+                : null,
+              contact: contacts.find((c) => c.id === data.contactId)
+                ? {
+                    id: data.contactId!,
+                    firstName:
+                      contacts.find((c) => c.id === data.contactId)?.firstName ||
+                      "",
+                    lastName:
+                      contacts.find((c) => c.id === data.contactId)?.lastName ||
+                      "",
+                  }
+                : null,
+            },
+            ...prev,
+          ]);
+        }
       }
 
       setIsModalOpen(false);

@@ -13,9 +13,11 @@ import Link from "next/link";
 import {
   ContactModal,
   type ContactFormData,
-  updateContact,
-  deleteContact,
 } from "@nukleo/commercial";
+import {
+  updateContactAction,
+  deleteContactAction,
+} from "../actions";
 import { useRouter } from "next/navigation";
 
 interface ContactDetailClientProps {
@@ -61,8 +63,12 @@ export function ContactDetailClient({
 
     setIsDeleting(true);
     try {
-      await deleteContact(contact.id);
-      router.push("/commercial/contacts");
+      const result = await deleteContactAction(contact.id);
+      if (result.success) {
+        router.push("/commercial/contacts");
+      } else {
+        setIsDeleting(false);
+      }
     } catch (error) {
       console.error("Error deleting contact:", error);
       setIsDeleting(false);
@@ -71,7 +77,7 @@ export function ContactDetailClient({
 
   const handleModalSubmit = async (data: ContactFormData) => {
     try {
-      await updateContact(contact.id, {
+      const result = await updateContactAction(contact.id, {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -80,8 +86,10 @@ export function ContactDetailClient({
         companyId: data.companyId,
       });
 
-      setIsModalOpen(false);
-      router.refresh();
+      if (result.success) {
+        setIsModalOpen(false);
+        router.refresh();
+      }
     } catch (error) {
       console.error("Error updating contact:", error);
     }

@@ -20,11 +20,13 @@ import {
 import {
   ContactModal,
   type ContactFormData,
-  getAllContacts,
-  createContact,
-  updateContact,
-  getAllCompanies,
 } from "@nukleo/commercial";
+import {
+  getContactsAction,
+  getCompaniesAction,
+  createContactAction,
+  updateContactAction,
+} from "./actions";
 
 interface Contact {
   id: string;
@@ -51,26 +53,18 @@ export default function ContactsPage() {
   React.useEffect(() => {
     async function loadData() {
       try {
-        const [contactsData, companiesData] = await Promise.all([
-          getAllContacts(),
-          getAllCompanies(),
+        const [contactsResult, companiesResult] = await Promise.all([
+          getContactsAction(),
+          getCompaniesAction(),
         ]);
 
-        setContacts(
-          contactsData.map((contact) => ({
-            id: contact.id,
-            firstName: contact.firstName,
-            lastName: contact.lastName,
-            email: contact.email,
-            phone: contact.phone,
-            position: contact.position,
-            company: contact.company,
-          }))
-        );
+        if (contactsResult.success && contactsResult.data) {
+          setContacts(contactsResult.data);
+        }
 
-        setCompanies(
-          companiesData.map((c) => ({ id: c.id, name: c.name }))
-        );
+        if (companiesResult.success && companiesResult.data) {
+          setCompanies(companiesResult.data);
+        }
       } catch (error) {
         console.error("Error loading data:", error);
       } finally {
@@ -101,11 +95,8 @@ export default function ContactsPage() {
 
   const handleModalSubmit = async (data: ContactFormData) => {
     try {
-      // TODO: Get current user ID from auth context
-      const ownerId = "temp-user-id"; // Replace with actual user ID
-
       if (editingContact) {
-        await updateContact(editingContact.id, {
+        const result = await updateContactAction(editingContact.id, {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
@@ -114,57 +105,61 @@ export default function ContactsPage() {
           companyId: data.companyId,
         });
 
-        setContacts((prev) =>
-          prev.map((contact) =>
-            contact.id === editingContact.id
-              ? {
-                  ...contact,
-                  firstName: data.firstName,
-                  lastName: data.lastName,
-                  email: data.email || null,
-                  phone: data.phone || null,
-                  position: data.position || null,
-                  company: companies.find((c) => c.id === data.companyId)
-                    ? {
-                        id: data.companyId!,
-                        name:
-                          companies.find((c) => c.id === data.companyId)?.name ||
-                          "",
-                      }
-                    : null,
-                }
-              : contact
-          )
-        );
+        if (result.success && result.data) {
+          setContacts((prev) =>
+            prev.map((contact) =>
+              contact.id === editingContact.id
+                ? {
+                    ...contact,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email || null,
+                    phone: data.phone || null,
+                    position: data.position || null,
+                    company: companies.find((c) => c.id === data.companyId)
+                      ? {
+                          id: data.companyId!,
+                          name:
+                            companies.find((c) => c.id === data.companyId)
+                              ?.name || "",
+                        }
+                      : null,
+                  }
+                : contact
+            )
+          );
+        }
       } else {
-        const newContact = await createContact({
+        const result = await createContactAction({
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
           phone: data.phone,
           position: data.position,
           companyId: data.companyId,
-          ownerId,
         });
 
-        setContacts((prev) => [
-          {
-            id: newContact.id,
-            firstName: newContact.firstName,
-            lastName: newContact.lastName,
-            email: newContact.email,
-            phone: newContact.phone,
-            position: newContact.position,
-            company: companies.find((c) => c.id === data.companyId)
-              ? {
-                  id: data.companyId!,
-                  name:
-                    companies.find((c) => c.id === data.companyId)?.name || "",
-                }
-              : null,
-          },
-          ...prev,
-        ]);
+        if (result.success && result.data) {
+          setContacts((prev) => [
+            {
+              id: result.data!.id,
+              firstName: result.data!.firstName,
+              lastName: result.data!.lastName,
+              email: result.data!.email,
+              phone: result.data!.phone,
+              position: result.data!.position,
+              company: companies.find((c) => c.id === data.companyId)
+                ? {
+                    id: data.companyId!,
+                    name:
+                      companies.find((c) => c.id === data.companyId)?.name ||
+                      "",
+                  }
+                : null,
+            },
+            ...prev,
+          ]);
+        }
       }
 
       setIsModalOpen(false);
