@@ -10,7 +10,6 @@ import {
   Button,
   Badge,
   Input,
-  Select,
 } from "@nukleo/ui";
 import { getProjectsAction, deleteProjectAction } from "./actions";
 import { useToast } from "@/lib/toast";
