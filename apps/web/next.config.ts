@@ -5,7 +5,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // output: "standalone", // Disabled to allow next start to work properly
   transpilePackages: ["@nukleo/ui", "@nukleo/db", "@nukleo/commercial"],
   
   // Image optimization
