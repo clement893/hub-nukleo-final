@@ -1,0 +1,13 @@
+{
+  "name": "@nukleo/tailwind-config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "peerDependencies": {
+    "tailwindcss": "^3.0.0"
+  }
+}
+
