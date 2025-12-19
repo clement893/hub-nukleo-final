@@ -15,6 +15,10 @@ COPY apps/web ./apps/web
 # Ignore scripts to avoid conflicts with postinstall hooks
 RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
+# Generate Prisma Client (needs DATABASE_URL env var, but we'll generate anyway for types)
+WORKDIR /app/packages/db
+RUN pnpm db:generate || echo "Prisma client generation skipped (DATABASE_URL may not be set yet)"
+
 # Build the web app (Next.js/Turbopack will compile packages from source)
 WORKDIR /app/apps/web
 RUN pnpm build

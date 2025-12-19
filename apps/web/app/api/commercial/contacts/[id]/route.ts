@@ -8,11 +8,12 @@ import {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const contact = await prisma.contact.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         company: true,
         opportunities: {
@@ -69,9 +70,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
 
     // Validate with Zod (make fields optional for update)
@@ -89,7 +91,7 @@ export async function PUT(
 
     const data = validationResult.data;
 
-    const contact = await updateContact(params.id, {
+    const contact = await updateContact(id, {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -122,10 +124,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await deleteContact(params.id);
+    const { id } = await params;
+    await deleteContact(id);
 
     return NextResponse.json({
       success: true,
