@@ -47,6 +47,21 @@ enum TaskPriority {
   URGENT
 }
 
+enum ProposalStatus {
+  DRAFT
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+  REVISED
+}
+
+enum ProposalItemType {
+  DELIVERABLE
+  SERVICE
+  PRODUCT
+  OTHER
+}
+
 model User {
   id            String        @id @default(cuid())
   email         String        @unique
@@ -61,6 +76,7 @@ model User {
   companies     Company[]
   projects      Project[]     @relation("ProjectManager")
   tasks         Task[]
+  proposals     Proposal[]
 
   @@map("users")
 }
@@ -84,6 +100,8 @@ model Opportunity {
   contact           Contact?          @relation(fields: [contactId], references: [id], onDelete: SetNull)
   ownerId           String
   owner             User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  proposals     Proposal[]
 
   @@index([ownerId])
   @@index([companyId])
@@ -184,5 +202,90 @@ model Task {
   @@index([status])
   @@index([priority])
   @@map("tasks")
+}
+
+model Proposal {
+  id                String            @id @default(cuid())
+  title             String
+  description       String?
+  status            ProposalStatus    @default(DRAFT)
+  totalAmount       Decimal?          @db.Decimal(10, 2)
+  validUntil        DateTime?
+  submittedAt       DateTime?
+  acceptedAt        DateTime?
+  rejectedAt        DateTime?
+  rejectionReason   String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Relations
+  opportunityId     String
+  opportunity       Opportunity       @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  createdById       String
+  createdBy         User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  sections          ProposalSection[]
+  processes         ProposalProcess[]
+
+  @@index([opportunityId])
+  @@index([createdById])
+  @@index([status])
+  @@map("proposals")
+}
+
+model ProposalSection {
+  id                String          @id @default(cuid())
+  title             String
+  description       String?
+  order             Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Relations
+  proposalId        String
+  proposal         Proposal        @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  items             ProposalItem[]
+
+  @@index([proposalId])
+  @@index([order])
+  @@map("proposal_sections")
+}
+
+model ProposalItem {
+  id                String            @id @default(cuid())
+  title             String
+  description       String?
+  type              ProposalItemType  @default(DELIVERABLE)
+  quantity          Int?              @default(1)
+  unitPrice         Decimal?          @db.Decimal(10, 2)
+  totalPrice        Decimal?          @db.Decimal(10, 2)
+  order             Int               @default(0)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Relations
+  sectionId         String
+  section           ProposalSection  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@index([sectionId])
+  @@index([order])
+  @@map("proposal_items")
+}
+
+model ProposalProcess {
+  id                String          @id @default(cuid())
+  title             String
+  description       String?
+  order             Int             @default(0)
+  estimatedDuration Int?            // in days
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Relations
+  proposalId        String
+  proposal          Proposal        @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@index([order])
+  @@map("proposal_processes")
 }
 
