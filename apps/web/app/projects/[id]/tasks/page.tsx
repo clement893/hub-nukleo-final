@@ -77,7 +77,7 @@ type Task = {
   dueDate: Date | null;
   assignee: {
     id: string;
-    name: string;
+    name: string | null;
     email: string;
   } | null;
 };
@@ -130,7 +130,7 @@ function SortableTaskCard({
       )}
       {task.assignee && (
         <p className="text-xs text-gray-500 mb-2">
-          👤 {task.assignee.name}
+          👤 {task.assignee.name || task.assignee.email}
         </p>
       )}
       {task.dueDate && (
