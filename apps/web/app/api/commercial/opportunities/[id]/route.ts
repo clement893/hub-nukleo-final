@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { opportunitySchema } from "@nukleo/commercial/schemas";
 import { prisma } from "@nukleo/db";
 import {
@@ -7,7 +8,7 @@ import {
 } from "@nukleo/commercial/services/opportunities";
 
 export async function GET(
-  _request: NextRequest,
+  _request: NextRequest, // eslint-disable-line @typescript-eslint/no-unused-vars
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -122,7 +123,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  _request: NextRequest, // eslint-disable-line @typescript-eslint/no-unused-vars
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
