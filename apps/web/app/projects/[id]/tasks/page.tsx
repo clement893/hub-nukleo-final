@@ -31,7 +31,6 @@ import {
 } from "@nukleo/ui";
 import {
   getTasksAction,
-  createTaskAction,
   updateTaskAction,
   deleteTaskAction,
   getProjectAction,
