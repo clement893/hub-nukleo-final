@@ -4,22 +4,29 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+// Prisma reads DATABASE_URL from process.env automatically
+// During build, DATABASE_URL may not be available, so we provide a dummy value
+// This won't be used during build as pages using Prisma are marked as dynamic
+const getPrismaClient = () => {
+  // If DATABASE_URL is not set (e.g., during build), provide a dummy value
+  // Prisma will still validate the connection string format, but won't connect
+  const databaseUrl = process.env.DATABASE_URL || "postgresql://dummy:dummy@dummy:5432/dummy";
+  
+  return new PrismaClient({
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
         : ["error"],
-    // Only set datasource URL if it exists (not available during build)
-    ...(process.env.DATABASE_URL && {
-      datasources: {
-        db: {
-          url: process.env.DATABASE_URL,
-        },
+    datasources: {
+      db: {
+        url: databaseUrl,
       },
-    }),
+    },
   });
+};
+
+export const prisma =
+  globalForPrisma.prisma ?? getPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
