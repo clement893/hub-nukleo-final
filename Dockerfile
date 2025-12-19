@@ -44,10 +44,8 @@ RUN echo "Checking .next directory structure:" && \
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
 
-# Create startup script that runs migrations and starts the app
+# Start the application using the start script from package.json
+# The start script will handle database initialization
 WORKDIR /app/apps/web
-RUN echo '#!/bin/sh\necho "========================================\necho "=== Starting application ==="\necho "========================================\necho "Current directory: $(pwd)"\necho "DATABASE_URL is: ${DATABASE_URL:+SET (hidden)}"\necho ""\nif [ -z "$DATABASE_URL" ]; then\n  echo "ERROR: DATABASE_URL is not set!"\n  echo "Skipping database initialization"\nelse\n  echo "DATABASE_URL is set, initializing database..."\n  cd /app/packages/db\n  echo "Current directory: $(pwd)"\n  echo "Step 1: Running db:push (creates tables from schema)..."\n  pnpm db:push --accept-data-loss --skip-generate --force-reset 2>&1\n  PUSH_EXIT=$?\n  if [ $PUSH_EXIT -eq 0 ]; then\n    echo "✓ db:push succeeded"\n  else\n    echo "✗ db:push failed with exit code $PUSH_EXIT"\n    echo "Step 2: Trying migrate:deploy as fallback..."\n    pnpm db:migrate:deploy 2>&1\n    MIGRATE_EXIT=$?\n    if [ $MIGRATE_EXIT -eq 0 ]; then\n      echo "✓ migrate:deploy succeeded"\n    else\n      echo "✗ migrate:deploy also failed with exit code $MIGRATE_EXIT"\n    fi\n  fi\n  echo "Database initialization complete"\nfi\necho ""\necho "Starting Next.js server..."\ncd /app/apps/web\nexec pnpm start' > /start.sh && chmod +x /start.sh
-
-# Start the application
-CMD ["/start.sh"]
+CMD ["pnpm", "start"]
 
