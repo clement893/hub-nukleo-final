@@ -43,8 +43,7 @@ WORKDIR /app/apps/web
 RUN pnpm build
 
 # Make scripts executable
-RUN chmod +x /app/apps/web/scripts/run-migrations.sh && \
-    chmod +x /app/apps/web/scripts/start-server.sh
+RUN chmod +x /app/apps/web/scripts/run-migrations.sh
 
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
