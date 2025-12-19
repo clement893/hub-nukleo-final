@@ -51,7 +51,16 @@ export default async function CommercialDashboard() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <PipelineChart pipelineByStage={opportunitiesStats.pipelineByStage} />
+        <PipelineChart
+          pipelineByStage={opportunitiesStats.pipelineByStage.map((item) => ({
+            ...item,
+            value:
+              typeof item.value === "number"
+                ? item.value
+                : Number(item.value),
+            stage: String(item.stage),
+          }))}
+        />
         <RecentActivity
           opportunities={recentOpportunities}
           contacts={recentContacts}
