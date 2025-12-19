@@ -277,7 +277,7 @@ export default function ContactsStatsPage() {
                 {stats.byCompany.slice(0, 10).map((item, index) => (
                   <div
                     key={item.company}
-                    className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
+                    className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-gray-500">#{index + 1}</span>
@@ -304,7 +304,7 @@ export default function ContactsStatsPage() {
                 {stats.byPosition.slice(0, 10).map((item, index) => (
                   <div
                     key={item.position}
-                    className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
+                    className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-gray-500">#{index + 1}</span>

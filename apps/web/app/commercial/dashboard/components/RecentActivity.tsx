@@ -82,7 +82,7 @@ export function RecentActivity({
               <Link
                 key={`${activity.type}-${activity.id}`}
                 href={activity.url}
-                className="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                className="block p-3 rounded-lg bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border border-gray-200/50 dark:border-gray-700/50"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
@@ -90,7 +90,7 @@ export function RecentActivity({
                       <span className="text-sm font-medium">
                         {activity.title}
                       </span>
-                      <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">
+                      <span className="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                         {activity.type === "opportunity"
                           ? "Opportunité"
                           : activity.type === "contact"

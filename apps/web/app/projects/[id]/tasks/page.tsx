@@ -39,7 +39,7 @@ import { useToast } from "@/lib/toast";
 import { TaskForm } from "@/components/projects/TaskForm";
 
 const statusColors: Record<string, string> = {
-  TODO: "bg-gray-100 text-gray-800",
+  TODO: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
   IN_PROGRESS: "bg-blue-100 text-blue-800",
   REVIEW: "bg-yellow-100 text-yellow-800",
   DONE: "bg-green-100 text-green-800",
@@ -53,7 +53,7 @@ const statusLabels: Record<string, string> = {
 };
 
 const priorityColors: Record<string, string> = {
-  LOW: "bg-gray-100 text-gray-800",
+  LOW: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
   MEDIUM: "bg-blue-100 text-blue-800",
   HIGH: "bg-orange-100 text-orange-800",
   URGENT: "bg-red-100 text-red-800",
@@ -115,12 +115,12 @@ function SortableTaskCard({
       style={style}
       {...attributes}
       {...listeners}
-      className="p-3 border rounded-md bg-white hover:shadow-md transition-shadow cursor-move"
+      className="p-3 border rounded-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-move"
       onClick={() => onEdit(task)}
     >
       <div className="flex justify-between items-start mb-2">
         <h4 className="font-medium text-sm">{task.title}</h4>
-        <Badge className={priorityColors[task.priority] || "bg-gray-100"}>
+        <Badge className={priorityColors[task.priority] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
           {priorityLabels[task.priority] || task.priority}
         </Badge>
       </div>
@@ -150,7 +150,7 @@ function SortableTaskCard({
             className={`text-xs px-2 py-1 rounded ${
               task.status === s
                 ? "bg-blue-100 text-blue-800"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
             }`}
           >
             {statusLabels[s]?.charAt(0) || s.charAt(0)}

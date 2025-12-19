@@ -16,7 +16,7 @@ import { useToast } from "@/lib/toast";
 import { TimeEntryForm } from "@/components/projects/TimeEntryForm";
 
 const statusColors: Record<string, string> = {
-  PLANNING: "bg-gray-100 text-gray-800",
+  PLANNING: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
   IN_PROGRESS: "bg-blue-100 text-blue-800",
   ON_HOLD: "bg-yellow-100 text-yellow-800",
   COMPLETED: "bg-green-100 text-green-800",
@@ -123,7 +123,7 @@ export default function ProjectDetailPage() {
             <CardTitle>Statut</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge className={statusColors[project.status] || "bg-gray-100 text-gray-800"}>
+            <Badge className={statusColors[project.status] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
               {statusLabels[project.status] || project.status}
             </Badge>
           </CardContent>
@@ -224,7 +224,7 @@ export default function ProjectDetailPage() {
                 return (
                   <div
                     key={task.id}
-                    className="flex justify-between items-center p-3 border rounded-md hover:bg-gray-50"
+                    className="flex justify-between items-center p-3 border rounded-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
                     <div className="flex-1">
                       <p className="font-medium">{task.title}</p>
@@ -242,7 +242,7 @@ export default function ProjectDetailPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge className={statusColors[task.status] || "bg-gray-100 text-gray-800"}>
+                      <Badge className={statusColors[task.status] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
                         {task.status}
                       </Badge>
                       <Button

@@ -191,7 +191,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
                       <Link
                         key={contact.id}
                         href={`/commercial/contacts/${contact.id}`}
-                        className="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                        className="block p-3 rounded-lg bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border border-gray-200/50 dark:border-gray-700/50"
                       >
                         <div className="flex justify-between items-start">
                           <div>
@@ -234,7 +234,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
                       <Link
                         key={opp.id}
                         href="/commercial/opportunities"
-                        className="block p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                        className="block p-3 rounded-lg bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border border-gray-200/50 dark:border-gray-700/50"
                       >
                         <div className="flex justify-between items-start">
                           <div>

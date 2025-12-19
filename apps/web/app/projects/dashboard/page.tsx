@@ -213,7 +213,7 @@ export default function ProjectsDashboardPage() {
               {topProjects.map((project) => (
                 <div
                   key={project.id}
-                  className="flex justify-between items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer"
+                  className="flex justify-between items-center p-3 border rounded-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
                   onClick={() => router.push(`/projects/${project.id}`)}
                 >
                   <div className="flex-1">
@@ -229,7 +229,7 @@ export default function ProjectsDashboardPage() {
                       <p className="text-sm font-medium">{project._count?.tasks || 0}</p>
                       <p className="text-xs text-gray-500">tâches</p>
                     </div>
-                    <Badge className={statusColors[project.status] || "bg-gray-100"}>
+                    <Badge className={statusColors[project.status] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
                       {statusLabels[project.status] || project.status}
                     </Badge>
                   </div>
