@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Avatar, Badge } from "@nukleo/ui";
+import { Card, CardHeader, CardTitle, CardContent, Button, Avatar } from "@nukleo/ui";
 import Link from "next/link";
 
 interface ContactDetailPageProps {
