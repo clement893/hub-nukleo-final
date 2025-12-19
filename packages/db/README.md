@@ -1,127 +1,156 @@
-# @nukleo/db
+# Package @nukleo/db
 
-Package de base de données pour les applications Nukleo utilisant Prisma et PostgreSQL.
+Package de gestion de la base de données avec Prisma.
 
-## Installation
+## Structure
 
-```bash
-pnpm add @nukleo/db
+```
+packages/db/
+├── prisma/
+│   ├── schema.prisma      # Schéma Prisma avec tous les modèles
+│   └── seed.ts            # Script de seed pour les données de test
+├── src/
+│   ├── index.ts           # Export du client Prisma et types
+│   └── types.ts           # Types uniquement (pour Client Components)
+└── package.json
 ```
 
-## Configuration
-
-### Variables d'environnement
-
-Créez un fichier `.env` à la racine du monorepo avec :
-
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/nukleo?schema=public"
-```
-
-### Génération du client Prisma
-
-```bash
-pnpm db:generate
-```
-
-## Scripts disponibles
-
-- `pnpm db:generate` - Génère le client Prisma
-- `pnpm db:push` - Pousse le schéma vers la base de données (développement)
-- `pnpm db:migrate` - Crée et applique une migration
-- `pnpm db:migrate:deploy` - Applique les migrations (production)
-- `pnpm db:studio` - Ouvre Prisma Studio
-- `pnpm db:seed` - Seed la base de données (si configuré)
-- `pnpm db:reset` - Réinitialise la base de données
-
-## Utilisation
-
-```tsx
-import { prisma } from "@nukleo/db";
-
-// Exemple : Créer un utilisateur
-const user = await prisma.user.create({
-  data: {
-    email: "user@example.com",
-    name: "John Doe",
-    role: "USER",
-  },
-});
-
-// Exemple : Récupérer les opportunités avec relations
-const opportunities = await prisma.opportunity.findMany({
-  include: {
-    company: true,
-    contact: true,
-    owner: true,
-  },
-});
-```
-
-## Modèles disponibles
+## Modèles de Données
 
 ### User
-- `id`, `email`, `name`, `role` (ADMIN, MANAGER, USER)
+- Utilisateurs de l'application
+- Rôles : ADMIN, MANAGER, USER
 - Relations : opportunities, contacts, companies, projects, tasks
 
 ### Opportunity
-- `id`, `title`, `description`, `value`, `stage` (NEW, QUALIFIED, PROPOSAL, NEGOTIATION, WON, LOST), `probability`, `expectedCloseDate`, `actualCloseDate`
-- Relations : company, contact, owner
+- Opportunités commerciales
+- Stages : NEW, QUALIFIED, PROPOSAL, NEGOTIATION, WON, LOST
+- Relations : company, contact, owner (User)
 
 ### Contact
-- `id`, `firstName`, `lastName`, `email`, `phone`, `position`
-- Relations : company, owner, opportunities
+- Contacts commerciaux
+- Relations : company, owner (User), opportunities
 
 ### Company
-- `id`, `name`, `industry`, `website`, `phone`, `address`, `city`, `country`
-- Relations : owner, contacts, opportunities, projects
+- Entreprises clientes
+- Relations : owner (User), contacts, opportunities, projects
 
 ### Project
-- `id`, `name`, `description`, `status` (PLANNING, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED), `startDate`, `endDate`, `budget`
-- Relations : company, manager, tasks
+- Projets
+- Status : PLANNING, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED
+- Relations : company, manager (User), tasks
 
 ### Task
-- `id`, `title`, `description`, `status` (TODO, IN_PROGRESS, REVIEW, DONE), `priority` (LOW, MEDIUM, HIGH, URGENT), `dueDate`
-- Relations : project, assignee
+- Tâches de projet
+- Status : TODO, IN_PROGRESS, REVIEW, DONE
+- Priority : LOW, MEDIUM, HIGH, URGENT
+- Relations : project, assignee (User)
 
-## Types TypeScript
+## Scripts Disponibles
 
-Tous les types Prisma sont exportés :
-
-```tsx
-import type { User, Opportunity, Role, OpportunityStage } from "@nukleo/db";
-```
-
-## Migration
-
-Pour créer une nouvelle migration :
-
+### Génération du Client Prisma
 ```bash
-pnpm db:migrate --name migration_name
+pnpm db:generate
+```
+Génère le client Prisma à partir du schéma.
+
+### Push du Schéma (Développement)
+```bash
+pnpm db:push
+```
+Pousse le schéma vers la base de données sans créer de migration. Utile pour le développement rapide.
+
+### Créer une Migration
+```bash
+pnpm db:migrate
+```
+Crée une nouvelle migration et l'applique à la base de données de développement.
+
+### Déployer les Migrations (Production)
+```bash
+pnpm db:migrate:deploy
+```
+Applique les migrations en attente à la base de données de production.
+
+### Prisma Studio
+```bash
+pnpm db:studio
+```
+Ouvre Prisma Studio dans le navigateur pour visualiser et gérer les données.
+
+### Seed la Base de Données
+```bash
+pnpm db:seed
+```
+Remplit la base de données avec des données de test.
+
+### Reset la Base de Données
+```bash
+pnpm db:reset
+```
+Supprime toutes les données et réapplique les migrations et le seed.
+
+## Configuration
+
+### Variables d'Environnement
+
+La variable `DATABASE_URL` doit être configurée pour se connecter à la base de données PostgreSQL.
+
+Format :
+```
+postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 
-## Seed (optionnel)
-
-Créez un fichier `prisma/seed.ts` pour seed la base de données :
-
-```tsx
-import { prisma } from "../src/index";
-
-async function main() {
-  // Seed data here
-}
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+### Exemple pour Railway
+```
+postgresql://postgres:PASSWORD@turntable.proxy.rlwy.net:49842/railway
 ```
 
-## Licence
+## Utilisation
 
-MIT
+### Dans les Services (Server-side)
+```typescript
+import { prisma } from "@nukleo/db";
 
+const users = await prisma.user.findMany();
+```
+
+### Dans les Client Components (Types uniquement)
+```typescript
+import type { OpportunityStage } from "@nukleo/db/types";
+
+const stage: OpportunityStage = "NEW";
+```
+
+## Migrations
+
+Les migrations sont stockées dans `prisma/migrations/`. Elles sont créées automatiquement lors de l'exécution de `pnpm db:migrate`.
+
+Pour créer une migration initiale :
+```bash
+cd packages/db
+pnpm db:migrate --name init
+```
+
+## Seed
+
+Le script de seed (`prisma/seed.ts`) crée :
+- 3 utilisateurs (admin, manager, user)
+- 2 entreprises
+- 2 contacts
+- 3 opportunités (dont une gagnée)
+- 1 projet
+- 2 tâches
+
+Pour exécuter le seed :
+```bash
+cd packages/db
+pnpm db:seed
+```
+
+## Notes Importantes
+
+- ⚠️ Ne jamais modifier directement les migrations existantes
+- 🔒 Toujours valider les changements de schéma avant de créer une migration
+- 📊 Utiliser Prisma Studio pour visualiser les données pendant le développement
+- 🔄 En production, utiliser `db:migrate:deploy` au lieu de `db:migrate`

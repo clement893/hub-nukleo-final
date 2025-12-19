@@ -1,149 +1,223 @@
-import { prisma } from "../src/index";
+import { PrismaClient, Role, OpportunityStage, ProjectStatus, TaskStatus, TaskPriority } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Starting database seed...");
 
-  // Create admin user
-  const admin = await prisma.user.upsert({
+  // Create a default admin user
+  const adminUser = await prisma.user.upsert({
     where: { email: "admin@nukleo.com" },
     update: {},
     create: {
       email: "admin@nukleo.com",
       name: "Admin User",
-      role: "ADMIN",
+      role: Role.ADMIN,
     },
   });
 
-  console.log("✅ Created admin user:", admin.email);
+  console.log("✅ Created admin user:", adminUser.email);
 
-  // Create manager user
-  const manager = await prisma.user.upsert({
+  // Create a manager user
+  const managerUser = await prisma.user.upsert({
     where: { email: "manager@nukleo.com" },
     update: {},
     create: {
       email: "manager@nukleo.com",
       name: "Manager User",
-      role: "MANAGER",
+      role: Role.MANAGER,
     },
   });
 
-  console.log("✅ Created manager user:", manager.email);
+  console.log("✅ Created manager user:", managerUser.email);
 
-  // Create regular user
-  const user = await prisma.user.upsert({
+  // Create a regular user
+  const regularUser = await prisma.user.upsert({
     where: { email: "user@nukleo.com" },
     update: {},
     create: {
       email: "user@nukleo.com",
       name: "Regular User",
-      role: "USER",
+      role: Role.USER,
     },
   });
 
-  console.log("✅ Created regular user:", user.email);
+  console.log("✅ Created regular user:", regularUser.email);
 
-  // Create company
-  const company = await prisma.company.create({
-    data: {
+  // Create sample companies
+  const company1 = await prisma.company.upsert({
+    where: { id: "company-1" },
+    update: {},
+    create: {
+      id: "company-1",
       name: "Acme Corporation",
       industry: "Technology",
       website: "https://acme.com",
-      phone: "+1-555-0100",
+      phone: "+33 1 23 45 67 89",
       address: "123 Tech Street",
-      city: "San Francisco",
-      country: "USA",
-      ownerId: manager.id,
+      city: "Paris",
+      country: "France",
+      ownerId: adminUser.id,
     },
   });
 
-  console.log("✅ Created company:", company.name);
+  const company2 = await prisma.company.upsert({
+    where: { id: "company-2" },
+    update: {},
+    create: {
+      id: "company-2",
+      name: "Global Solutions Inc",
+      industry: "Consulting",
+      website: "https://globalsolutions.com",
+      phone: "+33 1 98 76 54 32",
+      address: "456 Business Avenue",
+      city: "Lyon",
+      country: "France",
+      ownerId: managerUser.id,
+    },
+  });
 
-  // Create contact
-  const contact = await prisma.contact.create({
-    data: {
+  console.log("✅ Created companies:", company1.name, company2.name);
+
+  // Create sample contacts
+  const contact1 = await prisma.contact.upsert({
+    where: { id: "contact-1" },
+    update: {},
+    create: {
+      id: "contact-1",
       firstName: "John",
       lastName: "Doe",
       email: "john.doe@acme.com",
-      phone: "+1-555-0101",
+      phone: "+33 6 12 34 56 78",
       position: "CEO",
-      companyId: company.id,
-      ownerId: manager.id,
+      companyId: company1.id,
+      ownerId: adminUser.id,
     },
   });
 
-  console.log("✅ Created contact:", `${contact.firstName} ${contact.lastName}`);
-
-  // Create opportunity
-  const opportunity = await prisma.opportunity.create({
-    data: {
-      title: "Enterprise License Deal",
-      description: "Large enterprise customer interested in annual license",
-      value: 50000.0,
-      stage: "QUALIFIED",
-      probability: 60,
-      expectedCloseDate: new Date("2024-12-31"),
-      companyId: company.id,
-      contactId: contact.id,
-      ownerId: manager.id,
+  const contact2 = await prisma.contact.upsert({
+    where: { id: "contact-2" },
+    update: {},
+    create: {
+      id: "contact-2",
+      firstName: "Jane",
+      lastName: "Smith",
+      email: "jane.smith@globalsolutions.com",
+      phone: "+33 6 87 65 43 21",
+      position: "CTO",
+      companyId: company2.id,
+      ownerId: managerUser.id,
     },
   });
 
-  console.log("✅ Created opportunity:", opportunity.title);
+  console.log("✅ Created contacts:", `${contact1.firstName} ${contact1.lastName}`, `${contact2.firstName} ${contact2.lastName}`);
 
-  // Create project
-  const project = await prisma.project.create({
-    data: {
+  // Create sample opportunities
+  const opportunity1 = await prisma.opportunity.upsert({
+    where: { id: "opp-1" },
+    update: {},
+    create: {
+      id: "opp-1",
+      title: "New Enterprise Contract",
+      description: "Large enterprise contract for software implementation",
+      value: 500000,
+      stage: OpportunityStage.QUALIFIED,
+      probability: 75,
+      expectedCloseDate: new Date("2025-03-31"),
+      companyId: company1.id,
+      contactId: contact1.id,
+      ownerId: adminUser.id,
+    },
+  });
+
+  const opportunity2 = await prisma.opportunity.upsert({
+    where: { id: "opp-2" },
+    update: {},
+    create: {
+      id: "opp-2",
+      title: "Consulting Project",
+      description: "Strategic consulting project",
+      value: 150000,
+      stage: OpportunityStage.PROPOSAL,
+      probability: 50,
+      expectedCloseDate: new Date("2025-02-28"),
+      companyId: company2.id,
+      contactId: contact2.id,
+      ownerId: managerUser.id,
+    },
+  });
+
+  const opportunity3 = await prisma.opportunity.upsert({
+    where: { id: "opp-3" },
+    update: {},
+    create: {
+      id: "opp-3",
+      title: "Won Deal",
+      description: "Successfully closed deal",
+      value: 250000,
+      stage: OpportunityStage.WON,
+      probability: 100,
+      expectedCloseDate: new Date("2024-12-15"),
+      actualCloseDate: new Date("2024-12-15"),
+      companyId: company1.id,
+      contactId: contact1.id,
+      ownerId: adminUser.id,
+    },
+  });
+
+  console.log("✅ Created opportunities:", opportunity1.title, opportunity2.title, opportunity3.title);
+
+  // Create sample projects
+  const project1 = await prisma.project.upsert({
+    where: { id: "project-1" },
+    update: {},
+    create: {
+      id: "project-1",
       name: "Website Redesign",
       description: "Complete redesign of company website",
-      status: "IN_PROGRESS",
-      startDate: new Date("2024-01-01"),
-      endDate: new Date("2024-06-30"),
-      budget: 25000.0,
-      companyId: company.id,
-      managerId: manager.id,
+      status: ProjectStatus.IN_PROGRESS,
+      startDate: new Date("2025-01-01"),
+      endDate: new Date("2025-06-30"),
+      budget: 100000,
+      companyId: company1.id,
+      managerId: managerUser.id,
     },
   });
 
-  console.log("✅ Created project:", project.name);
+  console.log("✅ Created project:", project1.name);
 
-  // Create tasks
-  const tasks = await Promise.all([
-    prisma.task.create({
-      data: {
-        title: "Design mockups",
-        description: "Create initial design mockups for homepage",
-        status: "DONE",
-        priority: "HIGH",
-        dueDate: new Date("2024-01-15"),
-        projectId: project.id,
-        assigneeId: user.id,
-      },
-    }),
-    prisma.task.create({
-      data: {
-        title: "Frontend development",
-        description: "Implement frontend components",
-        status: "IN_PROGRESS",
-        priority: "HIGH",
-        dueDate: new Date("2024-03-01"),
-        projectId: project.id,
-        assigneeId: user.id,
-      },
-    }),
-    prisma.task.create({
-      data: {
-        title: "Backend API integration",
-        description: "Integrate with backend APIs",
-        status: "TODO",
-        priority: "MEDIUM",
-        dueDate: new Date("2024-04-01"),
-        projectId: project.id,
-        assigneeId: user.id,
-      },
-    }),
-  ]);
+  // Create sample tasks
+  const task1 = await prisma.task.upsert({
+    where: { id: "task-1" },
+    update: {},
+    create: {
+      id: "task-1",
+      title: "Design mockups",
+      description: "Create initial design mockups for the website",
+      status: TaskStatus.IN_PROGRESS,
+      priority: TaskPriority.HIGH,
+      dueDate: new Date("2025-02-15"),
+      projectId: project1.id,
+      assigneeId: regularUser.id,
+    },
+  });
 
-  console.log(`✅ Created ${tasks.length} tasks`);
+  const task2 = await prisma.task.upsert({
+    where: { id: "task-2" },
+    update: {},
+    create: {
+      id: "task-2",
+      title: "Frontend development",
+      description: "Implement frontend components",
+      status: TaskStatus.TODO,
+      priority: TaskPriority.MEDIUM,
+      dueDate: new Date("2025-03-31"),
+      projectId: project1.id,
+      assigneeId: regularUser.id,
+    },
+  });
+
+  console.log("✅ Created tasks:", task1.title, task2.title);
 
   console.log("🎉 Database seed completed successfully!");
 }
@@ -156,4 +230,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
