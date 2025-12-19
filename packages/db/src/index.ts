@@ -11,12 +11,14 @@ export const prisma =
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
         : ["error"],
-    // Optimize connection pool for production
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL,
+    // Only set datasource URL if it exists (not available during build)
+    ...(process.env.DATABASE_URL && {
+      datasources: {
+        db: {
+          url: process.env.DATABASE_URL,
+        },
       },
-    },
+    }),
   });
 
 if (process.env.NODE_ENV !== "production") {
