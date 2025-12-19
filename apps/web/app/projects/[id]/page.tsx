@@ -209,8 +209,8 @@ export default function ProjectDetailPage() {
               Voir toutes les tâches
             </Button>
           </div>
-        </CardHeader>
-        <CardContent>
+        </GlassCardHeader>
+        <GlassCardContent>
           {tasks && tasks.length > 0 ? (
             <div className="space-y-2">
               {tasks.slice(0, 5).map((task: any) => {
@@ -221,18 +221,18 @@ export default function ProjectDetailPage() {
                 return (
                   <div
                     key={task.id}
-                    className="flex justify-between items-center p-3 border rounded-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="flex justify-between items-center p-3 border rounded-md bg-white dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                   >
                     <div className="flex-1">
-                      <p className="font-medium">{task.title}</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{task.title}</p>
                       <div className="flex gap-4 mt-1">
                         {task.assignee && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             👤 {task.assignee.name}
                           </p>
                         )}
                         {totalHours > 0 && (
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             ⏱️ {totalHours}h
                           </p>
                         )}
@@ -249,7 +249,7 @@ export default function ProjectDetailPage() {
                         }}
                         variant="ghost"
                         size="sm"
-                        className="text-blue-600"
+                        className="text-blue-600 dark:text-blue-400"
                       >
                         + Temps
                       </Button>
@@ -259,10 +259,10 @@ export default function ProjectDetailPage() {
               })}
             </div>
           ) : (
-            <p className="text-gray-500">Aucune tâche pour le moment</p>
+            <p className="text-gray-500 dark:text-gray-400">Aucune tâche pour le moment</p>
           )}
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       {isTimeEntryModalOpen && selectedTaskId && (
         <Modal

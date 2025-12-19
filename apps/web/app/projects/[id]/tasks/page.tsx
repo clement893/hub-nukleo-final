@@ -25,6 +25,7 @@ import {
   Badge,
   Modal,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import {
   getTasksAction,
   updateTaskAction,

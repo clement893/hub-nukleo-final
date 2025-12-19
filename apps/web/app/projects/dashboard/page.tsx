@@ -3,13 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Badge,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getProjectsAction } from "../actions";
 import { useToast } from "@/lib/toast";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
@@ -123,45 +120,45 @@ export default function ProjectsDashboardPage() {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold">{stats.total}</div>
-            <p className="text-sm text-gray-600 mt-1">Total projets</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-blue-600">{stats.inProgress}</div>
-            <p className="text-sm text-gray-600 mt-1">En cours</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-green-600">{stats.completed}</div>
-            <p className="text-sm text-gray-600 mt-1">Terminés</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold">
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total projets</p>
+          </GlassCardContent>
+        </GlassCard>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.inProgress}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">En cours</p>
+          </GlassCardContent>
+        </GlassCard>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.completed}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Terminés</p>
+          </GlassCardContent>
+        </GlassCard>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-3xl font-bold text-gray-900 dark:text-white">
               {stats.totalBudget.toLocaleString("fr-FR", {
                 style: "currency",
                 currency: "EUR",
                 maximumFractionDigits: 0,
               })}
             </div>
-            <p className="text-sm text-gray-600 mt-1">Budget total</p>
-          </CardContent>
-        </Card>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Budget total</p>
+          </GlassCardContent>
+        </GlassCard>
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Répartition par statut</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Répartition par statut</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -181,14 +178,14 @@ export default function ProjectsDashboardPage() {
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Projets créés par mois</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Projets créés par mois</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -198,16 +195,16 @@ export default function ProjectsDashboardPage() {
                 <Bar dataKey="value" fill="#3B82F6" />
               </BarChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
       </div>
 
       {/* Top Projects */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Projets avec le plus de tâches</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Projets avec le plus de tâches</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent>
           {topProjects.length > 0 ? (
             <div className="space-y-3">
               {topProjects.map((project) => (
@@ -237,31 +234,31 @@ export default function ProjectsDashboardPage() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500">Aucun projet avec des tâches</p>
+            <p className="text-gray-500 dark:text-gray-400">Aucun projet avec des tâches</p>
           )}
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       {/* Additional Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold">{stats.totalTasks}</div>
-            <p className="text-sm text-gray-600 mt-1">Total tâches</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-yellow-600">{stats.onHold}</div>
-            <p className="text-sm text-gray-600 mt-1">En attente</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-gray-600">{stats.planning}</div>
-            <p className="text-sm text-gray-600 mt-1">En planification</p>
-          </CardContent>
-        </Card>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalTasks}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total tâches</p>
+          </GlassCardContent>
+        </GlassCard>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.onHold}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">En attente</p>
+          </GlassCardContent>
+        </GlassCard>
+        <GlassCard>
+          <GlassCardContent className="pt-6">
+            <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{stats.planning}</div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">En planification</p>
+          </GlassCardContent>
+        </GlassCard>
       </div>
     </div>
   );

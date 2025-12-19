@@ -3,12 +3,9 @@
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getProjectAction, getTasksAction } from "../../actions";
 import { useToast } from "@/lib/toast";
 

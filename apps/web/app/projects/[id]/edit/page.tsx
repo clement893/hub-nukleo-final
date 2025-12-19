@@ -5,14 +5,11 @@ import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Input,
   Select,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import {
   updateProjectSchema,
   type UpdateProjectData,
@@ -130,13 +127,13 @@ export default function EditProjectPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Informations générales</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Informations générales</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Nom du projet *
             </label>
             <Input
@@ -147,12 +144,12 @@ export default function EditProjectPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
             <textarea
               {...register("description")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
               rows={4}
               placeholder="Description du projet"
             />
@@ -160,7 +157,7 @@ export default function EditProjectPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Statut
               </label>
               <Select
@@ -176,7 +173,7 @@ export default function EditProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Budget
               </label>
               <Input
@@ -190,7 +187,7 @@ export default function EditProjectPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Date de début
               </label>
               <Input
@@ -200,7 +197,7 @@ export default function EditProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Date de fin
               </label>
               <Input
@@ -209,8 +206,8 @@ export default function EditProjectPage() {
               />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       <div className="flex justify-end gap-2 pb-8">
         <Button
