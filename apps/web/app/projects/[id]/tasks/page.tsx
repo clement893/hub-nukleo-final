@@ -152,7 +152,7 @@ function SortableTaskCard({
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
-            {statusLabels[s].charAt(0)}
+            {statusLabels[s]?.charAt(0) || s.charAt(0)}
           </button>
         ))}
         <button
