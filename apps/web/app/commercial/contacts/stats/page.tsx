@@ -223,7 +223,7 @@ export default function ContactsStatsPage() {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {completenessData.map((entry, index) => (
+                  {completenessData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={index === 0 ? "#00C49F" : "#FF8042"}
@@ -254,7 +254,7 @@ export default function ContactsStatsPage() {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {phoneCompletenessData.map((entry, index) => (
+                  {phoneCompletenessData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={index === 0 ? "#0088FE" : "#FF8042"}
