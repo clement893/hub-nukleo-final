@@ -38,25 +38,28 @@ const nextConfig: NextConfig = {
   turbopack: {},
 };
 
-// Wrap with Sentry configuration
-const configWithSentry = withSentryConfig(
-  withBundleAnalyzer(nextConfig),
-  {
-    // For all available options, see:
-    // https://github.com/getsentry/sentry-webpack-plugin#options
+// Conditionally wrap with Sentry only if DSN is provided
+// This allows builds to work without Sentry configured
+const configWithBundleAnalyzer = withBundleAnalyzer(nextConfig);
 
-    // Suppresses source map uploading logs during build
-    silent: true,
-    
-    org: process.env.SENTRY_ORG,
-    project: process.env.SENTRY_PROJECT,
-    
-    // Only upload source maps in production
-    widenClientFileUpload: true,
-    hideSourceMaps: true,
-    disableLogger: true,
-    automaticVercelMonitors: true,
-  }
-);
+// Only wrap with Sentry if DSN is configured
+const finalConfig = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
+  ? withSentryConfig(configWithBundleAnalyzer, {
+      // For all available options, see:
+      // https://github.com/getsentry/sentry-webpack-plugin#options
 
-export default configWithSentry;
+      // Suppresses source map uploading logs during build
+      silent: true,
+      
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      
+      // Only upload source maps in production
+      widenClientFileUpload: true,
+      hideSourceMaps: true,
+      disableLogger: true,
+      automaticVercelMonitors: true,
+    })
+  : configWithBundleAnalyzer;
+
+export default finalConfig;
