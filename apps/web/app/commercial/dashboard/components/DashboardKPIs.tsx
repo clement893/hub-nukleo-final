@@ -21,31 +21,31 @@ export function DashboardKPIs({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-500">
+          <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Opportunités totales
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold">{totalOpportunities}</div>
-          <p className="text-sm text-gray-500 mt-1">En cours</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">En cours</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-500">
+          <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Taux de conversion
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold">{conversionRate}%</div>
-          <p className="text-sm text-gray-500 mt-1">Gagné / Total</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Gagné / Total</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-500">
+          <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Revenu total
           </CardTitle>
         </CardHeader>
@@ -57,31 +57,31 @@ export function DashboardKPIs({
               maximumFractionDigits: 0,
             })}
           </div>
-          <p className="text-sm text-gray-500 mt-1">Généré</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Généré</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-500">
+          <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Contacts
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold">{contactsCount}</div>
-          <p className="text-sm text-gray-500 mt-1">Actifs</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Actifs</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-500">
+          <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Entreprises
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold">{companiesCount}</div>
-          <p className="text-sm text-gray-500 mt-1">En base</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">En base</p>
         </CardContent>
       </Card>
     </div>

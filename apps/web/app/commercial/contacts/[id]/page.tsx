@@ -29,7 +29,7 @@ export default async function ContactDetailPage({
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">Contact non trouvé</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">Contact non trouvé</p>
               <Link href="/commercial/contacts">
                 <Button variant="outline">Retour à la liste</Button>
               </Link>
