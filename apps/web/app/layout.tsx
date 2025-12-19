@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: "Hub Nukleo",
@@ -14,9 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="antialiased">
-        <ErrorBoundary>{children}</ErrorBoundary>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
