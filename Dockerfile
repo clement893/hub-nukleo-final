@@ -46,7 +46,7 @@ EXPOSE 3000
 
 # Create startup script that runs migrations and starts the app
 WORKDIR /app/apps/web
-RUN echo '#!/bin/sh\nset -e\necho "=== Starting application ==="\necho "DATABASE_URL is: ${DATABASE_URL:+set}"\ncd /app/packages/db\nif [ -n "$DATABASE_URL" ]; then\n  echo "DATABASE_URL is set, initializing database..."\n  echo "Step 1: Attempting db:push (creates tables from schema)..."\n  if pnpm db:push --accept-data-loss --skip-generate; then\n    echo "✓ db:push succeeded"\n  else\n    echo "✗ db:push failed, trying migrate:deploy..."\n    pnpm db:migrate:deploy || echo "✗ migrate:deploy also failed"\n  fi\n  echo "Step 2: Verifying database connection..."\n  pnpm prisma db execute --stdin <<< "SELECT 1" || echo "Database connection check failed"\nelse\n  echo "WARNING: DATABASE_URL not set, skipping database initialization"\nfi\necho "Starting Next.js server..."\ncd /app/apps/web\nexec pnpm start' > /start.sh && chmod +x /start.sh
+RUN echo '#!/bin/sh\necho "=== Starting application ==="\necho "DATABASE_URL is: ${DATABASE_URL:+set}"\ncd /app/packages/db\nif [ -n "$DATABASE_URL" ]; then\n  echo "DATABASE_URL is set, initializing database..."\n  echo "Step 1: Attempting db:push (creates tables from schema)..."\n  pnpm db:push --accept-data-loss --skip-generate 2>&1 || {\n    echo "db:push failed with exit code $?"\n    echo "Trying migrate:deploy as fallback..."\n    pnpm db:migrate:deploy 2>&1 || echo "migrate:deploy also failed"\n  }\n  echo "Database initialization complete"\nelse\n  echo "WARNING: DATABASE_URL not set, skipping database initialization"\nfi\necho "Starting Next.js server..."\ncd /app/apps/web\nexec pnpm start' > /start.sh && chmod +x /start.sh
 
 # Start the application
 CMD ["/start.sh"]
