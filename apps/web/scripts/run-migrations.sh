@@ -3,6 +3,8 @@
 # Script to sync Prisma schema to database before starting the application
 # This ensures the database schema is up to date
 
+set -e  # Exit on error (but we'll catch errors and continue)
+
 echo "🔄 Syncing database schema..."
 
 # Use absolute path from /app root (as defined in Dockerfile)
@@ -22,6 +24,12 @@ cd "$DB_DIR" || {
   echo "⚠️  Continuing startup without database sync..."
   exit 0
 }
+
+# Check if DATABASE_URL is set
+if [ -z "$DATABASE_URL" ]; then
+  echo "⚠️  DATABASE_URL not set, skipping database sync..."
+  exit 0
+fi
 
 # Try db:push first (works without migrations)
 echo "📦 Attempting db:push..."
