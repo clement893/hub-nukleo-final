@@ -12,7 +12,8 @@ COPY apps/web ./apps/web
 
 # Install dependencies from root
 # Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
-RUN pnpm install --no-frozen-lockfile
+# Ignore scripts to avoid conflicts
+RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
 # Build the web app
 WORKDIR /app/apps/web
