@@ -28,11 +28,13 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white px-4">
-      <Card className="w-full max-w-md">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+      <Card className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900/50">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Hub Nukleo</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-3xl font-bold text-gray-900 dark:text-white">
+            Hub Nukleo
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             Connectez-vous à votre compte
           </CardDescription>
         </CardHeader>
