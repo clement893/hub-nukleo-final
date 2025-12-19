@@ -58,7 +58,7 @@ export function exportToCSV(
 export function exportToPDF(
   data: ExportableData[],
   title: string,
-  filename: string = "export.pdf"
+  _filename: string = "export.pdf"
 ): void {
   if (data.length === 0 || !data[0]) {
     return;
