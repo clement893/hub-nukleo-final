@@ -217,9 +217,9 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
               </CardContent>
             </Card>
 
-            <Card className="mt-6">
+            <Card className="mt-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
-                <CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">
                   Opportunités ({company.opportunities.length})
                 </CardTitle>
               </CardHeader>
