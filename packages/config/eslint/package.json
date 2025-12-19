@@ -7,9 +7,9 @@
     "index.js"
   ],
   "dependencies": {
-    "@next/eslint-plugin-next": "^15.1.0",
+    "@next/eslint-plugin-next": "^16.0.0",
     "eslint": "^8",
-    "eslint-config-next": "^15.1.0",
+    "eslint-config-next": "^16.0.0",
     "eslint-config-prettier": "^9.1.0"
   },
   "peerDependencies": {
