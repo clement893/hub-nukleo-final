@@ -100,7 +100,7 @@ export function RecentActivity({
                     </div>
                     <p className="text-sm text-gray-500 mt-1">
                       {activity.subtitle}
-                      {activity.value && (
+                      {activity.type === "opportunity" && activity.value && (
                         <span className="ml-2 font-semibold">
                           {activity.value.toLocaleString("fr-FR", {
                             style: "currency",
