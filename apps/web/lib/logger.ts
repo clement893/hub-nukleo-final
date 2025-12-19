@@ -1,18 +1,64 @@
 /**
  * Centralized logging service
- * Handles error logging with proper error tracking in production
+ * 
+ * Handles error logging with proper error tracking in production using Sentry.
+ * Provides a unified interface for logging across the application with different log levels.
+ * 
+ * @example
+ * ```typescript
+ * import { logger } from "@/lib/logger";
+ * 
+ * // Log an error
+ * logger.error("Failed to fetch user", error, { userId: "123" });
+ * 
+ * // Log a warning
+ * logger.warn("Rate limit approaching", { requests: 95, limit: 100 });
+ * 
+ * // Log info
+ * logger.info("User logged in", { userId: "123" });
+ * 
+ * // Log debug (only in development)
+ * logger.debug("Processing request", { path: "/api/users" });
+ * ```
+ * 
+ * @module logger
  */
 
+import * as Sentry from "@sentry/nextjs";
+
+/**
+ * Log levels available in the logger
+ */
 type LogLevel = "error" | "warn" | "info" | "debug";
 
+/**
+ * Additional context data to include with log entries
+ */
 interface LogContext {
   [key: string]: unknown;
 }
 
+/**
+ * Centralized Logger class
+ * 
+ * Provides structured logging with automatic error tracking in production.
+ * In development, logs are formatted with emojis for better readability.
+ * In production, errors are automatically sent to Sentry for tracking.
+ */
 class Logger {
-  private isProduction = process.env.NODE_ENV === "production";
+  private readonly isProduction = process.env.NODE_ENV === "production";
+  private readonly isDevelopment = process.env.NODE_ENV === "development";
 
-  private log(level: LogLevel, message: string, error?: Error, context?: LogContext) {
+  /**
+   * Internal logging method that handles all log levels
+   * 
+   * @param level - The log level (error, warn, info, debug)
+   * @param message - The log message
+   * @param error - Optional error object to log
+   * @param context - Optional additional context data
+   * @private
+   */
+  private log(level: LogLevel, message: string, error?: Error, context?: LogContext): void {
     const timestamp = new Date().toISOString();
     const logData = {
       timestamp,
@@ -28,16 +74,23 @@ class Logger {
       ...context,
     };
 
-    if (this.isProduction) {
-      // In production, send to error tracking service (Sentry, LogRocket, etc.)
-      // Example: Sentry.captureException(error, { extra: logData });
-      // For now, we'll still log to console but could integrate Sentry later
-      if (level === "error") {
-        console.error(`[${level.toUpperCase()}] ${message}`, logData);
-      } else {
-        console.log(`[${level.toUpperCase()}] ${message}`, logData);
-      }
-    } else {
+    // In production, send errors to Sentry
+    if (this.isProduction && level === "error" && error) {
+      Sentry.captureException(error, {
+        level: "error",
+        tags: {
+          logLevel: level,
+        },
+        extra: {
+          message,
+          context,
+          timestamp,
+        },
+      });
+    }
+
+    // Always log to console for immediate visibility
+    if (this.isDevelopment) {
       // In development, use console with better formatting
       const emoji = {
         error: "❌",
@@ -51,25 +104,103 @@ class Logger {
       } else {
         console.log(`${emoji} [${level.toUpperCase()}] ${message}`, logData);
       }
+    } else {
+      // In production, use structured logging
+      if (level === "error") {
+        console.error(`[${level.toUpperCase()}] ${message}`, logData);
+      } else {
+        console.log(`[${level.toUpperCase()}] ${message}`, logData);
+      }
     }
   }
 
-  error(message: string, error?: Error, context?: LogContext) {
+  /**
+   * Log an error
+   * 
+   * Errors are automatically sent to Sentry in production.
+   * 
+   * @param message - Error message describing what went wrong
+   * @param error - Optional Error object
+   * @param context - Optional additional context (e.g., userId, requestId)
+   * 
+   * @example
+   * ```typescript
+   * try {
+   *   await fetchUser(userId);
+   * } catch (error) {
+   *   logger.error("Failed to fetch user", error, { userId });
+   * }
+   * ```
+   */
+  error(message: string, error?: Error, context?: LogContext): void {
     this.log("error", message, error, context);
   }
 
-  warn(message: string, context?: LogContext) {
+  /**
+   * Log a warning
+   * 
+   * Use for situations that are not errors but should be noted.
+   * 
+   * @param message - Warning message
+   * @param context - Optional additional context
+   * 
+   * @example
+   * ```typescript
+   * if (requests > 90) {
+   *   logger.warn("Rate limit approaching", { requests, limit: 100 });
+   * }
+   * ```
+   */
+  warn(message: string, context?: LogContext): void {
     this.log("warn", message, undefined, context);
   }
 
-  info(message: string, context?: LogContext) {
+  /**
+   * Log informational messages
+   * 
+   * Use for general information about application flow.
+   * 
+   * @param message - Info message
+   * @param context - Optional additional context
+   * 
+   * @example
+   * ```typescript
+   * logger.info("User logged in", { userId, timestamp });
+   * ```
+   */
+  info(message: string, context?: LogContext): void {
     this.log("info", message, undefined, context);
   }
 
-  debug(message: string, context?: LogContext) {
+  /**
+   * Log debug messages
+   * 
+   * Debug logs are primarily useful during development.
+   * They provide detailed information about application state.
+   * 
+   * @param message - Debug message
+   * @param context - Optional additional context
+   * 
+   * @example
+   * ```typescript
+   * logger.debug("Processing request", { path, method, headers });
+   * ```
+   */
+  debug(message: string, context?: LogContext): void {
     this.log("debug", message, undefined, context);
   }
 }
 
+/**
+ * Singleton logger instance
+ * 
+ * Use this instance throughout the application for consistent logging.
+ * 
+ * @example
+ * ```typescript
+ * import { logger } from "@/lib/logger";
+ * logger.error("Something went wrong", error);
+ * ```
+ */
 export const logger = new Logger();
 
