@@ -20,15 +20,9 @@ import {
 import { createProjectAction } from "../actions";
 import { useToast } from "@/lib/toast";
 
-type Company = {
-  id: string;
-  name: string;
-};
-
 export default function NewProjectPage() {
   const router = useRouter();
   const { addToast } = useToast();
-  const [companies, setCompanies] = React.useState<Company[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
