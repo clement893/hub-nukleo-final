@@ -16,6 +16,13 @@ import {
   TableRow,
   TableCell,
   Avatar,
+  Select,
+  Modal,
+  DropdownMenu,
+  DropdownTrigger,
+  DropdownContent,
+  DropdownItem,
+  DropdownSeparator,
 } from "@nukleo/ui";
 import {
   ContactModal,
@@ -26,17 +33,11 @@ import {
   getCompaniesAction,
   createContactAction,
   updateContactAction,
+  deleteContactAction,
 } from "./actions";
-
-interface Contact {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email?: string | null;
-  phone?: string | null;
-  position?: string | null;
-  company?: { id: string; name: string } | null;
-}
+import { useToast } from "../../../lib/toast";
+import { exportToCSV, exportToPDF } from "../../../lib/export";
+import { calculateContactStats, type Contact } from "../../../lib/stats";
 
 export default function ContactsPage() {
   const [contacts, setContacts] = React.useState<Contact[]>([]);
@@ -44,11 +45,18 @@ export default function ContactsPage() {
     Array<{ id: string; name: string }>
   >([]);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [filterCompany, setFilterCompany] = React.useState<string>("");
+  const [filterPosition, setFilterPosition] = React.useState<string>("");
+  const [hasEmail, setHasEmail] = React.useState<boolean | null>(null);
+  const [hasPhone, setHasPhone] = React.useState<boolean | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [contactToDelete, setContactToDelete] = React.useState<Contact | null>(null);
   const [editingContact, setEditingContact] = React.useState<Contact | null>(
     null
   );
   const [isLoading, setIsLoading] = React.useState(true);
+  const { addToast } = useToast();
 
   React.useEffect(() => {
     async function loadData() {
@@ -60,6 +68,12 @@ export default function ContactsPage() {
 
         if (contactsResult.success && contactsResult.data) {
           setContacts(contactsResult.data);
+        } else {
+          addToast({
+            variant: "error",
+            title: "Erreur",
+            description: contactsResult.error || "Impossible de charger les contacts",
+          });
         }
 
         if (companiesResult.success && companiesResult.data) {
@@ -67,25 +81,114 @@ export default function ContactsPage() {
         }
       } catch (error) {
         console.error("Error loading data:", error);
+        addToast({
+          variant: "error",
+          title: "Erreur",
+          description: "Une erreur est survenue lors du chargement des données",
+        });
       } finally {
         setIsLoading(false);
       }
     }
 
     loadData();
-  }, []);
+  }, [addToast]);
 
-  const filteredContacts = contacts.filter(
-    (contact) =>
-      contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.company?.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Advanced filtering
+  const filteredContacts = React.useMemo(() => {
+    return contacts.filter((contact) => {
+      // Search term filter
+      const matchesSearch =
+        !searchTerm ||
+        contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.company?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.position?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      // Company filter
+      const matchesCompany =
+        !filterCompany || contact.company?.id === filterCompany;
+
+      // Position filter
+      const matchesPosition =
+        !filterPosition || contact.position === filterPosition;
+
+      // Email filter
+      const matchesEmail =
+        hasEmail === null || (hasEmail ? !!contact.email : !contact.email);
+
+      // Phone filter
+      const matchesPhone =
+        hasPhone === null || (hasPhone ? !!contact.phone : !contact.phone);
+
+      return (
+        matchesSearch &&
+        matchesCompany &&
+        matchesPosition &&
+        matchesEmail &&
+        matchesPhone
+      );
+    });
+  }, [contacts, searchTerm, filterCompany, filterPosition, hasEmail, hasPhone]);
+
+  // Get unique positions for filter
+  const uniquePositions = React.useMemo(() => {
+    const positions = new Set<string>();
+    contacts.forEach((contact) => {
+      if (contact.position) {
+        positions.add(contact.position);
+      }
+    });
+    return Array.from(positions).sort();
+  }, [contacts]);
 
   const handleCreateContact = () => {
     setEditingContact(null);
     setIsModalOpen(true);
+  };
+
+  const handleEditContact = (contact: Contact) => {
+    setEditingContact(contact);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = (contact: Contact) => {
+    setContactToDelete(contact);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!contactToDelete) return;
+
+    try {
+      const result = await deleteContactAction(contactToDelete.id);
+      if (result.success) {
+        setContacts((prev) =>
+          prev.filter((contact) => contact.id !== contactToDelete.id)
+        );
+        addToast({
+          variant: "success",
+          title: "Contact supprimé",
+          description: `${contactToDelete.firstName} ${contactToDelete.lastName} a été supprimé avec succès`,
+        });
+        setIsDeleteModalOpen(false);
+        setContactToDelete(null);
+      } else {
+        addToast({
+          variant: "error",
+          title: "Erreur",
+          description: result.error || "Impossible de supprimer le contact",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting contact:", error);
+      addToast({
+        variant: "error",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la suppression",
+      });
+    }
   };
 
   const handleModalSubmit = async (data: ContactFormData) => {
@@ -123,6 +226,17 @@ export default function ContactsPage() {
                 : contact
             )
           );
+          addToast({
+            variant: "success",
+            title: "Contact modifié",
+            description: "Le contact a été modifié avec succès",
+          });
+        } else {
+          addToast({
+            variant: "error",
+            title: "Erreur",
+            description: result.error || "Impossible de modifier le contact",
+          });
         }
       } else {
         const result = await createContactAction({
@@ -154,6 +268,17 @@ export default function ContactsPage() {
             },
             ...prev,
           ]);
+          addToast({
+            variant: "success",
+            title: "Contact créé",
+            description: "Le contact a été créé avec succès",
+          });
+        } else {
+          addToast({
+            variant: "error",
+            title: "Erreur",
+            description: result.error || "Impossible de créer le contact",
+          });
         }
       }
 
@@ -161,8 +286,64 @@ export default function ContactsPage() {
       setEditingContact(null);
     } catch (error) {
       console.error("Error saving contact:", error);
+      addToast({
+        variant: "error",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la sauvegarde",
+      });
     }
   };
+
+  const handleExportCSV = () => {
+    const exportData = filteredContacts.map((contact) => ({
+      Prénom: contact.firstName,
+      Nom: contact.lastName,
+      Email: contact.email || "",
+      Téléphone: contact.phone || "",
+      Poste: contact.position || "",
+      Entreprise: contact.company?.name || "",
+    }));
+
+    exportToCSV(exportData, `contacts_${new Date().toISOString().split("T")[0]}.csv`);
+    addToast({
+      variant: "success",
+      title: "Export réussi",
+      description: "Le fichier CSV a été téléchargé",
+    });
+  };
+
+  const handleExportPDF = () => {
+    const exportData = filteredContacts.map((contact) => ({
+      Prénom: contact.firstName,
+      Nom: contact.lastName,
+      Email: contact.email || "",
+      Téléphone: contact.phone || "",
+      Poste: contact.position || "",
+      Entreprise: contact.company?.name || "",
+    }));
+
+    exportToPDF(exportData, "Liste des contacts", `contacts_${new Date().toISOString().split("T")[0]}.pdf`);
+    addToast({
+      variant: "success",
+      title: "Export réussi",
+      description: "Le fichier PDF est prêt à être imprimé",
+    });
+  };
+
+  const handleResetFilters = () => {
+    setSearchTerm("");
+    setFilterCompany("");
+    setFilterPosition("");
+    setHasEmail(null);
+    setHasPhone(null);
+  };
+
+  const hasActiveFilters =
+    searchTerm ||
+    filterCompany ||
+    filterPosition ||
+    hasEmail !== null ||
+    hasPhone !== null;
 
   if (isLoading) {
     return (
@@ -172,29 +353,180 @@ export default function ContactsPage() {
     );
   }
 
+  const stats = calculateContactStats(filteredContacts);
+
   return (
     <>
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Contacts</h1>
-            <p className="text-gray-600 mt-2">Gérez vos contacts commerciaux</p>
+            <p className="text-gray-600 mt-2">
+              Gérez vos contacts commerciaux ({stats.total} contact{stats.total > 1 ? "s" : ""})
+            </p>
           </div>
-          <Button variant="primary" onClick={handleCreateContact}>
-            Nouveau contact
-          </Button>
+          <div className="flex gap-2">
+            <Link href="/commercial/contacts/stats">
+              <Button variant="outline">Statistiques</Button>
+            </Link>
+            <DropdownMenu>
+              <DropdownTrigger>
+                <Button variant="outline">Exporter</Button>
+              </DropdownTrigger>
+              <DropdownContent>
+                <DropdownItem onClick={handleExportCSV}>Exporter en CSV</DropdownItem>
+                <DropdownItem onClick={handleExportPDF}>Exporter en PDF</DropdownItem>
+              </DropdownContent>
+            </DropdownMenu>
+            <Button variant="primary" onClick={handleCreateContact}>
+              Nouveau contact
+            </Button>
+          </div>
         </div>
 
+        {/* Advanced Filters */}
         <Card className="mb-6">
-          <CardContent className="pt-6">
-            <Input
-              placeholder="Rechercher un contact..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-md"
-            />
+          <CardHeader>
+            <CardTitle>Filtres et recherche</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Recherche
+                </label>
+                <Input
+                  placeholder="Rechercher un contact..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Entreprise
+                </label>
+                <Select
+                  value={filterCompany}
+                  onChange={(e) => setFilterCompany(e.target.value)}
+                  options={[
+                    { value: "", label: "Toutes les entreprises" },
+                    ...companies.map((c) => ({
+                      value: c.id,
+                      label: c.name,
+                    })),
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Poste
+                </label>
+                <Select
+                  value={filterPosition}
+                  onChange={(e) => setFilterPosition(e.target.value)}
+                  options={[
+                    { value: "", label: "Tous les postes" },
+                    ...uniquePositions.map((p) => ({
+                      value: p,
+                      label: p,
+                    })),
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <Select
+                  value={
+                    hasEmail === null
+                      ? ""
+                      : hasEmail
+                      ? "yes"
+                      : "no"
+                  }
+                  onChange={(e) =>
+                    setHasEmail(
+                      e.target.value === ""
+                        ? null
+                        : e.target.value === "yes"
+                        ? true
+                        : false
+                    )
+                  }
+                  options={[
+                    { value: "", label: "Tous" },
+                    { value: "yes", label: "Avec email" },
+                    { value: "no", label: "Sans email" },
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Téléphone
+                </label>
+                <Select
+                  value={
+                    hasPhone === null
+                      ? ""
+                      : hasPhone
+                      ? "yes"
+                      : "no"
+                  }
+                  onChange={(e) =>
+                    setHasPhone(
+                      e.target.value === ""
+                        ? null
+                        : e.target.value === "yes"
+                        ? true
+                        : false
+                    )
+                  }
+                  options={[
+                    { value: "", label: "Tous" },
+                    { value: "yes", label: "Avec téléphone" },
+                    { value: "no", label: "Sans téléphone" },
+                  ]}
+                />
+              </div>
+            </div>
+            {hasActiveFilters && (
+              <div className="mt-4">
+                <Button variant="ghost" size="sm" onClick={handleResetFilters}>
+                  Réinitialiser les filtres
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.total}</div>
+              <div className="text-sm text-gray-600">Total contacts</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.withEmail}</div>
+              <div className="text-sm text-gray-600">Avec email</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.withPhone}</div>
+              <div className="text-sm text-gray-600">Avec téléphone</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.withCompany}</div>
+              <div className="text-sm text-gray-600">Avec entreprise</div>
+            </CardContent>
+          </Card>
+        </div>
 
         <Card>
           <CardHeader>
@@ -204,13 +536,18 @@ export default function ContactsPage() {
             {filteredContacts.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500 mb-4">
-                  {searchTerm
-                    ? "Aucun contact trouvé"
+                  {hasActiveFilters
+                    ? "Aucun contact ne correspond aux filtres"
                     : "Aucun contact pour le moment"}
                 </p>
-                {!searchTerm && (
+                {!hasActiveFilters && (
                   <Button variant="outline" onClick={handleCreateContact}>
                     Créer votre premier contact
+                  </Button>
+                )}
+                {hasActiveFilters && (
+                  <Button variant="outline" onClick={handleResetFilters}>
+                    Réinitialiser les filtres
                   </Button>
                 )}
               </div>
@@ -246,11 +583,34 @@ export default function ContactsPage() {
                       <TableCell>{contact.position || "-"}</TableCell>
                       <TableCell>{contact.company?.name || "-"}</TableCell>
                       <TableCell>
-                        <Link href={`/commercial/contacts/${contact.id}`}>
-                          <Button variant="ghost" size="sm">
-                            Voir
-                          </Button>
-                        </Link>
+                        <div className="flex items-center gap-2">
+                          <Link href={`/commercial/contacts/${contact.id}`}>
+                            <Button variant="ghost" size="sm">
+                              Voir
+                            </Button>
+                          </Link>
+                          <DropdownMenu>
+                            <DropdownTrigger>
+                              <Button variant="ghost" size="sm">
+                                ⋮
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownContent>
+                              <DropdownItem
+                                onClick={() => handleEditContact(contact)}
+                              >
+                                Modifier
+                              </DropdownItem>
+                              <DropdownSeparator />
+                              <DropdownItem
+                                onClick={() => handleDeleteClick(contact)}
+                                className="text-red-600"
+                              >
+                                Supprimer
+                              </DropdownItem>
+                            </DropdownContent>
+                          </DropdownMenu>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -282,6 +642,44 @@ export default function ContactsPage() {
         }
         companies={companies}
       />
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setContactToDelete(null);
+        }}
+        title="Confirmer la suppression"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsDeleteModalOpen(false);
+                setContactToDelete(null);
+              }}
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Supprimer
+            </Button>
+          </>
+        }
+      >
+        <p>
+          Êtes-vous sûr de vouloir supprimer le contact{" "}
+          <strong>
+            {contactToDelete?.firstName} {contactToDelete?.lastName}
+          </strong>
+          ? Cette action est irréversible.
+        </p>
+      </Modal>
     </>
   );
 }
