@@ -47,7 +47,7 @@ Ajoutez ces variables dans votre fichier `.env` ou dans Railway :
 AWS_REGION="us-east-1"
 AWS_ACCESS_KEY_ID="votre-access-key-id"
 AWS_SECRET_ACCESS_KEY="votre-secret-access-key"
-AWS_S3_BUCKET_NAME="votre-bucket-name"
+AWS_S3_BUCKET="votre-bucket-name"
 ```
 
 ### 5. Configuration CORS (si nécessaire)

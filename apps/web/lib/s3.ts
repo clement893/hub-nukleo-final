@@ -16,7 +16,7 @@ const s3Client = new S3Client({
   },
 });
 
-const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME || "";
+const BUCKET_NAME = process.env.AWS_S3_BUCKET || process.env.AWS_S3_BUCKET_NAME || "";
 
 /**
  * Upload a file to S3
@@ -34,7 +34,7 @@ export async function uploadToS3(
 ): Promise<string> {
   try {
     if (!BUCKET_NAME) {
-      throw new Error("AWS_S3_BUCKET_NAME environment variable is not set");
+      throw new Error("AWS_S3_BUCKET environment variable is not set");
     }
 
     const command = new PutObjectCommand({
@@ -67,7 +67,7 @@ export async function uploadToS3(
 export async function getPresignedDownloadUrl(key: string, expiresIn: number = 3600): Promise<string> {
   try {
     if (!BUCKET_NAME) {
-      throw new Error("AWS_S3_BUCKET_NAME environment variable is not set");
+      throw new Error("AWS_S3_BUCKET environment variable is not set");
     }
 
     const command = new GetObjectCommand({
@@ -101,7 +101,7 @@ export async function getPresignedUploadUrl(
 ): Promise<string> {
   try {
     if (!BUCKET_NAME) {
-      throw new Error("AWS_S3_BUCKET_NAME environment variable is not set");
+      throw new Error("AWS_S3_BUCKET environment variable is not set");
     }
 
     const command = new PutObjectCommand({
@@ -130,7 +130,7 @@ export async function getPresignedUploadUrl(
 export async function deleteFromS3(key: string): Promise<void> {
   try {
     if (!BUCKET_NAME) {
-      throw new Error("AWS_S3_BUCKET_NAME environment variable is not set");
+      throw new Error("AWS_S3_BUCKET environment variable is not set");
     }
 
     const command = new DeleteObjectCommand({
@@ -154,7 +154,7 @@ export async function deleteFromS3(key: string): Promise<void> {
 export async function fileExistsInS3(key: string): Promise<boolean> {
   try {
     if (!BUCKET_NAME) {
-      throw new Error("AWS_S3_BUCKET_NAME environment variable is not set");
+      throw new Error("AWS_S3_BUCKET environment variable is not set");
     }
 
     const command = new HeadObjectCommand({
