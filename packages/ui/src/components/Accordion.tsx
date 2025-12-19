@@ -1,7 +1,8 @@
 import * as React from "react";
+import { createContext } from "react";
 import { cn } from "../utils/cn";
 
-const AccordionContext = React.createContext<{
+const AccordionContext = createContext<{
   value: string | string[];
   onValueChange: (value: string) => void;
   type: "single" | "multiple";

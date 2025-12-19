@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createContext } from "react";
 import { cn } from "../utils/cn";
 
 export interface RadioGroupContextValue {
@@ -9,7 +10,7 @@ export interface RadioGroupContextValue {
   disabled?: boolean;
 }
 
-const RadioGroupContext = React.createContext<RadioGroupContextValue>({});
+const RadioGroupContext = createContext<RadioGroupContextValue>({});
 
 export interface RadioGroupProps {
   value?: string;

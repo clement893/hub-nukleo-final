@@ -1,7 +1,8 @@
 import * as React from "react";
+import { createContext } from "react";
 import { cn } from "../utils/cn";
 
-const TabsContext = React.createContext<{
+const TabsContext = createContext<{
   value: string;
   onValueChange: (value: string) => void;
   orientation?: "horizontal" | "vertical";

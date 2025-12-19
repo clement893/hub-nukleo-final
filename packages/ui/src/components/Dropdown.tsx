@@ -1,7 +1,8 @@
 import * as React from "react";
+import { createContext } from "react";
 import { cn } from "../utils/cn";
 
-const DropdownContext = React.createContext<{
+const DropdownContext = createContext<{
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }>({
