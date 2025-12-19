@@ -99,7 +99,7 @@ export default function EditProposalPage() {
                 id: item.id,
                 title: item.title,
                 description: item.description || "",
-                type: item.type,
+                type: item.type as "DELIVERABLE" | "SERVICE" | "PRODUCT" | "OTHER",
                 quantity: item.quantity || null,
                 unitPrice: item.unitPrice ? Number(item.unitPrice) : null,
                 totalPrice: item.totalPrice ? Number(item.totalPrice) : null,
