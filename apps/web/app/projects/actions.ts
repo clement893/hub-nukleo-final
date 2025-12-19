@@ -78,7 +78,7 @@ export async function createProjectAction(data: unknown) {
 
 export async function updateProjectAction(id: string, data: unknown) {
   try {
-    const validatedData = updateProjectSchema.parse({ ...data, id });
+    const validatedData = updateProjectSchema.parse({ ...(data as Record<string, unknown>), id });
     const project = await updateProject(id, validatedData);
     return {
       success: true,
