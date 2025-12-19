@@ -71,7 +71,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
           <img
             src={src}
             alt={alt}
-            className={cn(avatarImageVariants({ size }))}
+            className={cn(avatarImageVariants())}
             onError={() => setImageError(true)}
           />
         ) : (
