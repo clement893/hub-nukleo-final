@@ -11,20 +11,19 @@ export const companySchema = z.object({
     .string()
     .optional()
     .nullable()
-    .transform((val) => {
-      if (val === null || val === "" || val === undefined) return undefined;
-      // Validate URL only if provided
-      try {
-        if (val) new URL(val);
-      } catch {
-        return val; // Return as-is, validation will happen on submit
-      }
-      return val;
-    })
     .refine(
-      (val) => !val || val === "" || /^https?:\/\/.+/.test(val),
+      (val) => {
+        if (!val || val === "" || val === null) return true;
+        try {
+          new URL(val);
+          return true;
+        } catch {
+          return false;
+        }
+      },
       { message: "URL invalide" }
-    ),
+    )
+    .transform((val) => (val === null || val === "" ? undefined : val)),
   phone: z
     .string()
     .optional()
