@@ -233,7 +233,7 @@ export async function createTimeEntryAction(data: unknown) {
 
 export async function updateTimeEntryAction(id: string, data: unknown) {
   try {
-    const validatedData = updateTimeEntrySchema.parse({ ...data, id });
+    const validatedData = updateTimeEntrySchema.parse({ ...(data as Record<string, unknown>), id });
     const timeEntry = await updateTimeEntry(id, validatedData);
     return {
       success: true,
