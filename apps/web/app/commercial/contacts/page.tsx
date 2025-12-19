@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+
+// Force dynamic rendering to avoid SSR issues with ToastProvider
+export const dynamic = "force-dynamic";
 import {
   Card,
   CardHeader,
