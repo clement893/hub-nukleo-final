@@ -2,6 +2,10 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../utils/cn";
 
+/**
+ * Button component variants configuration
+ * Defines the visual styles for different button types and sizes
+ */
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
@@ -32,14 +36,69 @@ const buttonVariants = cva(
   }
 );
 
+/**
+ * Button component props
+ * 
+ * @interface ButtonProps
+ * @extends {React.ButtonHTMLAttributes<HTMLButtonElement>}
+ * @extends {VariantProps<typeof buttonVariants>}
+ * 
+ * @property {boolean} [loading] - Shows a loading spinner and disables the button
+ * @property {React.ReactNode} [leftIcon] - Icon displayed on the left side of the button text
+ * @property {React.ReactNode} [rightIcon] - Icon displayed on the right side of the button text
+ * 
+ * @example
+ * ```tsx
+ * <Button variant="primary" size="md" onClick={handleClick}>
+ *   Click me
+ * </Button>
+ * 
+ * <Button variant="primary" loading={isLoading}>
+ *   Submit
+ * </Button>
+ * 
+ * <Button variant="outline" leftIcon={<Icon />}>
+ *   With Icon
+ * </Button>
+ * ```
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  /** Shows a loading spinner and disables the button */
   loading?: boolean;
+  /** Icon displayed on the left side of the button text */
   leftIcon?: React.ReactNode;
+  /** Icon displayed on the right side of the button text */
   rightIcon?: React.ReactNode;
 }
 
+/**
+ * Button component
+ * 
+ * A versatile button component with multiple variants, sizes, and states.
+ * Supports loading state, icons, and all standard HTML button attributes.
+ * 
+ * @component
+ * @param {ButtonProps} props - The component props
+ * @returns {JSX.Element} A button element
+ * 
+ * @example
+ * ```tsx
+ * // Primary button
+ * <Button variant="primary">Click me</Button>
+ * 
+ * // Button with loading state
+ * <Button variant="primary" loading={isSubmitting}>
+ *   Submit
+ * </Button>
+ * 
+ * // Button with icon
+ * <Button variant="outline" leftIcon={<PlusIcon />}>
+ *   Add Item
+ * </Button>
+ * ```
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {

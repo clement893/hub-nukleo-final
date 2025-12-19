@@ -5,9 +5,12 @@ import {
   updateOpportunityStage,
   createOpportunity,
   updateOpportunity,
+  deleteOpportunity,
   getAllCompanies,
   getAllContacts,
 } from "@nukleo/commercial";
+import { getCurrentUserId } from "../../../lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function getOpportunitiesAction() {
   try {
@@ -86,8 +89,7 @@ export async function createOpportunityAction(data: {
   contactId?: string;
 }) {
   try {
-    // TODO: Get current user ID from auth context
-    const ownerId = "temp-user-id";
+    const ownerId = await getCurrentUserId();
     const opportunity = await createOpportunity({
       title: data.title,
       description: data.description,
@@ -101,6 +103,7 @@ export async function createOpportunityAction(data: {
       contactId: data.contactId,
       ownerId,
     });
+    revalidatePath("/commercial/opportunities");
     return { success: true, data: opportunity };
   } catch (error) {
     console.error("Error creating opportunity:", error);
@@ -128,10 +131,22 @@ export async function updateOpportunityAction(
         ? new Date(data.expectedCloseDate)
         : undefined,
     });
+    revalidatePath("/commercial/opportunities");
     return { success: true };
   } catch (error) {
     console.error("Error updating opportunity:", error);
     return { success: false, error: "Failed to update opportunity" };
+  }
+}
+
+export async function deleteOpportunityAction(id: string) {
+  try {
+    await deleteOpportunity(id);
+    revalidatePath("/commercial/opportunities");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting opportunity:", error);
+    return { success: false, error: "Failed to delete opportunity" };
   }
 }
 

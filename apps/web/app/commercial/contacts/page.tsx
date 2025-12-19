@@ -349,19 +349,14 @@ export default function ContactsPage() {
     hasPhone !== null;
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <p className="text-gray-500">Chargement...</p>
-      </div>
-    );
+    return <p className="text-gray-500">Chargement...</p>;
   }
 
   const stats = calculateContactStats(filteredContacts);
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Contacts</h1>
             <p className="text-gray-600 mt-2">
@@ -622,7 +617,6 @@ export default function ContactsPage() {
             )}
           </CardContent>
         </Card>
-      </div>
 
       <ContactModal
         isOpen={isModalOpen}

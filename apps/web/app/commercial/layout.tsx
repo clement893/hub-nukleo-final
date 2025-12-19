@@ -8,8 +8,10 @@ export default function CommercialLayout({
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
-      <main className="flex-1 lg:ml-64">
-        <div className="pt-16 lg:pt-0 p-4 lg:p-8">{children}</div>
+      <main className="flex-1 lg:ml-64 w-full">
+        <div className="pt-16 lg:pt-0 p-4 lg:p-8 max-w-full overflow-x-hidden">
+          {children}
+        </div>
       </main>
     </div>
   );
