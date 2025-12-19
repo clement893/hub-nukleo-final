@@ -41,7 +41,11 @@ export default async function CommercialDashboard() {
       <DashboardKPIs
         totalOpportunities={opportunitiesStats.totalOpportunities}
         conversionRate={opportunitiesStats.conversionRate}
-        totalRevenue={opportunitiesStats.totalRevenue}
+        totalRevenue={
+          typeof opportunitiesStats.totalRevenue === "number"
+            ? opportunitiesStats.totalRevenue
+            : Number(opportunitiesStats.totalRevenue)
+        }
         contactsCount={contactsCount}
         companiesCount={companiesCount}
       />
