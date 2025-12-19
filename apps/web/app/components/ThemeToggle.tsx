@@ -8,12 +8,34 @@ export function ThemeToggle() {
 
   React.useEffect(() => {
     setMounted(true);
-    const theme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    const dark = theme === "dark" || (!theme && systemPrefersDark);
-    setIsDark(dark);
+    // Check current theme
+    const checkTheme = () => {
+      const theme = localStorage.getItem("theme");
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      const dark = theme === "dark" || (!theme && systemPrefersDark);
+      setIsDark(dark);
+      
+      if (dark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    };
+    
+    checkTheme();
+    
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      if (!localStorage.getItem("theme")) {
+        checkTheme();
+      }
+    };
+    mediaQuery.addEventListener("change", handleChange);
+    
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const toggleTheme = () => {
@@ -31,8 +53,9 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Toggle theme"
+        disabled
       >
         <svg
           className="w-5 h-5 text-gray-600 dark:text-gray-400"
@@ -54,12 +77,12 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
         <svg
-          className="w-5 h-5 text-gray-600 dark:text-gray-400"
+          className="w-5 h-5 text-yellow-500"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

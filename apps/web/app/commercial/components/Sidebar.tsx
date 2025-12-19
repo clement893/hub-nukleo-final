@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@nukleo/ui";
+import { ThemeToggle } from "@/app/components/ThemeToggle";
 
 interface NavItem {
   title: string;
@@ -166,7 +167,7 @@ export function Sidebar() {
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-2 rounded-md bg-white shadow-md hover:bg-gray-50"
+          className="p-2 rounded-md bg-white dark:bg-gray-800 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white transition-colors"
           aria-label="Toggle menu"
         >
           <svg
@@ -205,31 +206,33 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-50 h-screen w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out shadow-lg",
+          "fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out shadow-lg",
           "lg:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
             <Link
               href="/commercial/dashboard"
               className="flex items-center space-x-2"
               onClick={() => setIsMobileOpen(false)}
             >
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
                 Hub Nukleo
               </span>
             </Link>
-            <button
-              onClick={() => setIsMobileOpen(false)}
-              className="lg:hidden p-1 rounded-md hover:bg-gray-100"
-              aria-label="Close menu"
-            >
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMobileOpen(false)}
+                className="lg:hidden p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                aria-label="Close menu"
+              >
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -244,6 +247,7 @@ export function Sidebar() {
                 />
               </svg>
             </button>
+            </div>
           </div>
 
           {/* Navigation */}
@@ -252,7 +256,7 @@ export function Sidebar() {
             <div>
               <button
                 onClick={() => setIsCommercialModuleOpen(!isCommercialModuleOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <div className="flex items-center space-x-3">
                   <svg
@@ -301,13 +305,13 @@ export function Sidebar() {
                         className={cn(
                           "flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive
-                            ? "bg-blue-50 text-blue-700"
-                            : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                            ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white"
                         )}
                       >
                         <span
                           className={cn(
-                            isActive ? "text-blue-600" : "text-gray-500"
+                            isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
                           )}
                         >
                           {item.icon}
@@ -324,7 +328,7 @@ export function Sidebar() {
             <div>
               <button
                 onClick={() => setIsProjectsModuleOpen(!isProjectsModuleOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <div className="flex items-center space-x-3">
                   <svg
@@ -373,13 +377,13 @@ export function Sidebar() {
                         className={cn(
                           "flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive
-                            ? "bg-blue-50 text-blue-700"
-                            : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                            ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white"
                         )}
                       >
                         <span
                           className={cn(
-                            isActive ? "text-blue-600" : "text-gray-500"
+                            isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
                           )}
                         >
                           {item.icon}
@@ -394,10 +398,10 @@ export function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200">
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
             <Link
               href="/"
-              className="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-900"
+              className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               onClick={() => setIsMobileOpen(false)}
             >
               <svg

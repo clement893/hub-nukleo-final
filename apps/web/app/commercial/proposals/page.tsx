@@ -41,11 +41,11 @@ type Proposal = {
 };
 
 const statusColors: Record<string, string> = {
-  DRAFT: "bg-gray-100 text-gray-800",
-  SUBMITTED: "bg-blue-100 text-blue-800",
-  ACCEPTED: "bg-green-100 text-green-800",
-  REJECTED: "bg-red-100 text-red-800",
-  REVISED: "bg-yellow-100 text-yellow-800",
+  DRAFT: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
+  SUBMITTED: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+  ACCEPTED: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300",
+  REJECTED: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+  REVISED: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300",
 };
 
 const statusLabels: Record<string, string> = {
@@ -135,15 +135,15 @@ export default function ProposalsPage() {
   };
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   return (
     <>
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Soumissions</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Soumissions</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             Gérez vos soumissions commerciales ({proposals.length} soumission{proposals.length > 1 ? "s" : ""})
           </p>
         </div>
@@ -159,7 +159,7 @@ export default function ProposalsPage() {
         <CardContent>
           {proposals.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">Aucune soumission pour le moment</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">Aucune soumission pour le moment</p>
               <Link href="/commercial/proposals/new">
                 <Button variant="primary">Créer une soumission</Button>
               </Link>
@@ -183,7 +183,7 @@ export default function ProposalsPage() {
                     <TableCell>
                       <Link
                         href={`/commercial/proposals/${proposal.id}`}
-                        className="font-medium text-blue-600 hover:underline"
+                        className="font-medium text-blue-600 dark:text-blue-400 hover:underline transition-colors"
                       >
                         {proposal.title}
                       </Link>
@@ -191,15 +191,15 @@ export default function ProposalsPage() {
                     <TableCell>
                       <Link
                         href={`/commercial/opportunities/${proposal.opportunity.id}`}
-                        className="text-gray-600 hover:underline"
+                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:underline transition-colors"
                       >
                         {proposal.opportunity.title}
                       </Link>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
                       {proposal.opportunity.company?.name || "-"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
                       {proposal.totalAmount
                         ? new Intl.NumberFormat("fr-FR", {
                             style: "currency",
@@ -216,7 +216,7 @@ export default function ProposalsPage() {
                         {statusLabels[proposal.status] || proposal.status}
                       </span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-900 dark:text-gray-100">
                       {new Date(proposal.createdAt).toLocaleDateString("fr-FR")}
                     </TableCell>
                     <TableCell>
@@ -240,7 +240,7 @@ export default function ProposalsPage() {
                           <DropdownSeparator />
                           <DropdownItem
                             onClick={() => handleDeleteClick(proposal.id)}
-                            className="text-red-600"
+                            className="text-red-600 dark:text-red-400"
                           >
                             Supprimer
                           </DropdownItem>
@@ -257,13 +257,13 @@ export default function ProposalsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50">
+          <Card className="w-full max-w-md bg-white dark:bg-gray-800">
             <CardHeader>
-              <CardTitle>Confirmer la suppression</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Confirmer la suppression</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Êtes-vous sûr de vouloir supprimer cette soumission ? Cette action est irréversible.
               </p>
               <div className="flex gap-2 justify-end">
