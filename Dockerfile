@@ -1,4 +1,4 @@
-FROM node:20-alpine
+﻿FROM node:20-alpine
 
 # Install OpenSSL and libc6-compat for Prisma
 RUN apk add --no-cache openssl libc6-compat
@@ -20,7 +20,7 @@ COPY apps ./apps
 # Install dependencies from root
 # Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
 # Ignore scripts to avoid conflicts with postinstall hooks
-RUN pnpm install --no-frozen-lockfile --ignore-scripts || (echo "Installation failed, checking package.json..." && cat package.json && exit 1)
+RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
 # Generate Prisma Client and run migrations
 WORKDIR /app/packages/db
