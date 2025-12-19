@@ -22,8 +22,6 @@ import {
 import { getContactsAction } from "../actions";
 import { calculateContactStats, type Contact } from "../../../../lib/stats";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
-
 export default function ContactsStatsPage() {
   const [contacts, setContacts] = React.useState<Contact[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
