@@ -1,5 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from "@nukleo/ui";
 import Link from "next/link";
+import { getCompanyById } from "@nukleo/commercial";
+import { CompanyDetailClient } from "./CompanyDetailClient";
 
 interface CompanyDetailPageProps {
   params: {
@@ -7,10 +9,10 @@ interface CompanyDetailPageProps {
   };
 }
 
-export default function CompanyDetailPage({ params }: CompanyDetailPageProps) {
-  // TODO: Fetch company data using params.id
-  void params; // Mark params as used to satisfy TypeScript
-  const company = null;
+export default async function CompanyDetailPage({
+  params,
+}: CompanyDetailPageProps) {
+  const company = await getCompanyById(params.id);
 
   if (!company) {
     return (
@@ -30,91 +32,33 @@ export default function CompanyDetailPage({ params }: CompanyDetailPageProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <Link href="/commercial/companies">
-          <Button variant="ghost" size="sm">← Retour</Button>
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle>Acme Corporation</CardTitle>
-                  <CardContent className="pt-2">
-                    <Badge variant="default">Technologie</Badge>
-                  </CardContent>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Site web</label>
-                  <p className="text-sm">
-                    <a
-                      href="https://example.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
-                    >
-                      https://example.com
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Téléphone</label>
-                  <p className="text-sm">+33 1 23 45 67 89</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-500">Adresse</label>
-                  <p className="text-sm">
-                    123 Rue Example<br />
-                    75001 Paris<br />
-                    France
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>Contacts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500">Aucun contact associé</p>
-            </CardContent>
-          </Card>
-
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>Opportunités</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500">Aucune opportunité associée</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Actions</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full">Modifier</Button>
-              <Button variant="outline" className="w-full">Créer un contact</Button>
-              <Button variant="outline" className="w-full">Créer une opportunité</Button>
-              <Button variant="danger" className="w-full">Supprimer</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+    <CompanyDetailClient
+      company={{
+        id: company.id,
+        name: company.name,
+        industry: company.industry,
+        website: company.website,
+        phone: company.phone,
+        address: company.address,
+        city: company.city,
+        country: company.country,
+        contacts: company.contacts.map((contact) => ({
+          id: contact.id,
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          email: contact.email,
+          position: contact.position,
+        })),
+        opportunities: company.opportunities.map((opp) => ({
+          id: opp.id,
+          title: opp.title,
+          value: opp.value ? Number(opp.value) : null,
+          stage: opp.stage,
+          contact: opp.contact
+            ? `${opp.contact.firstName} ${opp.contact.lastName}`
+            : null,
+        })),
+      }}
+    />
   );
 }
-
