@@ -48,7 +48,7 @@ export default function ProjectGanttPage() {
   }, [projectId, addToast]);
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   // Calculate timeline bounds
@@ -86,10 +86,10 @@ export default function ProjectGanttPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
             Gantt - {project?.name || "Projet"}
           </h1>
-          <p className="text-gray-600 mt-2">Vue temporelle des tâches du projet</p>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Vue temporelle des tâches du projet</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => router.push(`/projects/${projectId}`)} variant="outline">
@@ -104,23 +104,23 @@ export default function ProjectGanttPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Diagramme de Gantt</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Diagramme de Gantt</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent>
           <div className="overflow-x-auto">
             <div className="min-w-full">
               {/* Timeline header */}
-              <div className="flex border-b border-gray-200 mb-4">
-                <div className="w-48 flex-shrink-0 p-2 font-medium text-sm border-r border-gray-200">
+              <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+                <div className="w-48 flex-shrink-0 p-2 font-medium text-sm border-r border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                   Tâche
                 </div>
                 <div className="flex-1 flex">
                   {days.slice(0, Math.min(30, days.length)).map((day, idx) => (
                     <div
                       key={idx}
-                      className="flex-1 p-2 text-xs text-center border-r border-gray-200 min-w-[60px]"
+                      className="flex-1 p-2 text-xs text-center border-r border-gray-200 dark:border-gray-700 min-w-[60px] text-gray-700 dark:text-gray-300"
                     >
                       {day.toLocaleDateString("fr-FR", {
                         day: "2-digit",
@@ -136,11 +136,11 @@ export default function ProjectGanttPage() {
                 {tasks.map((task) => {
                   const { left, width } = getTaskPosition(task);
                   return (
-                    <div key={task.id} className="flex items-center border-b border-gray-100">
-                      <div className="w-48 flex-shrink-0 p-2 text-sm border-r border-gray-200">
-                        <div className="font-medium">{task.title}</div>
+                    <div key={task.id} className="flex items-center border-b border-gray-100 dark:border-gray-700">
+                      <div className="w-48 flex-shrink-0 p-2 text-sm border-r border-gray-200 dark:border-gray-700">
+                        <div className="font-medium text-gray-900 dark:text-white">{task.title}</div>
                         {task.assignee && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
                             {task.assignee.name}
                           </div>
                         )}
@@ -155,7 +155,7 @@ export default function ProjectGanttPage() {
                                 ? "bg-blue-500"
                                 : task.status === "REVIEW"
                                 ? "bg-yellow-500"
-                                : "bg-gray-300"
+                                : "bg-gray-300 dark:bg-gray-600"
                             } opacity-75 hover:opacity-100 transition-opacity`}
                             style={{
                               left: `${left}%`,
@@ -172,41 +172,41 @@ export default function ProjectGanttPage() {
               </div>
 
               {tasks.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                   Aucune tâche avec date d'échéance pour afficher le Gantt
                 </div>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       {/* Legend */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Légende</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Légende</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent>
           <div className="flex gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-gray-300 rounded"></div>
-              <span className="text-sm">À faire</span>
+              <div className="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+              <span className="text-sm text-gray-700 dark:text-gray-300">À faire</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-blue-500 rounded"></div>
-              <span className="text-sm">En cours</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">En cours</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-              <span className="text-sm">En révision</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">En révision</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-green-500 rounded"></div>
-              <span className="text-sm">Terminé</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Terminé</span>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
     </div>
   );
 }

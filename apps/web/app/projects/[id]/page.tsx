@@ -80,7 +80,7 @@ export default function ProjectDetailPage() {
   }, [projectId, router, addToast]);
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   if (!project) {
@@ -95,8 +95,10 @@ export default function ProjectDetailPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{project.name}</h1>
-          <p className="text-gray-600 mt-2">{project.description || "Aucune description"}</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+            {project.name}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">{project.description || "Aucune description"}</p>
         </div>
         <div className="flex gap-2">
           <Button

@@ -103,15 +103,17 @@ export default function EditProjectPage() {
   };
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Modifier le projet</h1>
-          <p className="text-gray-600 mt-2">Modifiez les informations du projet</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+            Modifier le projet
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Modifiez les informations du projet</p>
         </div>
         <div className="flex gap-2">
           <Button

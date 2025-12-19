@@ -340,16 +340,16 @@ export default function ProjectTasksPage() {
           {statusOrder.map((status) => {
             const statusTasks = getTasksByStatus(status);
             return (
-              <Card key={status} className="min-h-[400px]">
-                <CardHeader>
-                  <CardTitle className="text-lg flex justify-between items-center">
+              <GlassCard key={status} className="min-h-[400px]">
+                <GlassCardHeader>
+                  <GlassCardTitle className="text-lg flex justify-between items-center">
                     <span>{statusLabels[status]}</span>
                     <Badge className={statusColors[status]}>
                       {statusTasks.length}
                     </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
+                  </GlassCardTitle>
+                </GlassCardHeader>
+                <GlassCardContent className="space-y-2">
                   <SortableContext
                     items={statusTasks.map((t) => t.id)}
                     strategy={verticalListSortingStrategy}
@@ -366,12 +366,12 @@ export default function ProjectTasksPage() {
                     ))}
                   </SortableContext>
                   {statusTasks.length === 0 && (
-                    <p className="text-sm text-gray-400 text-center py-8">
+                    <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                       Aucune tâche
                     </p>
                   )}
-                </CardContent>
-              </Card>
+                </GlassCardContent>
+              </GlassCard>
             );
           })}
         </div>
