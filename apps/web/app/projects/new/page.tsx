@@ -5,10 +5,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Input,
   Select,
@@ -108,11 +104,11 @@ export default function NewProjectPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Informations générales</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Informations générales</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nom du projet *

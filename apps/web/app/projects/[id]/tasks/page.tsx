@@ -21,10 +21,6 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Badge,
   Modal,

@@ -3,14 +3,11 @@
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Badge,
   Modal,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getProjectAction, getTasksAction } from "../actions";
 import { useToast } from "@/lib/toast";
 import { TimeEntryForm } from "@/components/projects/TimeEntryForm";
@@ -118,86 +115,86 @@ export default function ProjectDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Statut</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Statut</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
             <Badge className={statusColors[project.status] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
               {statusLabels[project.status] || project.status}
             </Badge>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Progression</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Progression</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300">
                 <span>{completedTasks} / {totalTasks} tâches terminées</span>
                 <span>{progress}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all"
+                  className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
 
         {project.budget && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Budget</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">
+          <GlassCard>
+            <GlassCardHeader>
+              <GlassCardTitle>Budget</GlassCardTitle>
+            </GlassCardHeader>
+            <GlassCardContent>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {project.budget.toLocaleString("fr-FR", {
                   style: "currency",
                   currency: "EUR",
                 })}
               </p>
-            </CardContent>
-          </Card>
+            </GlassCardContent>
+          </GlassCard>
         )}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Informations</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>Informations</GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent className="space-y-4">
           {project.company && (
-            <div>
+            <div className="text-gray-700 dark:text-gray-300">
               <span className="font-medium">Client:</span> {project.company.name}
             </div>
           )}
           {project.startDate && (
-            <div>
+            <div className="text-gray-700 dark:text-gray-300">
               <span className="font-medium">Date de début:</span>{" "}
               {new Date(project.startDate).toLocaleDateString("fr-FR")}
             </div>
           )}
           {project.endDate && (
-            <div>
+            <div className="text-gray-700 dark:text-gray-300">
               <span className="font-medium">Date de fin:</span>{" "}
               {new Date(project.endDate).toLocaleDateString("fr-FR")}
             </div>
           )}
-          <div>
+          <div className="text-gray-700 dark:text-gray-300">
             <span className="font-medium">Créé le:</span>{" "}
             {new Date(project.createdAt).toLocaleDateString("fr-FR")}
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
-      <Card>
-        <CardHeader className="flex justify-between items-center">
-          <CardTitle>Tâches récentes</CardTitle>
+      <GlassCard>
+        <GlassCardHeader className="flex justify-between items-center">
+          <GlassCardTitle>Tâches récentes</GlassCardTitle>
           <div className="flex gap-2">
             <Button
               onClick={() => router.push(`/projects/${projectId}/gantt`)}
