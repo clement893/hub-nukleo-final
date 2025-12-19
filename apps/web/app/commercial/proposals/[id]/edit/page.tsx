@@ -89,7 +89,7 @@ export default function EditProposalPage() {
             status: proposal.status,
             totalAmount: proposal.totalAmount ? Number(proposal.totalAmount) : null,
             validUntil: proposal.validUntil ? new Date(proposal.validUntil) : null,
-            opportunityId: proposal.opportunityId,
+            opportunityId: proposal.opportunityId ?? undefined,
             sections: proposal.sections.map((section: { id: string; title: string; description: string | null; order: number; items: Array<{ id: string; title: string; description: string | null; type: string; quantity: number | null; unitPrice: number | null; totalPrice: number | null; order: number }> }) => ({
               id: section.id,
               title: section.title,
