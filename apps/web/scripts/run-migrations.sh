@@ -5,13 +5,22 @@
 
 echo "🔄 Syncing database schema..."
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-DB_DIR="$SCRIPT_DIR/../../packages/db"
+# Use absolute path from /app root (as defined in Dockerfile)
+DB_DIR="/app/packages/db"
 
+# Check if directory exists
+if [ ! -d "$DB_DIR" ]; then
+  echo "❌ Database directory not found: $DB_DIR"
+  echo "⚠️  Continuing startup without database sync..."
+  echo "⚠️  Please ensure the database schema is up to date manually"
+  exit 0
+fi
+
+echo "📁 Using database directory: $DB_DIR"
 cd "$DB_DIR" || {
   echo "❌ Could not change to database directory: $DB_DIR"
-  exit 1
+  echo "⚠️  Continuing startup without database sync..."
+  exit 0
 }
 
 # Try db:push first (works without migrations)
