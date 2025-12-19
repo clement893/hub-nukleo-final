@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -56,6 +57,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function ProposalsPage() {
+  const router = useRouter();
   const [proposals, setProposals] = React.useState<Proposal[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
@@ -225,15 +227,15 @@ export default function ProposalsPage() {
                           </Button>
                         </DropdownTrigger>
                         <DropdownContent>
-                          <DropdownItem asChild>
-                            <Link href={`/commercial/proposals/${proposal.id}`}>
-                              Voir
-                            </Link>
+                          <DropdownItem
+                            onClick={() => router.push(`/commercial/proposals/${proposal.id}`)}
+                          >
+                            Voir
                           </DropdownItem>
-                          <DropdownItem asChild>
-                            <Link href={`/commercial/proposals/${proposal.id}/edit`}>
-                              Modifier
-                            </Link>
+                          <DropdownItem
+                            onClick={() => router.push(`/commercial/proposals/${proposal.id}/edit`)}
+                          >
+                            Modifier
                           </DropdownItem>
                           <DropdownSeparator />
                           <DropdownItem
