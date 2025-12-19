@@ -1,11 +1,4 @@
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@nukleo/ui";
-import {
   getOpportunitiesStats,
   getRecentOpportunities,
   getContactsStats,
