@@ -6,7 +6,8 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "install": "cd ../.. && corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile"
   },
   "dependencies": {
     "@nukleo/db": "workspace:*",
