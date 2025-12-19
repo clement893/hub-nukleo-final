@@ -14,15 +14,16 @@ import {
 import { ContactDetailClient } from "./ContactDetailClient";
 
 interface ContactDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ContactDetailPage({
   params,
 }: ContactDetailPageProps) {
-  const contact = await getContactById(params.id);
+  const { id } = await params;
+  const contact = await getContactById(id);
   const companies = await getAllCompanies();
 
   if (!contact) {

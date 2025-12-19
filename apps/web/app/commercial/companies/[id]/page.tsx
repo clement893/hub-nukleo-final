@@ -4,15 +4,16 @@ import { getCompanyById } from "@nukleo/commercial";
 import { CompanyDetailClient } from "./CompanyDetailClient";
 
 interface CompanyDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function CompanyDetailPage({
   params,
 }: CompanyDetailPageProps) {
-  const company = await getCompanyById(params.id);
+  const { id } = await params;
+  const company = await getCompanyById(id);
 
   if (!company) {
     return (
