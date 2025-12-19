@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Avatar } from "@nukleo/ui";
-import Image from "next/image";
 
 interface ContactAvatarProps {
   firstName: string;
@@ -14,6 +13,7 @@ interface ContactAvatarProps {
 
 /**
  * ContactAvatar - Component to display contact avatar with S3 photo support
+ * Uses the /api/files/[key] route which redirects to presigned S3 URL
  */
 export function ContactAvatar({
   firstName,
@@ -22,51 +22,22 @@ export function ContactAvatar({
   size = "md",
   className,
 }: ContactAvatarProps) {
-  const [photoUrl, setPhotoUrl] = React.useState<string | null>(null);
   const [error, setError] = React.useState(false);
-
-  React.useEffect(() => {
-    if (photoKey && !error) {
-      // Generate presigned URL for the photo
-      fetch(`/api/files/${encodeURIComponent(photoKey)}/presigned?type=download&expiresIn=3600`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success && data.url) {
-            setPhotoUrl(data.url);
-          }
-        })
-        .catch(() => {
-          setError(true);
-        });
-    }
-  }, [photoKey, error]);
 
   const fallback = `${firstName[0]}${lastName[0]}`.toUpperCase();
 
-  if (photoUrl && !error) {
-    return (
-      <Avatar
-        size={size}
-        className={className}
-        fallback={fallback}
-      >
-        <Image
-          src={photoUrl}
-          alt={`${firstName} ${lastName}`}
-          width={size === "lg" ? 80 : size === "md" ? 40 : 32}
-          height={size === "lg" ? 80 : size === "md" ? 40 : 32}
-          className="rounded-full object-cover"
-          onError={() => setError(true)}
-        />
-      </Avatar>
-    );
-  }
+  // If photoKey exists and no error, use the API route which will redirect to presigned URL
+  const photoUrl = photoKey && !error 
+    ? `/api/files/${encodeURIComponent(photoKey)}`
+    : undefined;
 
   return (
     <Avatar
       size={size}
       className={className}
       fallback={fallback}
+      src={photoUrl}
+      onError={() => setError(true)}
     />
   );
 }

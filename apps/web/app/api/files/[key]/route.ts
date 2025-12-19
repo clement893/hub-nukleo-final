@@ -29,7 +29,14 @@ export async function GET(
     // Generate presigned URL (valid for 1 hour)
     const url = await getPresignedDownloadUrl(decodedKey, 3600);
 
-    // Redirect to the presigned URL
+    // Return JSON with URL for images (better for Avatar component)
+    // Or redirect for direct file downloads
+    const acceptHeader = request.headers.get("accept") || "";
+    if (acceptHeader.includes("application/json") || request.headers.get("x-requested-with") === "XMLHttpRequest") {
+      return NextResponse.json({ url });
+    }
+
+    // Redirect to the presigned URL for direct downloads
     return NextResponse.redirect(url);
   } catch (error) {
     logger.error("Error getting file", error instanceof Error ? error : new Error(String(error)));
