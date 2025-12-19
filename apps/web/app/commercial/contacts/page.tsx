@@ -59,6 +59,8 @@ export default function ContactsPage() {
     null
   );
   const [isLoading, setIsLoading] = React.useState(true);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [itemsPerPage] = React.useState(50); // Pagination: 50 items per page
   const { addToast } = useToast();
 
   React.useEffect(() => {
@@ -562,7 +564,7 @@ export default function ContactsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredContacts.map((contact) => (
+                  {paginatedContacts.map((contact) => (
                     <TableRow key={contact.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -617,6 +619,59 @@ export default function ContactsPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-sm text-gray-600">
+              Affichage de {(currentPage - 1) * itemsPerPage + 1} à{" "}
+              {Math.min(currentPage * itemsPerPage, filteredContacts.length)} sur{" "}
+              {filteredContacts.length} contact{filteredContacts.length > 1 ? "s" : ""}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                Précédent
+              </Button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "primary" : "outline"}
+                      size="sm"
+                      onClick={() => setCurrentPage(pageNum)}
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Suivant
+              </Button>
+            </div>
+          </div>
+        )}
 
       <ContactModal
         isOpen={isModalOpen}
