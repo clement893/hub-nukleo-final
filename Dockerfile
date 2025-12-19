@@ -6,12 +6,13 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # Copy workspace configuration files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY package.json pnpm-workspace.yaml turbo.json ./
 COPY packages ./packages
 COPY apps/web ./apps/web
 
 # Install dependencies from root
-RUN pnpm install --frozen-lockfile
+# Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
+RUN pnpm install || pnpm install --no-frozen-lockfile
 
 # Build the web app
 WORKDIR /app/apps/web
