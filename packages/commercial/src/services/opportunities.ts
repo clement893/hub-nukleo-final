@@ -141,3 +141,9 @@ export async function updateOpportunity(
   });
 }
 
+export async function deleteOpportunity(id: string) {
+  return prisma.opportunity.delete({
+    where: { id },
+  });
+}
+
