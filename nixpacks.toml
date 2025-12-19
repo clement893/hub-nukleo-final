@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "pnpm"]
+nixPkgs = ["nodejs-18_x"]
 
 [phases.install]
-cmds = ["pnpm install --frozen-lockfile"]
+cmds = ["corepack enable", "corepack prepare pnpm@latest --activate", "pnpm install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["cd apps/web && pnpm install && pnpm build"]
+cmds = ["cd apps/web && pnpm build"]
 
 [start]
 cmd = "cd apps/web && pnpm start"
