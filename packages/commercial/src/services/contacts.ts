@@ -16,3 +16,9 @@ export async function getRecentContacts(limit = 5) {
   });
 }
 
+export async function getAllContacts() {
+  return prisma.contact.findMany({
+    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+  });
+}
+

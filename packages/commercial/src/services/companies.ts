@@ -11,3 +11,9 @@ export async function getRecentCompanies(limit = 5) {
   });
 }
 
+export async function getAllCompanies() {
+  return prisma.company.findMany({
+    orderBy: { name: "asc" },
+  });
+}
+
