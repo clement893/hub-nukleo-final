@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 
-export interface BreadcrumbItem {
+export interface BreadcrumbItemType {
   label: string;
   href?: string;
 }
 
 export interface BreadcrumbProps {
-  items: BreadcrumbItem[];
+  items: BreadcrumbItemType[];
   separator?: React.ReactNode;
   className?: string;
 }

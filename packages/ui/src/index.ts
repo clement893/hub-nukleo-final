@@ -68,7 +68,7 @@ export {
   BreadcrumbLink,
   BreadcrumbSeparator,
   type BreadcrumbProps,
-  type BreadcrumbItem,
+  type BreadcrumbItemType,
 } from "./components/Breadcrumb";
 export {
   Pagination,
