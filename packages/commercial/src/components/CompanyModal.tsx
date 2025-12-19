@@ -1,17 +1,10 @@
 "use client";
 
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal, Button, Input, Textarea } from "@nukleo/ui";
-
-export interface CompanyFormData {
-  name: string;
-  industry?: string;
-  website?: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  country?: string;
-}
+import { companySchema, type CompanyFormData } from "../schemas/company";
 
 export interface CompanyModalProps {
   isOpen: boolean;
@@ -26,22 +19,29 @@ export function CompanyModal({
   onSubmit,
   initialData,
 }: CompanyModalProps) {
-  const [formData, setFormData] = React.useState<CompanyFormData>({
-    name: "",
-    industry: "",
-    website: "",
-    phone: "",
-    address: "",
-    city: "",
-    country: "",
-    ...initialData,
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<CompanyFormData>({
+    resolver: zodResolver(companySchema),
+    defaultValues: initialData || {
+      name: "",
+      industry: "",
+      website: "",
+      phone: "",
+      address: "",
+      city: "",
+      country: "",
+    },
   });
 
   React.useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      reset(initialData);
     } else {
-      setFormData({
+      reset({
         name: "",
         industry: "",
         website: "",
@@ -51,11 +51,10 @@ export function CompanyModal({
         country: "",
       });
     }
-  }, [initialData, isOpen]);
+  }, [initialData, isOpen, reset]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const onFormSubmit = async (data: CompanyFormData) => {
+    await onSubmit(data);
   };
 
   return (
@@ -64,77 +63,67 @@ export function CompanyModal({
       onClose={onClose}
       title={initialData ? "Modifier l'entreprise" : "Nouvelle entreprise"}
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
         <Input
           label="Nom de l'entreprise"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          {...register("name")}
+          error={errors.name?.message}
           required
         />
 
         <Input
           label="Industrie"
-          value={formData.industry || ""}
-          onChange={(e) =>
-            setFormData({ ...formData, industry: e.target.value })
-          }
+          {...register("industry")}
+          error={errors.industry?.message}
         />
 
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Site web"
             type="url"
-            value={formData.website || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, website: e.target.value })
-            }
+            {...register("website")}
+            error={errors.website?.message}
+            placeholder="https://example.com"
           />
 
           <Input
             label="Téléphone"
             type="tel"
-            value={formData.phone || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, phone: e.target.value })
-            }
+            {...register("phone")}
+            error={errors.phone?.message}
           />
         </div>
 
         <Textarea
           label="Adresse"
-          value={formData.address || ""}
-          onChange={(e) =>
-            setFormData({ ...formData, address: e.target.value })
-          }
+          {...register("address")}
+          error={errors.address?.message}
           rows={2}
         />
 
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Ville"
-            value={formData.city || ""}
-            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            {...register("city")}
+            error={errors.city?.message}
           />
 
           <Input
             label="Pays"
-            value={formData.country || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, country: e.target.value })
-            }
+            {...register("country")}
+            error={errors.country?.message}
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
             Annuler
           </Button>
-          <Button type="submit" variant="primary">
-            {initialData ? "Modifier" : "Créer"}
+          <Button type="submit" variant="primary" disabled={isSubmitting}>
+            {isSubmitting ? "Enregistrement..." : initialData ? "Modifier" : "Créer"}
           </Button>
         </div>
       </form>
     </Modal>
   );
 }
-

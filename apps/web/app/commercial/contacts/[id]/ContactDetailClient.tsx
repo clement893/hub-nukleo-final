@@ -12,8 +12,8 @@ import {
 import Link from "next/link";
 import {
   ContactModal,
-  type ContactFormData,
 } from "@nukleo/commercial";
+import type { ContactFormData } from "@nukleo/commercial/schemas";
 import {
   updateContactAction,
   deleteContactAction,

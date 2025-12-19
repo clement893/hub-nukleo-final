@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Modal,
   Button,
@@ -9,18 +11,10 @@ import {
   Select,
   type SelectOption,
 } from "@nukleo/ui";
-import type { OpportunityStage } from "@nukleo/db";
-
-export interface OpportunityFormData {
-  title: string;
-  description?: string;
-  value?: number;
-  stage: OpportunityStage;
-  probability?: number;
-  expectedCloseDate?: string;
-  companyId?: string;
-  contactId?: string;
-}
+import {
+  opportunitySchema,
+  type OpportunityFormData,
+} from "../schemas/opportunity";
 
 export interface OpportunityModalProps {
   isOpen: boolean;
@@ -30,15 +24,6 @@ export interface OpportunityModalProps {
   companies?: Array<{ id: string; name: string }>;
   contacts?: Array<{ id: string; firstName: string; lastName: string }>;
 }
-
-const stages: OpportunityStage[] = [
-  "NEW",
-  "QUALIFIED",
-  "PROPOSAL",
-  "NEGOTIATION",
-  "WON",
-  "LOST",
-];
 
 const stageOptions: SelectOption[] = [
   { value: "NEW", label: "Nouvelle" },
@@ -57,39 +42,42 @@ export function OpportunityModal({
   companies = [],
   contacts = [],
 }: OpportunityModalProps) {
-  const [formData, setFormData] = React.useState<OpportunityFormData>({
-    title: "",
-    description: "",
-    value: undefined,
-    stage: "NEW",
-    probability: 0,
-    expectedCloseDate: undefined,
-    companyId: undefined,
-    contactId: undefined,
-    ...initialData,
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<OpportunityFormData>({
+    resolver: zodResolver(opportunitySchema),
+    defaultValues: initialData || {
+      title: "",
+      description: "",
+      value: undefined,
+      stage: "NEW",
+      probability: undefined,
+      expectedCloseDate: undefined,
+      companyId: undefined,
+      contactId: undefined,
+    },
   });
 
   React.useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      reset(initialData);
     } else {
-      setFormData({
+      reset({
         title: "",
         description: "",
         value: undefined,
         stage: "NEW",
-        probability: 0,
+        probability: undefined,
         expectedCloseDate: undefined,
         companyId: undefined,
         contactId: undefined,
       });
     }
-  }, [initialData, isOpen]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+  }, [initialData, isOpen, reset]);
 
   const companyOptions: SelectOption[] = [
     { value: "", label: "Sélectionner une entreprise" },
@@ -104,24 +92,28 @@ export function OpportunityModal({
     })),
   ];
 
+  const onFormSubmit = async (data: OpportunityFormData) => {
+    await onSubmit(data);
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Nouvelle opportunité">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={initialData ? "Modifier l'opportunité" : "Nouvelle opportunité"}
+    >
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
         <Input
           label="Titre"
-          value={formData.title}
-          onChange={(e) =>
-            setFormData({ ...formData, title: e.target.value })
-          }
+          {...register("title")}
+          error={errors.title?.message}
           required
         />
 
         <Textarea
           label="Description"
-          value={formData.description || ""}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
+          {...register("description")}
+          error={errors.description?.message}
           rows={4}
         />
 
@@ -129,13 +121,9 @@ export function OpportunityModal({
           <Input
             label="Valeur (€)"
             type="number"
-            value={formData.value || ""}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                value: e.target.value ? parseFloat(e.target.value) : undefined,
-              })
-            }
+            step="0.01"
+            {...register("value", { valueAsNumber: true })}
+            error={errors.value?.message}
           />
 
           <Input
@@ -143,75 +131,70 @@ export function OpportunityModal({
             type="number"
             min="0"
             max="100"
-            value={formData.probability || ""}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                probability: e.target.value
-                  ? parseInt(e.target.value, 10)
-                  : undefined,
-              })
-            }
+            {...register("probability", { valueAsNumber: true })}
+            error={errors.probability?.message}
           />
         </div>
 
-        <Select
-          label="Étape"
-          options={stageOptions}
-          value={formData.stage}
-          onChange={(value) =>
-            setFormData({ ...formData, stage: value as OpportunityStage })
-          }
-          required
+        <Controller
+          name="stage"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Étape"
+              options={stageOptions}
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
+              error={errors.stage?.message}
+              required
+            />
+          )}
         />
 
         <Input
           label="Date de clôture prévue"
           type="date"
-          value={
-            formData.expectedCloseDate
-              ? new Date(formData.expectedCloseDate).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={(e) =>
-            setFormData({ ...formData, expectedCloseDate: e.target.value })
-          }
+          {...register("expectedCloseDate")}
+          error={errors.expectedCloseDate?.message}
         />
 
-        <Select
-          label="Entreprise"
-          options={companyOptions}
-          value={formData.companyId || ""}
-          onChange={(value) =>
-            setFormData({
-              ...formData,
-              companyId: value || undefined,
-            })
-          }
+        <Controller
+          name="companyId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Entreprise"
+              options={companyOptions}
+              value={field.value || ""}
+              onChange={(e) => field.onChange(e.target.value || undefined)}
+              error={errors.companyId?.message}
+            />
+          )}
         />
 
-        <Select
-          label="Contact"
-          options={contactOptions}
-          value={formData.contactId || ""}
-          onChange={(value) =>
-            setFormData({
-              ...formData,
-              contactId: value || undefined,
-            })
-          }
+        <Controller
+          name="contactId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Contact"
+              options={contactOptions}
+              value={field.value || ""}
+              onChange={(e) => field.onChange(e.target.value || undefined)}
+              error={errors.contactId?.message}
+            />
+          )}
         />
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
             Annuler
           </Button>
-          <Button type="submit" variant="primary">
-            {initialData ? "Modifier" : "Créer"}
+          <Button type="submit" variant="primary" disabled={isSubmitting}>
+            {isSubmitting ? "Enregistrement..." : initialData ? "Modifier" : "Créer"}
           </Button>
         </div>
       </form>
     </Modal>
   );
 }
-

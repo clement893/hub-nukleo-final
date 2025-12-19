@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@nukleo/db": "workspace:*",
-    "@nukleo/ui": "workspace:*"
+    "@nukleo/ui": "workspace:*",
+    "zod": "^3.23.8",
+    "@hookform/resolvers": "^3.9.0",
+    "react-hook-form": "^7.53.0"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

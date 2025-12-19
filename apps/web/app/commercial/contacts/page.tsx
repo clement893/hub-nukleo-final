@@ -19,8 +19,8 @@ import {
 } from "@nukleo/ui";
 import {
   ContactModal,
-  type ContactFormData,
 } from "@nukleo/commercial";
+import type { ContactFormData } from "@nukleo/commercial/schemas";
 import {
   getContactsAction,
   getCompaniesAction,
