@@ -16,9 +16,7 @@ import {
 import {
   proposalSchema,
   type ProposalFormData,
-  type ProposalSectionFormData,
   type ProposalItemFormData,
-  type ProposalProcessFormData,
 } from "@nukleo/commercial";
 import { createProposalAction } from "../actions";
 import { useToast } from "@/lib/toast";
