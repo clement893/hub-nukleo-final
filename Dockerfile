@@ -35,8 +35,11 @@ WORKDIR /app/apps/web
 WORKDIR /app/apps/web
 RUN pnpm build
 
-# Verify standalone build exists
-RUN ls -la .next/standalone || echo "Standalone build not found"
+# Verify standalone build exists and show structure
+RUN echo "Checking .next directory structure:" && \
+    ls -la .next/ || echo ".next directory not found" && \
+    ls -la .next/standalone/ || echo ".next/standalone directory not found" && \
+    find .next -name "server.js" -type f || echo "server.js not found"
 
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
