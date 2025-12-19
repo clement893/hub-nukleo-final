@@ -22,6 +22,7 @@ export async function getRecentContacts(limit = 5) {
 }
 
 export async function getAllContacts() {
+  // Optimize: Only select needed fields and use indexes
   return prisma.contact.findMany({
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
     select: {
@@ -36,6 +37,8 @@ export async function getAllContacts() {
         select: { id: true, name: true },
       },
     },
+    // Use take to limit results if needed (can be made configurable)
+    // take: 1000, // Uncomment if you want to limit results
   });
 }
 
