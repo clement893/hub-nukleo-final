@@ -501,7 +501,6 @@ function SectionForm({
                   sectionIndex={sectionIndex}
                   itemIndex={itemIndex}
                   register={register}
-                  control={control}
                   errors={errors}
                   watch={watch}
                   onRemove={() => removeItem(itemIndex)}
