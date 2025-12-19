@@ -38,7 +38,8 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const [endDate, setEndDate] = React.useState<string | null>(null);
     const hasError = !!error;
 
-    const isDateDisabled = (date: string) => {
+    // Reserved for future use - date validation logic
+    const _isDateDisabled = (date: string) => {
       if (disabledDates?.includes(date)) return true;
       if (minDate && date < minDate) return true;
       if (maxDate && date > maxDate) return true;
