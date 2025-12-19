@@ -2,8 +2,6 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@nukleo/ui";
 import Link from "next/link";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 
 interface RecentActivityProps {
   opportunities: Array<{
@@ -113,7 +111,11 @@ export function RecentActivity({
                     </p>
                   </div>
                   <span className="text-xs text-gray-400">
-                    {format(activity.date, "d MMM yyyy", { locale: fr })}
+                    {new Date(activity.date).toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
               </Link>
