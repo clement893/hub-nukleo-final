@@ -19,8 +19,8 @@ import {
 } from "@nukleo/ui";
 import {
   CompanyModal,
-} from "@nukleo/commercial";
-import type { CompanyFormData } from "@nukleo/commercial/schemas";
+} from "@nukleo/commercial/client";
+import type { CompanyFormData } from "@nukleo/commercial/client";
 import {
   getCompaniesListAction,
   createCompanyAction,

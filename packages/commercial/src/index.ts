@@ -1,13 +1,13 @@
 // Types
 export * from "./types";
 
-// Services
+// Services (server-side only, use in Server Actions or Server Components)
 export * from "./services";
 
-// Components
+// Components (can be used in Client Components)
 export * from "./components";
 
-// Schemas
+// Schemas (can be used in Client Components)
 export * from "./schemas";
 
 // Utils (will be added later)

@@ -33,8 +33,8 @@ import {
 import {
   OpportunityCard,
   OpportunityModal,
-} from "@nukleo/commercial";
-import type { OpportunityFormData } from "@nukleo/commercial/schemas";
+} from "@nukleo/commercial/client";
+import type { OpportunityFormData } from "@nukleo/commercial/client";
 import type { OpportunityStage } from "@nukleo/db";
 import {
   getOpportunitiesAction,

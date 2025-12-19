@@ -12,8 +12,8 @@ import {
 import Link from "next/link";
 import {
   CompanyModal,
-} from "@nukleo/commercial";
-import type { CompanyFormData } from "@nukleo/commercial/schemas";
+} from "@nukleo/commercial/client";
+import type { CompanyFormData } from "@nukleo/commercial/client";
 import {
   updateCompanyAction,
   deleteCompanyAction,
