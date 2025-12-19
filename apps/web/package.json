@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:-3000}",
     "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
