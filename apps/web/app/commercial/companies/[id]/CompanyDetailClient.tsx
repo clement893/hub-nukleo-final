@@ -225,9 +225,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
               </CardHeader>
               <CardContent>
                 {company.opportunities.length === 0 ? (
-                  <p className="text-sm text-gray-500">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
-                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
                 ) : (
                   <div className="space-y-2">
                     {company.opportunities.map((opp) => (
