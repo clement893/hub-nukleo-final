@@ -93,7 +93,6 @@ export default function NewProposalPage() {
   }, [addToast]);
 
   const watchedSections = watch("sections");
-  const watchedProcesses = watch("processes");
 
   // Calculate total amount
   React.useEffect(() => {
