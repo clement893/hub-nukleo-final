@@ -11,7 +11,9 @@
     "./services": "./src/services/index.ts",
     "./services/opportunities": "./src/services/opportunities.ts",
     "./services/contacts": "./src/services/contacts.ts",
-    "./services/companies": "./src/services/companies.ts"
+    "./services/companies": "./src/services/companies.ts",
+    "./services/proposals": "./src/services/proposals.ts",
+    "./schemas/proposal": "./src/schemas/proposal.ts"
   },
   "scripts": {
     "lint": "eslint .",

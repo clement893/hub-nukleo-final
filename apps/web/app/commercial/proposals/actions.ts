@@ -8,12 +8,10 @@ import {
   updateProposal,
   updateProposalStatus,
   deleteProposal,
-} from "@nukleo/commercial/services/proposals";
-import {
   proposalSchema,
   updateProposalSchema,
   updateProposalStatusSchema,
-} from "@nukleo/commercial/schemas";
+} from "@nukleo/commercial";
 
 export async function getProposalsAction() {
   try {
