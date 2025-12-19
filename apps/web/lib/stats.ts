@@ -64,3 +64,4 @@ export function calculateContactStats(contacts: Contact[]): ContactStats {
   };
 }
 
+

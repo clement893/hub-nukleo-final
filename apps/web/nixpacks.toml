@@ -10,3 +10,4 @@ cmds = ["cd ../.. && pnpm --filter web build"]
 [start]
 cmd = "cd ../.. && pnpm --filter web start"
 
+

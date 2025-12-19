@@ -198,3 +198,4 @@ cd packages/db
 pnpm db:generate
 ```
 
+

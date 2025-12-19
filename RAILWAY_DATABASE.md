@@ -90,3 +90,4 @@ Cela ouvrira Prisma Studio dans votre navigateur, vous permettant de visualiser 
 - 🔄 **Migrations** : Exécutez toujours les migrations après avoir modifié le schéma Prisma
 - 📊 **Production** : En production, utilisez toujours les variables d'environnement de Railway
 
+

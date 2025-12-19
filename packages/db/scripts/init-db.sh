@@ -30,3 +30,4 @@ echo "✅ Base de données initialisée avec succès!"
 echo ""
 echo "Pour visualiser les données, exécutez: pnpm db:studio"
 
+

@@ -28,3 +28,4 @@ Write-Host "✅ Base de données initialisée avec succès!" -ForegroundColor Gr
 Write-Host ""
 Write-Host "Pour visualiser les données, exécutez: pnpm db:studio" -ForegroundColor Yellow
 
+

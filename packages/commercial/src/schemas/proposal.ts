@@ -60,3 +60,4 @@ export type ProposalProcessFormData = z.infer<typeof proposalProcessSchema>;
 export type UpdateProposalStatusData = z.infer<typeof updateProposalStatusSchema>;
 export type UpdateProposalData = z.infer<typeof updateProposalSchema>;
 
+
