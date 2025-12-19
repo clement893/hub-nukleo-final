@@ -31,10 +31,11 @@ RUN pnpm db:generate || echo "Prisma client generation skipped (DATABASE_URL may
 WORKDIR /app/apps/web
 RUN pnpm build
 
-# Expose port
+# Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
 
 # Start the application using standalone mode
 WORKDIR /app/apps/web
-CMD ["pnpm", "start:standalone"]
+# Use PORT env var if set, otherwise default to 3000
+CMD node .next/standalone/server.js
 
