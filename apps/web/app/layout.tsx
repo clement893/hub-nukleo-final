@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import "./globals.css";
-import { ToastProvider } from "../lib/toast";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: "Hub Nukleo",
@@ -15,9 +15,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="antialiased">
-        <ToastProvider>{children}</ToastProvider>
+        <ErrorBoundary>{children}</ErrorBoundary>
       </body>
     </html>
   );
 }
-

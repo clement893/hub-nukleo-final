@@ -1,5 +1,4 @@
-import Link from "next/link";
-import {
+﻿import {
   Card,
   CardHeader,
   CardTitle,
@@ -19,17 +18,15 @@ export default function Home() {
             Hub Nukleo
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto">
-            Plateforme moderne de gestion commerciale, projets et équipe
+            Plateforme moderne de gestion commerciale, projets et Ã‰quipe
           </p>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
-          <Link href="/commercial/dashboard">
-            <Button variant="primary" size="lg">
-              Commencer
-            </Button>
-          </Link>
+          <Button variant="primary" size="lg">
+            Commencer
+          </Button>
           <Button variant="outline" size="lg">
             En savoir plus
           </Button>
@@ -42,21 +39,19 @@ export default function Home() {
             <CardHeader>
               <CardTitle>Commercial</CardTitle>
               <CardDescription>
-                Gérez vos opportunités, contacts et entreprises
+                GÃ©rez vos opportunitÃ©s, contacts et entreprises
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Suivez vos ventes, analysez vos performances et développez votre
+                Suivez vos ventes, analysez vos performances et dÃ©veloppez votre
                 portefeuille client avec des outils puissants de gestion CRM.
               </p>
             </CardContent>
             <CardFooter>
-              <Link href="/commercial/dashboard" className="w-full">
-                <Button variant="outline" className="w-full">
-                  Accéder au module
-                </Button>
-              </Link>
+              <Button variant="outline" className="w-full">
+                AccÃ©der au module
+              </Button>
             </CardFooter>
           </Card>
 
@@ -70,13 +65,13 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Organisez vos projets, assignez des tâches, suivez les budgets
-                et les délais pour une gestion optimale de vos livraisons.
+                Organisez vos projets, assignez des tÃ¢ches, suivez les budgets
+                et les dÃ©lais pour une gestion optimale de vos livraisons.
               </p>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="w-full">
-                Accéder au module
+                AccÃ©der au module
               </Button>
             </CardFooter>
           </Card>
@@ -84,20 +79,20 @@ export default function Home() {
           {/* Team Module */}
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle>Équipe</CardTitle>
+              <CardTitle>Ã‰quipe</CardTitle>
               <CardDescription>
-                Collaborez et coordonnez votre équipe
+                Collaborez et coordonnez votre Ã©quipe
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Gérez les membres de votre équipe, leurs rôles et permissions,
-                et facilitez la collaboration entre les différents départements.
+                GÃ©rez les membres de votre Ã©quipe, leurs rÃ´les et permissions,
+                et facilitez la collaboration entre les diffÃ©rents dÃ©partements.
               </p>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="w-full">
-                Accéder au module
+                AccÃ©der au module
               </Button>
             </CardFooter>
           </Card>

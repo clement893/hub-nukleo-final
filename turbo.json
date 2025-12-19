@@ -1,4 +1,4 @@
-{
+﻿{
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
@@ -13,9 +13,12 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
     "format": {
       "cache": false
     }
   }
 }
-
