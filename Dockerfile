@@ -27,6 +27,10 @@ WORKDIR /app/packages/db
 # Generate Prisma Client (works even without DATABASE_URL for types)
 RUN pnpm db:generate || echo "Prisma client generation skipped (DATABASE_URL may not be set yet)"
 
+# Run database migrations if DATABASE_URL is available
+# This will be executed at container startup, not during build
+WORKDIR /app/apps/web
+
 # Build the web app (Next.js/Turbopack will compile packages from source)
 WORKDIR /app/apps/web
 RUN pnpm build
@@ -37,8 +41,10 @@ RUN ls -la .next/standalone || echo "Standalone build not found"
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
 
-# Start the application using standalone mode
-# Next.js standalone mode requires running from the web app directory
+# Create startup script that runs migrations and starts the app
 WORKDIR /app/apps/web
-CMD ["node", ".next/standalone/server.js"]
+RUN echo '#!/bin/sh\nset -e\ncd /app/packages/db\nif [ -n "$DATABASE_URL" ]; then\n  echo "Running database migrations..."\n  pnpm db:migrate:deploy || echo "Migrations failed or already applied"\nelse\n  echo "DATABASE_URL not set, skipping migrations"\nfi\ncd /app/apps/web\nexec node .next/standalone/server.js' > /start.sh && chmod +x /start.sh
+
+# Start the application using standalone mode
+CMD ["/start.sh"]
 
