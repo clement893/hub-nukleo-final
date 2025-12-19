@@ -14,7 +14,7 @@ export interface TooltipProps {
 const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   ({ content, position = "top", delay = 200, children, className }, ref) => {
     const [isVisible, setIsVisible] = React.useState(false);
-    const timeoutRef = React.useRef<NodeJS.Timeout>();
+    const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>();
 
     const showTooltip = () => {
       if (timeoutRef.current) {
