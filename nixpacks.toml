@@ -5,8 +5,8 @@ nixPkgs = ["nodejs-18_x", "pnpm"]
 cmds = ["pnpm install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["cd apps/web && pnpm build"]
+cmds = ["pnpm --filter web build"]
 
 [start]
-cmd = "cd apps/web && pnpm start"
+cmd = "pnpm --filter web start"
 
