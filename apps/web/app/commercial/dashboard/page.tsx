@@ -14,21 +14,39 @@ import { RecentActivity } from "./components/RecentActivity";
 export const dynamic = "force-dynamic";
 
 export default async function CommercialDashboard() {
-  const [
-    opportunitiesStats,
-    contactsCount,
-    companiesCount,
-    recentOpportunities,
-    recentContacts,
-    recentCompanies,
-  ] = await Promise.all([
-    getOpportunitiesStats(),
-    getContactsStats(),
-    getCompaniesStats(),
-    getRecentOpportunities(5),
-    getRecentContacts(5),
-    getRecentCompanies(5),
-  ]);
+  let opportunitiesStats, contactsCount, companiesCount, recentOpportunities, recentContacts, recentCompanies;
+
+  try {
+    [
+      opportunitiesStats,
+      contactsCount,
+      companiesCount,
+      recentOpportunities,
+      recentContacts,
+      recentCompanies,
+    ] = await Promise.all([
+      getOpportunitiesStats(),
+      getContactsStats(),
+      getCompaniesStats(),
+      getRecentOpportunities(5),
+      getRecentContacts(5),
+      getRecentCompanies(5),
+    ]);
+  } catch (error) {
+    console.error("Error loading dashboard data:", error);
+    // Return default values if database is not accessible
+    opportunitiesStats = {
+      totalOpportunities: 0,
+      conversionRate: 0,
+      totalRevenue: 0,
+      pipelineByStage: [],
+    };
+    contactsCount = 0;
+    companiesCount = 0;
+    recentOpportunities = [];
+    recentContacts = [];
+    recentCompanies = [];
+  }
 
   return (
     <>
