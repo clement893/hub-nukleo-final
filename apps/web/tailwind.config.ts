@@ -10,7 +10,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      ...nukleoConfig.theme.extend,
+      ...(nukleoConfig.theme?.extend || {}),
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
