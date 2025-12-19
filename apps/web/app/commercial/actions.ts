@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { getAllOpportunities, createProposal } from "@nukleo/commercial";
 import type { ProposalFormData } from "@nukleo/commercial";
-import { auth } from "@/auth";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function getAllOpportunitiesAction() {
   try {
@@ -19,7 +20,7 @@ export async function getAllOpportunitiesAction() {
       })),
     };
   } catch (error) {
-    console.error("Error fetching opportunities:", error);
+    logger.error("Error fetching opportunities", error instanceof Error ? error : new Error(String(error)));
     return {
       success: false,
       error: "Impossible de charger les opportunitÃƒÆ’Ã‚Â©s",
@@ -47,7 +48,7 @@ export async function createProposalAction(data: ProposalFormData) {
       data: proposal,
     };
   } catch (error) {
-    console.error("Error creating proposal:", error);
+    logger.error("Error creating proposal", error instanceof Error ? error : new Error(String(error)));
     return {
       success: false,
       error:

@@ -4,6 +4,8 @@ import {
   getAllContacts,
   createContact,
 } from "@nukleo/commercial/services/contacts";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -23,7 +25,7 @@ export async function GET() {
       })),
     });
   } catch (error) {
-    console.error("Error fetching contacts:", error);
+    logger.error("Error fetching contacts", error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { success: false, error: "Failed to fetch contacts" },
       { status: 500 }
@@ -50,8 +52,7 @@ export async function POST(request: NextRequest) {
 
     const data = validationResult.data;
 
-    // TODO: Get current user ID from auth context
-    const ownerId = "temp-user-id"; // Replace with actual user ID
+    const ownerId = await getCurrentUserId();
 
     const contact = await createContact({
       firstName: data.firstName,
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating contact:", error);
+    logger.error("Error creating contact", error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { success: false, error: "Failed to create contact" },
       { status: 500 }

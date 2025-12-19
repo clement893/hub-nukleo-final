@@ -9,6 +9,7 @@ import {
 import { DashboardKPIs } from "./components/DashboardKPIs";
 import { PipelineChart } from "./components/PipelineChart";
 import { RecentActivity } from "./components/RecentActivity";
+import { logger } from "@/lib/logger";
 
 // Force dynamic rendering to avoid SSR issues with Prisma during build
 export const dynamic = "force-dynamic";
@@ -40,7 +41,7 @@ export default async function CommercialDashboard() {
       getRecentCompanies(5),
     ]);
   } catch (error) {
-    console.error("Error loading dashboard data:", error);
+    logger.error("Error loading dashboard data", error instanceof Error ? error : new Error(String(error)));
     // Return default values if database is not accessible
     opportunitiesStats = {
       totalOpportunities: 0,

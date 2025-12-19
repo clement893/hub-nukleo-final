@@ -41,12 +41,6 @@ WORKDIR /app/apps/web
 WORKDIR /app/apps/web
 RUN pnpm build
 
-# Verify standalone build exists and show structure
-RUN echo "Checking .next directory structure:" && \
-    ls -la .next/ || echo ".next directory not found" && \
-    ls -la .next/standalone/ || echo ".next/standalone directory not found" && \
-    find .next -name "server.js" -type f || echo "server.js not found"
-
 # Make scripts executable
 RUN chmod +x /app/apps/web/scripts/run-migrations.sh && \
     chmod +x /app/apps/web/scripts/start-server.sh

@@ -24,7 +24,8 @@ import {
   timeEntrySchema,
   updateTimeEntrySchema,
 } from "@nukleo/commercial";
-import { getCurrentUserId } from "@/lib/auth";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 // ==================== PROJECT ACTIONS ====================
 
@@ -37,7 +38,7 @@ export async function getProjectsAction() {
       data: projects,
     };
   } catch (error) {
-    console.error("Error fetching projects:", error);
+    logger.error("Error fetching projects", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch projects" };
   }
 }
@@ -53,7 +54,7 @@ export async function getProjectAction(id: string) {
       data: project,
     };
   } catch (error) {
-    console.error("Error fetching project:", error);
+    logger.error("Error fetching project", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch project" };
   }
 }
@@ -68,7 +69,7 @@ export async function createProjectAction(data: unknown) {
       data: project,
     };
   } catch (error) {
-    console.error("Error creating project:", error);
+    logger.error("Error creating project", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -85,7 +86,7 @@ export async function updateProjectAction(id: string, data: unknown) {
       data: project,
     };
   } catch (error) {
-    console.error("Error updating project:", error);
+    logger.error("Error updating project", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -100,7 +101,7 @@ export async function deleteProjectAction(id: string) {
       success: true,
     };
   } catch (error) {
-    console.error("Error deleting project:", error);
+    logger.error("Error deleting project", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete project" };
   }
 }
@@ -115,7 +116,7 @@ export async function getTasksAction(projectId: string) {
       data: tasks,
     };
   } catch (error) {
-    console.error("Error fetching tasks:", error);
+    logger.error("Error fetching tasks", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch tasks" };
   }
 }
@@ -131,7 +132,7 @@ export async function getTaskAction(id: string) {
       data: task,
     };
   } catch (error) {
-    console.error("Error fetching task:", error);
+    logger.error("Error fetching task", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch task" };
   }
 }
@@ -145,7 +146,7 @@ export async function createTaskAction(data: unknown) {
       data: task,
     };
   } catch (error) {
-    console.error("Error creating task:", error);
+    logger.error("Error creating task", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -162,7 +163,7 @@ export async function updateTaskAction(id: string, data: unknown) {
       data: task,
     };
   } catch (error) {
-    console.error("Error updating task:", error);
+    logger.error("Error updating task", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -177,7 +178,7 @@ export async function deleteTaskAction(id: string) {
       success: true,
     };
   } catch (error) {
-    console.error("Error deleting task:", error);
+    logger.error("Error deleting task", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete task" };
   }
 }
@@ -192,7 +193,7 @@ export async function getTimeEntriesAction(taskId: string) {
       data: timeEntries,
     };
   } catch (error) {
-    console.error("Error fetching time entries:", error);
+    logger.error("Error fetching time entries", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch time entries" };
   }
 }
@@ -208,7 +209,7 @@ export async function getTimeEntryAction(id: string) {
       data: timeEntry,
     };
   } catch (error) {
-    console.error("Error fetching time entry:", error);
+    logger.error("Error fetching time entry", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch time entry" };
   }
 }
@@ -223,7 +224,7 @@ export async function createTimeEntryAction(data: unknown) {
       data: timeEntry,
     };
   } catch (error) {
-    console.error("Error creating time entry:", error);
+    logger.error("Error creating time entry", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -240,7 +241,7 @@ export async function updateTimeEntryAction(id: string, data: unknown) {
       data: timeEntry,
     };
   } catch (error) {
-    console.error("Error updating time entry:", error);
+    logger.error("Error updating time entry", error instanceof Error ? error : new Error(String(error)));
     if (error instanceof Error) {
       return { success: false, error: error.message };
     }
@@ -255,7 +256,7 @@ export async function deleteTimeEntryAction(id: string) {
       success: true,
     };
   } catch (error) {
-    console.error("Error deleting time entry:", error);
+    logger.error("Error deleting time entry", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete time entry" };
   }
 }
@@ -270,7 +271,7 @@ export async function getUsersAction() {
       data: users,
     };
   } catch (error) {
-    console.error("Error fetching users:", error);
+    logger.error("Error fetching users", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch users" };
   }
 }

@@ -6,6 +6,8 @@ import {
   updateCompany,
   deleteCompany,
 } from "@nukleo/commercial";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function getCompaniesListAction() {
   try {
@@ -23,7 +25,7 @@ export async function getCompaniesListAction() {
       })),
     };
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    logger.error("Error fetching companies", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch companies" };
   }
 }
@@ -38,12 +40,11 @@ export async function createCompanyAction(data: {
   country?: string;
 }) {
   try {
-    // TODO: Get current user ID from auth context
-    const ownerId = "temp-user-id";
+    const ownerId = await getCurrentUserId();
     const company = await createCompany({ ...data, ownerId });
     return { success: true, data: company };
   } catch (error) {
-    console.error("Error creating company:", error);
+    logger.error("Error creating company", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to create company" };
   }
 }
@@ -64,7 +65,7 @@ export async function updateCompanyAction(
     const company = await updateCompany(id, data);
     return { success: true, data: company };
   } catch (error) {
-    console.error("Error updating company:", error);
+    logger.error("Error updating company", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update company" };
   }
 }
@@ -74,7 +75,7 @@ export async function deleteCompanyAction(id: string) {
     await deleteCompany(id);
     return { success: true };
   } catch (error) {
-    console.error("Error deleting company:", error);
+    logger.error("Error deleting company", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete company" };
   }
 }

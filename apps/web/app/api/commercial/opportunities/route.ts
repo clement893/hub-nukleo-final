@@ -4,6 +4,8 @@ import {
   getAllOpportunities,
   createOpportunity,
 } from "@nukleo/commercial/services/opportunities";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -25,7 +27,7 @@ export async function GET() {
       })),
     });
   } catch (error) {
-    console.error("Error fetching opportunities:", error);
+    logger.error("Error fetching opportunities", error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { success: false, error: "Failed to fetch opportunities" },
       { status: 500 }
@@ -52,8 +54,7 @@ export async function POST(request: NextRequest) {
 
     const data = validationResult.data;
 
-    // TODO: Get current user ID from auth context
-    const ownerId = "temp-user-id"; // Replace with actual user ID
+    const ownerId = await getCurrentUserId();
 
     const opportunity = await createOpportunity({
       title: data.title,
@@ -89,7 +90,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating opportunity:", error);
+    logger.error("Error creating opportunity", error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
       { success: false, error: "Failed to create opportunity" },
       { status: 500 }

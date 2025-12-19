@@ -9,7 +9,8 @@ import {
   getAllCompanies,
   getAllContacts,
 } from "@nukleo/commercial";
-import { getCurrentUserId } from "../../../lib/auth";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 
 export async function getOpportunitiesAction() {
@@ -30,7 +31,7 @@ export async function getOpportunitiesAction() {
       })),
     };
   } catch (error) {
-    console.error("Error fetching opportunities:", error);
+    logger.error("Error fetching opportunities", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch opportunities" };
   }
 }
@@ -43,7 +44,7 @@ export async function getCompaniesForOpportunitiesAction() {
       data: companies.map((c) => ({ id: c.id, name: c.name })),
     };
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    logger.error("Error fetching companies", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch companies" };
   }
 }
@@ -60,7 +61,7 @@ export async function getContactsForOpportunitiesAction() {
       })),
     };
   } catch (error) {
-    console.error("Error fetching contacts:", error);
+    logger.error("Error fetching contacts", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch contacts" };
   }
 }
@@ -73,7 +74,7 @@ export async function updateOpportunityStageAction(
     await updateOpportunityStage(id, stage);
     return { success: true };
   } catch (error) {
-    console.error("Error updating opportunity stage:", error);
+    logger.error("Error updating opportunity stage", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update opportunity stage" };
   }
 }
@@ -106,7 +107,7 @@ export async function createOpportunityAction(data: {
     revalidatePath("/commercial/opportunities");
     return { success: true, data: opportunity };
   } catch (error) {
-    console.error("Error creating opportunity:", error);
+    logger.error("Error creating opportunity", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to create opportunity" };
   }
 }
@@ -134,7 +135,7 @@ export async function updateOpportunityAction(
     revalidatePath("/commercial/opportunities");
     return { success: true };
   } catch (error) {
-    console.error("Error updating opportunity:", error);
+    logger.error("Error updating opportunity", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update opportunity" };
   }
 }
@@ -145,7 +146,7 @@ export async function deleteOpportunityAction(id: string) {
     revalidatePath("/commercial/opportunities");
     return { success: true };
   } catch (error) {
-    console.error("Error deleting opportunity:", error);
+    logger.error("Error deleting opportunity", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete opportunity" };
   }
 }

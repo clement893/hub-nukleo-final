@@ -7,6 +7,8 @@ import {
   deleteContact,
   getAllCompanies,
 } from "@nukleo/commercial";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function getContactsAction() {
   try {
@@ -24,7 +26,7 @@ export async function getContactsAction() {
       })),
     };
   } catch (error) {
-    console.error("Error fetching contacts:", error);
+    logger.error("Error fetching contacts", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch contacts" };
   }
 }
@@ -37,7 +39,7 @@ export async function getCompaniesAction() {
       data: companies.map((c) => ({ id: c.id, name: c.name })),
     };
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    logger.error("Error fetching companies", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch companies" };
   }
 }
@@ -51,12 +53,11 @@ export async function createContactAction(data: {
   companyId?: string;
 }) {
   try {
-    // TODO: Get current user ID from auth context
-    const ownerId = "temp-user-id";
+    const ownerId = await getCurrentUserId();
     const contact = await createContact({ ...data, ownerId });
     return { success: true, data: contact };
   } catch (error) {
-    console.error("Error creating contact:", error);
+    logger.error("Error creating contact", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to create contact" };
   }
 }
@@ -76,7 +77,7 @@ export async function updateContactAction(
     const contact = await updateContact(id, data);
     return { success: true, data: contact };
   } catch (error) {
-    console.error("Error updating contact:", error);
+    logger.error("Error updating contact", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update contact" };
   }
 }
@@ -86,7 +87,7 @@ export async function deleteContactAction(id: string) {
     await deleteContact(id);
     return { success: true };
   } catch (error) {
-    console.error("Error deleting contact:", error);
+    logger.error("Error deleting contact", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete contact" };
   }
 }

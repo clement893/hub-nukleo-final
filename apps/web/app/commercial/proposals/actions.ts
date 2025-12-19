@@ -12,6 +12,8 @@ import {
   updateProposalSchema,
   updateProposalStatusSchema,
 } from "@nukleo/commercial";
+import { getCurrentUserId } from "@/lib/auth-helpers";
+import { logger } from "@/lib/logger";
 
 export async function getProposalsAction() {
   try {
@@ -21,7 +23,7 @@ export async function getProposalsAction() {
       data: proposals,
     };
   } catch (error) {
-    console.error("Error fetching proposals:", error);
+    logger.error("Error fetching proposals", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch proposals" };
   }
 }
@@ -37,7 +39,7 @@ export async function getProposalAction(id: string) {
       data: proposal,
     };
   } catch (error) {
-    console.error("Error fetching proposal:", error);
+    logger.error("Error fetching proposal", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch proposal" };
   }
 }
@@ -50,7 +52,7 @@ export async function getProposalsByOpportunityAction(opportunityId: string) {
       data: proposals,
     };
   } catch (error) {
-    console.error("Error fetching proposals by opportunity:", error);
+    logger.error("Error fetching proposals by opportunity", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to fetch proposals" };
   }
 }
@@ -67,13 +69,12 @@ export async function createProposalAction(data: unknown) {
       };
     }
 
-    // TODO: Get current user ID from auth context
-    const createdById = "temp-user-id";
+    const createdById = await getCurrentUserId();
 
     const proposal = await createProposal(validationResult.data, createdById);
     return { success: true, data: proposal };
   } catch (error) {
-    console.error("Error creating proposal:", error);
+    logger.error("Error creating proposal", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to create proposal" };
   }
 }
@@ -91,13 +92,12 @@ export async function updateProposalAction(id: string, data: unknown) {
       };
     }
 
-    // TODO: Get current user ID from auth context
-    const createdById = "temp-user-id";
+    const createdById = await getCurrentUserId();
 
     const proposal = await updateProposal(id, validationResult.data, createdById);
     return { success: true, data: proposal };
   } catch (error) {
-    console.error("Error updating proposal:", error);
+    logger.error("Error updating proposal", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update proposal" };
   }
 }
@@ -117,7 +117,7 @@ export async function updateProposalStatusAction(id: string, data: unknown) {
     const proposal = await updateProposalStatus(id, validationResult.data);
     return { success: true, data: proposal };
   } catch (error) {
-    console.error("Error updating proposal status:", error);
+    logger.error("Error updating proposal status", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to update proposal status" };
   }
 }
@@ -127,7 +127,7 @@ export async function deleteProposalAction(id: string) {
     await deleteProposal(id);
     return { success: true };
   } catch (error) {
-    console.error("Error deleting proposal:", error);
+    logger.error("Error deleting proposal", error instanceof Error ? error : new Error(String(error)));
     return { success: false, error: "Failed to delete proposal" };
   }
 }

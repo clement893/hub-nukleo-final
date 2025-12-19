@@ -22,7 +22,7 @@ export default function LoginPage() {
         redirect: true,
       });
     } catch (error) {
-      console.error("Error signing in:", error);
+      // Error is handled by NextAuth redirect
       setIsLoading(false);
     }
   };
