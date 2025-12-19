@@ -10,6 +10,8 @@ import {
   CardContent,
   Button,
   Badge,
+  Input,
+  Select,
 } from "@nukleo/ui";
 import { getProjectsAction, deleteProjectAction } from "./actions";
 import { useToast } from "@/lib/toast";
@@ -51,7 +53,10 @@ const statusLabels: Record<string, string> = {
 export default function ProjectsPage() {
   const router = useRouter();
   const [projects, setProjects] = React.useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = React.useState<Project[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const { addToast } = useToast();
 
   React.useEffect(() => {
@@ -64,6 +69,7 @@ export default function ProjectsPage() {
             budget: project.budget ? Number(project.budget) : null,
           }));
           setProjects(mappedProjects);
+          setFilteredProjects(mappedProjects);
         } else {
           addToast({
             variant: "error",
@@ -84,6 +90,27 @@ export default function ProjectsPage() {
     }
     loadData();
   }, [addToast]);
+
+  React.useEffect(() => {
+    let filtered = projects;
+
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter(
+        (project) =>
+          project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (project.description &&
+            project.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // Filter by status
+    if (statusFilter !== "all") {
+      filtered = filtered.filter((project) => project.status === statusFilter);
+    }
+
+    setFilteredProjects(filtered);
+  }, [projects, searchQuery, statusFilter]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
@@ -120,6 +147,13 @@ export default function ProjectsPage() {
     return <p className="text-gray-500">Chargement...</p>;
   }
 
+  const stats = {
+    total: projects.length,
+    inProgress: projects.filter((p) => p.status === "IN_PROGRESS").length,
+    completed: projects.filter((p) => p.status === "COMPLETED").length,
+    onHold: projects.filter((p) => p.status === "ON_HOLD").length,
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -135,7 +169,65 @@ export default function ProjectsPage() {
         </Button>
       </div>
 
-      {projects.length === 0 ? (
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold">{stats.total}</div>
+            <p className="text-sm text-gray-600">Total projets</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold text-blue-600">{stats.inProgress}</div>
+            <p className="text-sm text-gray-600">En cours</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+            <p className="text-sm text-gray-600">Terminés</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-2xl font-bold text-yellow-600">{stats.onHold}</div>
+            <p className="text-sm text-gray-600">En attente</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex gap-4 flex-wrap">
+            <div className="flex-1 min-w-[200px]">
+              <Input
+                type="text"
+                placeholder="Rechercher un projet..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="w-[200px]">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">Tous les statuts</option>
+                <option value="PLANNING">Planification</option>
+                <option value="IN_PROGRESS">En cours</option>
+                <option value="ON_HOLD">En attente</option>
+                <option value="COMPLETED">Terminé</option>
+                <option value="CANCELLED">Annulé</option>
+              </select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {filteredProjects.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
             <p className="text-gray-500 mb-4">Aucun projet pour le moment</p>
@@ -149,7 +241,7 @@ export default function ProjectsPage() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <Card key={project.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">

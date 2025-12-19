@@ -16,6 +16,7 @@ import {
   createTimeEntry,
   updateTimeEntry,
   deleteTimeEntry,
+  getAllUsers,
   projectSchema,
   updateProjectSchema,
   taskSchema,
@@ -256,6 +257,21 @@ export async function deleteTimeEntryAction(id: string) {
   } catch (error) {
     console.error("Error deleting time entry:", error);
     return { success: false, error: "Failed to delete time entry" };
+  }
+}
+
+// ==================== USER ACTIONS ====================
+
+export async function getUsersAction() {
+  try {
+    const users = await getAllUsers();
+    return {
+      success: true,
+      data: users,
+    };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return { success: false, error: "Failed to fetch users" };
   }
 }
 

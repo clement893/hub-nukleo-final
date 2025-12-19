@@ -3,6 +3,25 @@
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import {
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -49,6 +68,8 @@ const priorityLabels: Record<string, string> = {
   URGENT: "Urgente",
 };
 
+const statusOrder = ["TODO", "IN_PROGRESS", "REVIEW", "DONE"];
+
 type Task = {
   id: string;
   title: string;
@@ -63,7 +84,92 @@ type Task = {
   } | null;
 };
 
-const statusOrder = ["TODO", "IN_PROGRESS", "REVIEW", "DONE"];
+function SortableTaskCard({
+  task,
+  onEdit,
+  onDelete,
+  onStatusChange,
+}: {
+  task: Task;
+  onEdit: (task: Task) => void;
+  onDelete: (taskId: string) => void;
+  onStatusChange: (taskId: string, newStatus: string) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="p-3 border rounded-md bg-white hover:shadow-md transition-shadow cursor-move"
+      onClick={() => onEdit(task)}
+    >
+      <div className="flex justify-between items-start mb-2">
+        <h4 className="font-medium text-sm">{task.title}</h4>
+        <Badge className={priorityColors[task.priority] || "bg-gray-100"}>
+          {priorityLabels[task.priority] || task.priority}
+        </Badge>
+      </div>
+      {task.description && (
+        <p className="text-xs text-gray-500 mb-2 line-clamp-2">
+          {task.description}
+        </p>
+      )}
+      {task.assignee && (
+        <p className="text-xs text-gray-500 mb-2">
+          👤 {task.assignee.name}
+        </p>
+      )}
+      {task.dueDate && (
+        <p className="text-xs text-gray-500">
+          📅 {new Date(task.dueDate).toLocaleDateString("fr-FR")}
+        </p>
+      )}
+      <div className="flex gap-2 mt-2">
+        {statusOrder.map((s) => (
+          <button
+            key={s}
+            onClick={(e) => {
+              e.stopPropagation();
+              onStatusChange(task.id, s);
+            }}
+            className={`text-xs px-2 py-1 rounded ${
+              task.status === s
+                ? "bg-blue-100 text-blue-800"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            {statusLabels[s].charAt(0)}
+          </button>
+        ))}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(task.id);
+          }}
+          className="text-xs px-2 py-1 rounded bg-red-100 text-red-600 hover:bg-red-200 ml-auto"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function ProjectTasksPage() {
   const params = useParams();
@@ -75,6 +181,13 @@ export default function ProjectTasksPage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isTaskModalOpen, setIsTaskModalOpen] = React.useState(false);
   const [editingTask, setEditingTask] = React.useState<Task | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   React.useEffect(() => {
     async function loadData() {
@@ -174,6 +287,24 @@ export default function ProjectTasksPage() {
     }
   };
 
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    // Find the task being dragged
+    const draggedTask = tasks.find((t) => t.id === active.id);
+    if (!draggedTask) return;
+
+    // Find the target status (column)
+    const targetStatus = over.id as string;
+    if (statusOrder.includes(targetStatus)) {
+      await handleStatusChange(draggedTask.id, targetStatus);
+    }
+  };
+
   const getTasksByStatus = (status: string) => {
     return tasks.filter((task) => task.status === status);
   };
@@ -183,126 +314,93 @@ export default function ProjectTasksPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Tâches - {project?.name || "Projet"}
-          </h1>
-          <p className="text-gray-600 mt-2">Gérez les tâches du projet</p>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Tâches - {project?.name || "Projet"}
+            </h1>
+            <p className="text-gray-600 mt-2">Gérez les tâches du projet</p>
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={() => router.push(`/projects/${projectId}`)} variant="outline">
+              Retour au projet
+            </Button>
+            <Button onClick={() => router.push(`/projects/${projectId}/gantt`)} variant="outline">
+              Vue Gantt
+            </Button>
+            <Button onClick={handleCreateTask} variant="primary">
+              + Nouvelle tâche
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => router.push(`/projects/${projectId}`)} variant="outline">
-            Retour au projet
-          </Button>
-          <Button onClick={handleCreateTask} variant="primary">
-            + Nouvelle tâche
-          </Button>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statusOrder.map((status) => {
-          const statusTasks = getTasksByStatus(status);
-          return (
-            <Card key={status} className="min-h-[400px]">
-              <CardHeader>
-                <CardTitle className="text-lg flex justify-between items-center">
-                  <span>{statusLabels[status]}</span>
-                  <Badge className={statusColors[status]}>
-                    {statusTasks.length}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {statusTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className="p-3 border rounded-md bg-white hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => handleEditTask(task)}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {statusOrder.map((status) => {
+            const statusTasks = getTasksByStatus(status);
+            return (
+              <Card key={status} className="min-h-[400px]">
+                <CardHeader>
+                  <CardTitle className="text-lg flex justify-between items-center">
+                    <span>{statusLabels[status]}</span>
+                    <Badge className={statusColors[status]}>
+                      {statusTasks.length}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <SortableContext
+                    items={statusTasks.map((t) => t.id)}
+                    strategy={verticalListSortingStrategy}
+                    id={status}
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-sm">{task.title}</h4>
-                      <Badge className={priorityColors[task.priority] || "bg-gray-100"}>
-                        {priorityLabels[task.priority] || task.priority}
-                      </Badge>
-                    </div>
-                    {task.description && (
-                      <p className="text-xs text-gray-500 mb-2 line-clamp-2">
-                        {task.description}
-                      </p>
-                    )}
-                    {task.assignee && (
-                      <p className="text-xs text-gray-500 mb-2">
-                        👤 {task.assignee.name}
-                      </p>
-                    )}
-                    {task.dueDate && (
-                      <p className="text-xs text-gray-500">
-                        📅 {new Date(task.dueDate).toLocaleDateString("fr-FR")}
-                      </p>
-                    )}
-                    <div className="flex gap-2 mt-2">
-                      {statusOrder.map((s) => (
-                        <button
-                          key={s}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleStatusChange(task.id, s);
-                          }}
-                          className={`text-xs px-2 py-1 rounded ${
-                            task.status === s
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
-                        >
-                          {statusLabels[s].charAt(0)}
-                        </button>
-                      ))}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteTask(task.id);
-                        }}
-                        className="text-xs px-2 py-1 rounded bg-red-100 text-red-600 hover:bg-red-200 ml-auto"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                {statusTasks.length === 0 && (
-                  <p className="text-sm text-gray-400 text-center py-8">
-                    Aucune tâche
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                    {statusTasks.map((task) => (
+                      <SortableTaskCard
+                        key={task.id}
+                        task={task}
+                        onEdit={handleEditTask}
+                        onDelete={handleDeleteTask}
+                        onStatusChange={handleStatusChange}
+                      />
+                    ))}
+                  </SortableContext>
+                  {statusTasks.length === 0 && (
+                    <p className="text-sm text-gray-400 text-center py-8">
+                      Aucune tâche
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-      {isTaskModalOpen && (
-        <Modal
-          isOpen={isTaskModalOpen}
-          onClose={() => {
-            setIsTaskModalOpen(false);
-            setEditingTask(null);
-          }}
-          title={editingTask ? "Modifier la tâche" : "Nouvelle tâche"}
-        >
-          <TaskForm
-            projectId={projectId}
-            task={editingTask || undefined}
-            onSave={handleTaskSaved}
-            onCancel={() => {
+        {isTaskModalOpen && (
+          <Modal
+            isOpen={isTaskModalOpen}
+            onClose={() => {
               setIsTaskModalOpen(false);
               setEditingTask(null);
             }}
-          />
-        </Modal>
-      )}
-    </div>
+            title={editingTask ? "Modifier la tâche" : "Nouvelle tâche"}
+          >
+            <TaskForm
+              projectId={projectId}
+              task={editingTask || undefined}
+              onSave={handleTaskSaved}
+              onCancel={() => {
+                setIsTaskModalOpen(false);
+                setEditingTask(null);
+              }}
+            />
+          </Modal>
+        )}
+      </div>
+    </DndContext>
   );
 }
-

@@ -10,9 +10,11 @@ import {
   CardContent,
   Button,
   Badge,
+  Modal,
 } from "@nukleo/ui";
-import { getProjectAction } from "../actions";
+import { getProjectAction, getTasksAction } from "../actions";
 import { useToast } from "@/lib/toast";
+import { TimeEntryForm } from "@/components/projects/TimeEntryForm";
 
 const statusColors: Record<string, string> = {
   PLANNING: "bg-gray-100 text-gray-800",
@@ -36,25 +38,36 @@ export default function ProjectDetailPage() {
   const projectId = params.id as string;
   const { addToast } = useToast();
   const [project, setProject] = React.useState<any>(null);
+  const [tasks, setTasks] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isTimeEntryModalOpen, setIsTimeEntryModalOpen] = React.useState(false);
+  const [selectedTaskId, setSelectedTaskId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     async function loadProject() {
       try {
-        const result = await getProjectAction(projectId);
-        if (result.success && result.data) {
+        const [projectResult, tasksResult] = await Promise.all([
+          getProjectAction(projectId),
+          getTasksAction(projectId),
+        ]);
+
+        if (projectResult.success && projectResult.data) {
           const mappedProject = {
-            ...result.data,
-            budget: result.data.budget ? Number(result.data.budget) : null,
+            ...projectResult.data,
+            budget: projectResult.data.budget ? Number(projectResult.data.budget) : null,
           };
           setProject(mappedProject);
         } else {
           addToast({
             variant: "error",
             title: "Erreur",
-            description: result.error || "Impossible de charger le projet",
+            description: projectResult.error || "Impossible de charger le projet",
           });
           router.push("/projects");
+        }
+
+        if (tasksResult.success && tasksResult.data) {
+          setTasks(tasksResult.data);
         }
       } catch (error) {
         console.error("Error loading project:", error);
@@ -186,40 +199,102 @@ export default function ProjectDetailPage() {
       <Card>
         <CardHeader className="flex justify-between items-center">
           <CardTitle>Tâches récentes</CardTitle>
-          <Button
-            onClick={() => router.push(`/projects/${projectId}/tasks`)}
-            variant="outline"
-          >
-            Voir toutes les tâches
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => router.push(`/projects/${projectId}/gantt`)}
+              variant="outline"
+            >
+              Vue Gantt
+            </Button>
+            <Button
+              onClick={() => router.push(`/projects/${projectId}/tasks`)}
+              variant="outline"
+            >
+              Voir toutes les tâches
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          {project.tasks && project.tasks.length > 0 ? (
+          {tasks && tasks.length > 0 ? (
             <div className="space-y-2">
-              {project.tasks.slice(0, 5).map((task: any) => (
-                <div
-                  key={task.id}
-                  className="flex justify-between items-center p-3 border rounded-md"
-                >
-                  <div>
-                    <p className="font-medium">{task.title}</p>
-                    {task.assignee && (
-                      <p className="text-sm text-gray-500">
-                        Assigné à: {task.assignee.name}
-                      </p>
-                    )}
+              {tasks.slice(0, 5).map((task: any) => {
+                const totalHours = task.timeEntries?.reduce(
+                  (sum: number, te: any) => sum + Number(te.hours || 0),
+                  0
+                ) || 0;
+                return (
+                  <div
+                    key={task.id}
+                    className="flex justify-between items-center p-3 border rounded-md hover:bg-gray-50"
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium">{task.title}</p>
+                      <div className="flex gap-4 mt-1">
+                        {task.assignee && (
+                          <p className="text-sm text-gray-500">
+                            👤 {task.assignee.name}
+                          </p>
+                        )}
+                        {totalHours > 0 && (
+                          <p className="text-sm text-gray-500">
+                            ⏱️ {totalHours}h
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge className={statusColors[task.status] || "bg-gray-100 text-gray-800"}>
+                        {task.status}
+                      </Badge>
+                      <Button
+                        onClick={() => {
+                          setSelectedTaskId(task.id);
+                          setIsTimeEntryModalOpen(true);
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="text-blue-600"
+                      >
+                        + Temps
+                      </Button>
+                    </div>
                   </div>
-                  <Badge className={statusColors[task.status] || "bg-gray-100 text-gray-800"}>
-                    {task.status}
-                  </Badge>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <p className="text-gray-500">Aucune tâche pour le moment</p>
           )}
         </CardContent>
       </Card>
+
+      {isTimeEntryModalOpen && selectedTaskId && (
+        <Modal
+          isOpen={isTimeEntryModalOpen}
+          onClose={() => {
+            setIsTimeEntryModalOpen(false);
+            setSelectedTaskId(null);
+          }}
+          title="Saisir du temps"
+        >
+          <TimeEntryForm
+            taskId={selectedTaskId}
+            onSave={async () => {
+              setIsTimeEntryModalOpen(false);
+              setSelectedTaskId(null);
+              // Reload tasks
+              const result = await getTasksAction(projectId);
+              if (result.success && result.data) {
+                setTasks(result.data);
+              }
+            }}
+            onCancel={() => {
+              setIsTimeEntryModalOpen(false);
+              setSelectedTaskId(null);
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

@@ -8,6 +8,21 @@ import type {
   UpdateTimeEntryData,
 } from "../schemas/project";
 
+// ==================== USERS ====================
+
+export async function getAllUsers() {
+  return prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+}
+
 // ==================== PROJECTS ====================
 
 export async function getAllProjects(userId?: string) {

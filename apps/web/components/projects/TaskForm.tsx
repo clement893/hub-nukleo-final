@@ -16,6 +16,7 @@ import {
 import {
   createTaskAction,
   updateTaskAction,
+  getUsersAction,
 } from "@/app/projects/actions";
 import { useToast } from "@/lib/toast";
 
@@ -39,6 +40,17 @@ type TaskFormProps = {
 export function TaskForm({ projectId, task, onSave, onCancel }: TaskFormProps) {
   const { addToast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [users, setUsers] = React.useState<Array<{ id: string; name: string; email: string }>>([]);
+
+  React.useEffect(() => {
+    async function loadUsers() {
+      const result = await getUsersAction();
+      if (result.success && result.data) {
+        setUsers(result.data);
+      }
+    }
+    loadUsers();
+  }, []);
 
   const {
     register,
@@ -157,14 +169,32 @@ export function TaskForm({ projectId, task, onSave, onCancel }: TaskFormProps) {
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Date d'échéance
-        </label>
-        <Input
-          type="date"
-          {...register("dueDate", { valueAsDate: true })}
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Date d'échéance
+          </label>
+          <Input
+            type="date"
+            {...register("dueDate", { valueAsDate: true })}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Assigné à
+          </label>
+          <Select
+            {...register("assigneeId")}
+            options={[
+              { value: "", label: "Non assigné" },
+              ...users.map((user) => ({
+                value: user.id,
+                label: user.name || user.email,
+              })),
+            ]}
+          />
+        </div>
       </div>
 
       <div className="flex justify-end gap-2 pt-4">
