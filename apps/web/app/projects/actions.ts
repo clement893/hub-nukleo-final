@@ -155,7 +155,7 @@ export async function createTaskAction(data: unknown) {
 
 export async function updateTaskAction(id: string, data: unknown) {
   try {
-    const validatedData = updateTaskSchema.parse({ ...data, id });
+    const validatedData = updateTaskSchema.parse({ ...(data as Record<string, unknown>), id });
     const task = await updateTask(id, validatedData);
     return {
       success: true,
