@@ -23,7 +23,7 @@ export async function getAllOpportunitiesAction() {
     logger.error("Error fetching opportunities", error instanceof Error ? error : new Error(String(error)));
     return {
       success: false,
-      error: "Impossible de charger les opportunitÃƒÆ’Ã‚Â©s",
+      error: "Impossible de charger les opportunités",
       data: [],
     };
   }
@@ -32,14 +32,7 @@ export async function getAllOpportunitiesAction() {
 export async function createProposalAction(data: ProposalFormData) {
   try {
     const userId = await getCurrentUserId();
-    if (!session?.user || !(session.user as any).id) {
-      return {
-        success: false,
-        error: "Vous devez ÃƒÆ’Ã‚Âªtre connectÃƒÆ’Ã‚Â© pour crÃƒÆ’Ã‚Â©er une soumission",
-      };
-    }
-
-    const proposal = await createProposal(data, (session.user as any).id);
+    const proposal = await createProposal(data, userId);
 
     revalidatePath("/commercial/proposals");
     
@@ -54,7 +47,7 @@ export async function createProposalAction(data: ProposalFormData) {
       error:
         error instanceof Error
           ? error.message
-          : "Impossible de crÃƒÆ’Ã‚Â©er la soumission",
+          : "Impossible de créer la soumission",
     };
   }
 }
