@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ToastProvider } from "@/lib/toast";
+import { SessionProvider } from "./components/SessionProvider";
+import { SessionManager } from "./components/SessionManager";
 
 export const metadata: Metadata = {
   title: "Hub Nukleo",
@@ -16,9 +18,14 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <SessionManager />
+              {children}
+            </ToastProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
