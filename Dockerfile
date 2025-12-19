@@ -37,10 +37,9 @@ RUN pnpm db:generate || echo "Prisma client generation skipped (DATABASE_URL may
 # This will be executed at container startup, not during build
 WORKDIR /app/apps/web
 
-# Build the web app (using webpack for Sentry compatibility)
+# Build the web app
+# Note: Sentry is disabled during build (Turbopack compatibility) but works at runtime
 WORKDIR /app/apps/web
-# Force webpack instead of Turbopack for Sentry compatibility
-ENV NEXT_PRIVATE_SKIP_TURBO=1
 RUN pnpm build
 
 # Make scripts executable

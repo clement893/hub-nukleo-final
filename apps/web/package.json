@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "NEXT_PRIVATE_SKIP_TURBO=1 next build",
+    "build": "next build",
     "start": "sh scripts/run-migrations.sh && sh scripts/start-server.sh",
     "start:next": "next start",
     "lint": "next lint",
