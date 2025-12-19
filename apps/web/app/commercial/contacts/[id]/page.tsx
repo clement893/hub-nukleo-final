@@ -49,6 +49,7 @@ export default async function ContactDetailPage({
         email: contact.email,
         phone: contact.phone,
         position: contact.position,
+        photoKey: contact.photoKey,
         company: contact.company,
         opportunities: contact.opportunities.map((opp) => ({
           id: opp.id,

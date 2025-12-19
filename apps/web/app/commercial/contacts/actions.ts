@@ -22,6 +22,7 @@ export async function getContactsAction() {
         email: contact.email,
         phone: contact.phone,
         position: contact.position,
+        photoKey: contact.photoKey,
         company: contact.company,
       })),
     };

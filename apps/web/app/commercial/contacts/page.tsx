@@ -41,6 +41,7 @@ import {
 import { useToast } from "../../../lib/toast";
 import { exportToCSV, exportToPDF } from "../../../lib/export";
 import { calculateContactStats, type Contact } from "../../../lib/stats";
+import { ContactAvatar } from "../../../components/ContactAvatar";
 
 export default function ContactsPage() {
   const [contacts, setContacts] = React.useState<Contact[]>([]);
@@ -580,8 +581,11 @@ export default function ContactsPage() {
                     <TableRow key={contact.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <Avatar
-                            fallback={`${contact.firstName[0]}${contact.lastName[0]}`}
+                          <ContactAvatar
+                            firstName={contact.firstName}
+                            lastName={contact.lastName}
+                            photoKey={(contact as any).photoKey}
+                            size="md"
                           />
                           <div>
                             <div className="font-medium">

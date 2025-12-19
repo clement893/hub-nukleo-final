@@ -7,7 +7,6 @@ import {
   CardTitle,
   CardContent,
   Button,
-  Avatar,
 } from "@nukleo/ui";
 import Link from "next/link";
 import {
@@ -19,6 +18,7 @@ import {
   deleteContactAction,
 } from "../actions";
 import { useRouter } from "next/navigation";
+import { ContactAvatar } from "../../../../components/ContactAvatar";
 
 interface ContactDetailClientProps {
   contact: {
@@ -28,6 +28,7 @@ interface ContactDetailClientProps {
     email?: string | null;
     phone?: string | null;
     position?: string | null;
+    photoKey?: string | null;
     company?: { id: string; name: string } | null;
     opportunities: Array<{
       id: string;
@@ -111,9 +112,11 @@ export function ContactDetailClient({
             <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  <Avatar
+                  <ContactAvatar
+                    firstName={contact.firstName}
+                    lastName={contact.lastName}
+                    photoKey={contact.photoKey}
                     size="lg"
-                    fallback={`${contact.firstName[0]}${contact.lastName[0]}`}
                   />
                   <div>
                     <CardTitle className="text-gray-900 dark:text-white">

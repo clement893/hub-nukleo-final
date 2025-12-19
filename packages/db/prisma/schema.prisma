@@ -148,6 +148,7 @@ model Contact {
   email     String?
   phone     String?
   position  String?
+  photoKey  String?     // S3 key for contact photo
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 

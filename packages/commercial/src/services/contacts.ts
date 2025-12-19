@@ -32,6 +32,7 @@ export async function getAllContacts() {
       email: true,
       phone: true,
       position: true,
+      photoKey: true,
       createdAt: true,
       updatedAt: true,
       company: {
