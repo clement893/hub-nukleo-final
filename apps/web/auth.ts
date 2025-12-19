@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@nukleo/db";
 import Google from "next-auth/providers/google";
 import type { NextAuthConfig } from "next-auth";
+import type { Session } from "next-auth";
 
 export const authConfig: NextAuthConfig = {
   providers: [
@@ -33,4 +34,6 @@ export const authConfig: NextAuthConfig = {
   },
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+const nextAuth = NextAuth(authConfig);
+export const { handlers, signIn, signOut } = nextAuth;
+export const auth: (typeof nextAuth)['auth'] = nextAuth.auth;
