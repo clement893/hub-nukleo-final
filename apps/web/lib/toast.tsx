@@ -56,7 +56,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
 export function useToast() {
   const context = React.useContext(ToastContext);
+  // During SSR or if ToastProvider is not available, return a no-op implementation
   if (!context) {
+    if (typeof window === "undefined") {
+      // SSR: return no-op functions
+      return {
+        toasts: [],
+        addToast: () => {},
+        removeToast: () => {},
+      };
+    }
+    // Client-side but no provider: throw error
     throw new Error("useToast must be used within ToastProvider");
   }
   return context;
