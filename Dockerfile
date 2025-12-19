@@ -1,7 +1,13 @@
 FROM node:20-alpine
 
-# Install OpenSSL and libc6-compat for Prisma
-RUN apk add --no-cache openssl libc6-compat
+# Install dependencies for Prisma and native modules
+RUN apk add --no-cache \
+    openssl \
+    libc6-compat \
+    python3 \
+    make \
+    g++ \
+    && ln -sf python3 /usr/bin/python
 
 # Enable corepack for pnpm and install specific version
 RUN corepack enable && corepack prepare pnpm@8.15.0 --activate
