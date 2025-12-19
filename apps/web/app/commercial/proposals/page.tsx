@@ -67,7 +67,12 @@ export default function ProposalsPage() {
       try {
         const result = await getProposalsAction();
         if (result.success && result.data) {
-          setProposals(result.data);
+          // Convert Decimal values to numbers
+          const mappedProposals = result.data.map((proposal: any) => ({
+            ...proposal,
+            totalAmount: proposal.totalAmount ? Number(proposal.totalAmount) : null,
+          }));
+          setProposals(mappedProposals);
         } else {
           addToast({
             variant: "error",
