@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nukleo/commercial": "workspace:*",
     "@nukleo/db": "workspace:*",
     "@nukleo/ui": "workspace:*",
     "react": "^19.2.0",
