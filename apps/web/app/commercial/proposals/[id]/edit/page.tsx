@@ -138,8 +138,6 @@ export default function EditProposalPage() {
     loadData();
   }, [proposalId, router, addToast, reset]);
 
-  const watchedProcesses = watch("processes");
-
   // Calculate total amount
   React.useEffect(() => {
     const total = watchedSections.reduce((sum, section) => {
