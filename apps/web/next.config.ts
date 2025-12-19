@@ -31,11 +31,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@nukleo/ui", "@nukleo/db"],
   },
-  
-  // Server configuration
-  serverRuntimeConfig: {
-    // Allow Railway to set PORT dynamically
-  },
 };
 
 export default withBundleAnalyzer(nextConfig);
