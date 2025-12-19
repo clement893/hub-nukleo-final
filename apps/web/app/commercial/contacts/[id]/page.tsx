@@ -9,7 +9,7 @@ interface ContactDetailPageProps {
 
 export default function ContactDetailPage({ params }: ContactDetailPageProps) {
   // TODO: Fetch contact data using params.id
-  void params.id; // Will be used when implementing data fetching
+  void params; // Will be used when implementing data fetching
   const contact = null;
 
   if (!contact) {
