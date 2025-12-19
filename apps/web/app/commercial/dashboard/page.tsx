@@ -1,91 +1,66 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@nukleo/ui";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@nukleo/ui";
+import {
+  getOpportunitiesStats,
+  getRecentOpportunities,
+  getContactsStats,
+  getCompaniesStats,
+  getRecentContacts,
+  getRecentCompanies,
+} from "@nukleo/commercial";
+import { DashboardKPIs } from "./components/DashboardKPIs";
+import { PipelineChart } from "./components/PipelineChart";
+import { RecentActivity } from "./components/RecentActivity";
 
-export default function CommercialDashboard() {
+export default async function CommercialDashboard() {
+  const [
+    opportunitiesStats,
+    contactsCount,
+    companiesCount,
+    recentOpportunities,
+    recentContacts,
+    recentCompanies,
+  ] = await Promise.all([
+    getOpportunitiesStats(),
+    getContactsStats(),
+    getCompaniesStats(),
+    getRecentOpportunities(5),
+    getRecentContacts(5),
+    getRecentCompanies(5),
+  ]);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Tableau de bord Commercial</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Tableau de bord Commercial
+        </h1>
         <p className="text-gray-600 mt-2">
           Vue d'ensemble de votre activité commerciale
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Opportunités totales
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">0</div>
-            <p className="text-sm text-gray-500 mt-1">En cours</p>
-          </CardContent>
-        </Card>
+      <DashboardKPIs
+        totalOpportunities={opportunitiesStats.totalOpportunities}
+        conversionRate={opportunitiesStats.conversionRate}
+        totalRevenue={opportunitiesStats.totalRevenue}
+        contactsCount={contactsCount}
+        companiesCount={companiesCount}
+      />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-gray-5">
-              Valeur totale
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">0 €</div>
-            <p className="text-sm text-gray-500 mt-1">Pipeline</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Contacts
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">0</div>
-            <p className="text-sm text-gray-500 mt-1">Actifs</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-gray-500">
-              Entreprises
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">0</div>
-            <p className="text-sm text-gray-500 mt-1">En base</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Opportunités récentes</CardTitle>
-            <CardDescription>
-              Dernières opportunités créées
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500 text-sm">Aucune opportunité pour le moment</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Activité récente</CardTitle>
-            <CardDescription>
-              Dernières actions sur les contacts et entreprises
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-500 text-sm">Aucune activité récente</p>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <PipelineChart pipelineByStage={opportunitiesStats.pipelineByStage} />
+        <RecentActivity
+          opportunities={recentOpportunities}
+          contacts={recentContacts}
+          companies={recentCompanies}
+        />
       </div>
     </div>
   );
 }
-
