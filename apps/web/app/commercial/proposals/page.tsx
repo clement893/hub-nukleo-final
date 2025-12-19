@@ -41,11 +41,11 @@ type Proposal = {
 };
 
 const statusColors: Record<string, string> = {
-  DRAFT: "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
-  SUBMITTED: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
-  ACCEPTED: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300",
-  REJECTED: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
-  REVISED: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300",
+  DRAFT: "bg-gray-100 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600",
+  SUBMITTED: "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700/50 shadow-sm",
+  ACCEPTED: "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700/50 shadow-sm",
+  REJECTED: "bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700/50 shadow-sm",
+  REVISED: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700/50 shadow-sm",
 };
 
 const statusLabels: Record<string, string> = {
@@ -140,19 +140,26 @@ export default function ProposalsPage() {
 
   return (
     <>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8 flex justify-between items-center animate-fade-in">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Soumissions</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+            Soumissions
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
             Gérez vos soumissions commerciales ({proposals.length} soumission{proposals.length > 1 ? "s" : ""})
           </p>
         </div>
-        <Link href="/commercial/proposals/new">
-          <Button variant="primary">Nouvelle soumission</Button>
+        <Link href="/commercial/proposals/new" className="hover-lift">
+          <Button variant="primary" className="shadow-lg hover:shadow-xl transition-all duration-200">
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Nouvelle soumission
+          </Button>
         </Link>
       </div>
 
-      <Card>
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle>Liste des soumissions</CardTitle>
         </CardHeader>
@@ -179,13 +186,13 @@ export default function ProposalsPage() {
               </TableHeader>
               <TableBody>
                 {proposals.map((proposal) => (
-                  <TableRow key={proposal.id}>
+                  <TableRow key={proposal.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors duration-150 animate-slide-in">
                     <TableCell>
                       <Link
                         href={`/commercial/proposals/${proposal.id}`}
-                        className="font-medium text-blue-600 dark:text-blue-400 hover:underline transition-colors"
+                        className="font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-all duration-200 flex items-center group"
                       >
-                        {proposal.title}
+                        <span className="group-hover:translate-x-1 transition-transform duration-200">{proposal.title}</span>
                       </Link>
                     </TableCell>
                     <TableCell>
@@ -209,7 +216,7 @@ export default function ProposalsPage() {
                     </TableCell>
                     <TableCell>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
                           statusColors[proposal.status] || statusColors.DRAFT
                         }`}
                       >
@@ -257,10 +264,10 @@ export default function ProposalsPage() {
 
       {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md bg-white dark:bg-gray-800">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <Card className="w-full max-w-md glass card-shadow-hover animate-fade-in">
             <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-white">Confirmer la suppression</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white text-xl font-bold">Confirmer la suppression</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
