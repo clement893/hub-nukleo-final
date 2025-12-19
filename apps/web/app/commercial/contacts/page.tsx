@@ -137,6 +137,18 @@ export default function ContactsPage() {
     });
   }, [contacts, searchTerm, filterCompany, filterPosition, hasEmail, hasPhone]);
 
+  // Pagination
+  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
+  const paginatedContacts = React.useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredContacts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredContacts, currentPage, itemsPerPage]);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterCompany, filterPosition, hasEmail, hasPhone]);
+
   // Get unique positions for filter
   const uniquePositions = React.useMemo(() => {
     const positions = new Set<string>();
