@@ -8,12 +8,12 @@
   ],
   "dependencies": {
     "@next/eslint-plugin-next": "^16.0.0",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-config-next": "^16.0.0",
     "eslint-config-prettier": "^9.1.0"
   },
   "peerDependencies": {
-    "eslint": "^8.0.0 || ^9.0.0"
+    "eslint": "^9.0.0"
   }
 }
 
