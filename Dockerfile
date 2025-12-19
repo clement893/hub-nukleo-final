@@ -8,10 +8,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# Copy workspace configuration files
+# Copy workspace configuration files first
 COPY package.json pnpm-workspace.yaml turbo.json ./
+
+# Copy all packages
 COPY packages ./packages
-COPY apps/web ./apps/web
+
+# Copy all apps
+COPY apps ./apps
 
 # Install dependencies from root
 # Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
