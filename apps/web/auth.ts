@@ -18,10 +18,8 @@ declare module "next-auth" {
       role?: Role;
     } & DefaultSession["user"];
   }
-}
-
-// JWT types are now part of the main next-auth module in v5
-declare module "next-auth" {
+  
+  // JWT types are part of the main next-auth module in v5
   interface JWT {
     id?: string;
     role?: Role;
