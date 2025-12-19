@@ -1,9 +1,15 @@
 #!/bin/sh
 
-# Script to start Next.js server with proper PORT handling
-# Railway sets PORT environment variable dynamically
+# Script to start the Next.js server
+# Railway will provide the PORT environment variable
 
-echo "🚀 Starting Next.js server on port ${PORT:-3000}..."
+echo "🚀 Starting Next.js server..."
 
-# Next.js automatically uses PORT env var, but we can be explicit
-exec next start -p ${PORT:-3000}
+# Use PORT from environment or default to 3000
+PORT=${PORT:-3000}
+
+echo "📡 Server will listen on port $PORT"
+
+# Start Next.js server
+# Next.js automatically uses PORT environment variable
+exec next start -p $PORT
