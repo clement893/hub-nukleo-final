@@ -454,7 +454,6 @@ function SectionForm({
                   sectionIndex={sectionIndex}
                   itemIndex={itemIndex}
                   register={register}
-                  control={control}
                   errors={errors}
                   watch={watch}
                   onRemove={() => removeItem(itemIndex)}
@@ -473,7 +472,6 @@ function ItemForm({
   sectionIndex,
   itemIndex,
   register,
-  control,
   errors,
   watch,
   onRemove,
@@ -481,7 +479,6 @@ function ItemForm({
   sectionIndex: number;
   itemIndex: number;
   register: any;
-  control: any;
   errors: any;
   watch: any;
   onRemove: () => void;
