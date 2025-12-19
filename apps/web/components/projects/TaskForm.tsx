@@ -40,7 +40,7 @@ type TaskFormProps = {
 export function TaskForm({ projectId, task, onSave, onCancel }: TaskFormProps) {
   const { addToast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [users, setUsers] = React.useState<Array<{ id: string; name: string; email: string }>>([]);
+  const [users, setUsers] = React.useState<Array<{ id: string; name: string | null; email: string }>>([]);
 
   React.useEffect(() => {
     async function loadUsers() {
