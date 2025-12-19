@@ -172,7 +172,7 @@ export async function createProposal(data: ProposalFormData, createdById: string
   });
 }
 
-export async function updateProposal(id: string, data: UpdateProposalData, createdById: string) {
+export async function updateProposal(id: string, data: UpdateProposalData, _createdById: string) {
   // Calculate total amount if sections are provided
   let totalAmount = data.totalAmount;
   if (data.sections && data.sections.length > 0) {
