@@ -87,7 +87,7 @@ export default function NewProposalPage() {
         addToast({
           variant: "error",
           title: "Erreur",
-          description: "Impossible de charger les opportunitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©s",
+          description: "Impossible de charger les opportunitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©s",
         });
       } finally {
         setIsLoading(false);
@@ -124,15 +124,15 @@ export default function NewProposalPage() {
       if (result.success && result.data) {
         addToast({
           variant: "success",
-          title: "SuccÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨s",
-          description: "La soumission a ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©e avec succÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¨s",
+          title: "SuccÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨s",
+          description: "La soumission a ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©tÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© crÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©e avec succÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨s",
         });
         router.push(`/commercial/proposals/${result.data.id}`);
       } else {
         addToast({
           variant: "error",
           title: "Erreur",
-          description: result.error || "Impossible de crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©er la soumission",
+          description: result.error || "Impossible de crÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©er la soumission",
         });
       }
     } catch (error) {
@@ -140,7 +140,7 @@ export default function NewProposalPage() {
       addToast({
         variant: "error",
         title: "Erreur",
-        description: "Une erreur est survenue lors de la crÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation",
+        description: "Une erreur est survenue lors de la crÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ation",
       });
     } finally {
       setIsSubmitting(false);
@@ -156,7 +156,7 @@ export default function NewProposalPage() {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Nouvelle soumission</h1>
-          <p className="text-gray-600 mt-2">CrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ez une nouvelle soumission commerciale</p>
+          <p className="text-gray-600 mt-2">CrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ez une nouvelle soumission commerciale</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -167,7 +167,7 @@ export default function NewProposalPage() {
             Annuler
           </Button>
           <Button type="submit" variant="primary" disabled={isSubmitting}>
-            {isSubmitting ? "CrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation..." : "CrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©er la soumission"}
+            {isSubmitting ? "CrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ation..." : "CrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©er la soumission"}
           </Button>
         </div>
       </div>
@@ -175,14 +175,14 @@ export default function NewProposalPage() {
       {/* Basic Information */}
       <Card>
         <CardHeader>
-          <CardTitle>Informations gÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©rales</CardTitle>
+          <CardTitle>Informations gÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©rales</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
             <Select
               {...register("opportunityId")}
               error={errors.opportunityId?.message}
-              placeholder="SÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©lectionner une opportunitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©"
+              placeholder="SÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©lectionner une opportunitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©"
               options={opportunities.map((opp) => ({
                 value: opp.id,
                 label: `${opp.title}${opp.company ? ` - ${opp.company.name}` : ""}`,
@@ -232,7 +232,7 @@ export default function NewProposalPage() {
                 type="number"
                 step="0.01"
                 {...register("totalAmount", { valueAsNumber: true })}
-                placeholder="CalculÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© automatiquement"
+                placeholder="CalculÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© automatiquement"
                 readOnly
               />
             </div>
@@ -295,7 +295,7 @@ export default function NewProposalPage() {
       {/* Processes */}
       <Card>
         <CardHeader className="flex justify-between items-center">
-          <CardTitle>Processus de rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©alisation</CardTitle>
+          <CardTitle>Processus de rÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©alisation</CardTitle>
           <Button
             type="button"
             variant="outline"
@@ -341,7 +341,7 @@ export default function NewProposalPage() {
           Annuler
         </Button>
         <Button type="submit" variant="primary" disabled={isSubmitting}>
-          {isSubmitting ? "CrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation..." : "CrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©er la soumission"}
+          {isSubmitting ? "CrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ation..." : "CrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©er la soumission"}
         </Button>
       </div>
     </form>
@@ -384,12 +384,12 @@ function SectionForm({
         <div className="flex gap-2">
           {onMoveUp && (
             <Button type="button" variant="ghost" size="sm" onClick={onMoveUp}>
-              ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“
+              ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œ
             </Button>
           )}
           {onMoveDown && (
             <Button type="button" variant="ghost" size="sm" onClick={onMoveDown}>
-              ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ
+              ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“
             </Button>
           )}
           <Button type="button" variant="ghost" size="sm" onClick={onRemove} className="text-red-600">
@@ -548,7 +548,7 @@ function ItemForm({
       <div className="grid grid-cols-4 gap-3">
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">
-            QuantitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©
+            QuantitÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©
           </label>
           <Input
             type="number"
@@ -590,7 +590,7 @@ function ItemForm({
         <div className="flex items-end">
           {calculatedTotal > 0 && (
             <p className="text-xs text-gray-500">
-              CalculÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©: {calculatedTotal.toFixed(2)} ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬
+              CalculÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©: {calculatedTotal.toFixed(2)} ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬
             </p>
           )}
         </div>
@@ -622,12 +622,12 @@ function ProcessForm({
         <div className="flex gap-2">
           {onMoveUp && (
             <Button type="button" variant="ghost" size="sm" onClick={onMoveUp}>
-              ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“
+              ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œ
             </Button>
           )}
           {onMoveDown && (
             <Button type="button" variant="ghost" size="sm" onClick={onMoveDown}>
-              ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ
+              ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“
             </Button>
           )}
           <Button type="button" variant="ghost" size="sm" onClick={onRemove} className="text-red-600">
@@ -661,7 +661,7 @@ function ProcessForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            DurÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©e estimÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©e (en jours)
+            DurÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©e estimÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©e (en jours)
           </label>
           <Input
             type="number"
