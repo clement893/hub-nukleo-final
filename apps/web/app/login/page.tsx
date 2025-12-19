@@ -18,11 +18,16 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
+      // Store rememberMe preference in localStorage before redirect
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberMe");
+      }
+      
       await signIn("google", {
         callbackUrl: "/commercial/dashboard",
         redirect: true,
-        // Pass rememberMe as a custom parameter
-        // NextAuth will handle this in the callback
       });
     } catch (error) {
       // Error is handled by NextAuth redirect
