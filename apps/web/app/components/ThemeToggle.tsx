@@ -7,6 +7,8 @@ export function ThemeToggle() {
   const [isDark, setIsDark] = React.useState(false);
 
   React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     setMounted(true);
     // Check current theme
     const checkTheme = () => {
@@ -39,6 +41,8 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
+    if (typeof window === "undefined") return;
+    
     const newTheme = isDark ? "light" : "dark";
     setIsDark(!isDark);
     localStorage.setItem("theme", newTheme);

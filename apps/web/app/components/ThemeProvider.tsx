@@ -8,23 +8,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     setMounted(true);
     // Check for saved theme preference or default to system preference
-    const theme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    if (typeof window !== "undefined") {
+      const theme = localStorage.getItem("theme");
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
 
-    if (theme === "dark" || (!theme && systemPrefersDark)) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+      if (theme === "dark" || (!theme && systemPrefersDark)) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   }, []);
 
-  // Prevent flash of unstyled content
-  if (!mounted) {
-    return null;
-  }
-
+  // Always render children to avoid hydration issues
+  // The theme will be applied once mounted
   return <>{children}</>;
 }
 
