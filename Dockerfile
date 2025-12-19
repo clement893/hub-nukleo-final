@@ -12,8 +12,8 @@ COPY apps/web ./apps/web
 
 # Install dependencies from root
 # Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
-# Ignore scripts to avoid conflicts
-RUN pnpm install --no-frozen-lockfile --ignore-scripts
+# Ignore scripts to avoid conflicts with postinstall hooks
+RUN pnpm install --no-frozen-lockfile --ignore-scripts 2>&1 || (cat package.json && echo "=== Checking packages ===" && find packages -name package.json -exec echo "=== {} ===" \; -exec cat {} \; && exit 1)
 
 # Build the web app
 WORKDIR /app/apps/web
