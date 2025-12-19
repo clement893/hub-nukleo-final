@@ -90,12 +90,12 @@ export default function EditProposalPage() {
             totalAmount: proposal.totalAmount ? Number(proposal.totalAmount) : null,
             validUntil: proposal.validUntil ? new Date(proposal.validUntil) : null,
             opportunityId: proposal.opportunityId,
-            sections: proposal.sections.map((section) => ({
+            sections: proposal.sections.map((section: { id: string; title: string; description: string | null; order: number; items: Array<{ id: string; title: string; description: string | null; type: string; quantity: number | null; unitPrice: number | null; totalPrice: number | null; order: number }> }) => ({
               id: section.id,
               title: section.title,
               description: section.description || "",
               order: section.order,
-              items: section.items.map((item) => ({
+              items: section.items.map((item: { id: string; title: string; description: string | null; type: string; quantity: number | null; unitPrice: number | null; totalPrice: number | null; order: number }) => ({
                 id: item.id,
                 title: item.title,
                 description: item.description || "",
@@ -106,7 +106,7 @@ export default function EditProposalPage() {
                 order: item.order,
               })),
             })),
-            processes: proposal.processes.map((process) => ({
+            processes: proposal.processes.map((process: { id: string; title: string; description: string | null; order: number; estimatedDuration: number | null }) => ({
               id: process.id,
               title: process.title,
               description: process.description || "",
