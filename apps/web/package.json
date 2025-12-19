@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "sh scripts/run-migrations.sh && next start",
+    "start": "sh scripts/run-migrations.sh && node .next/standalone/server.js",
     "start:next": "next start",
     "lint": "next lint",
     "test": "vitest",
