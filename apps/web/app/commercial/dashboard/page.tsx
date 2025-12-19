@@ -10,6 +10,9 @@ import { DashboardKPIs } from "./components/DashboardKPIs";
 import { PipelineChart } from "./components/PipelineChart";
 import { RecentActivity } from "./components/RecentActivity";
 
+// Force dynamic rendering to avoid SSR issues with Prisma during build
+export const dynamic = "force-dynamic";
+
 export default async function CommercialDashboard() {
   const [
     opportunitiesStats,
