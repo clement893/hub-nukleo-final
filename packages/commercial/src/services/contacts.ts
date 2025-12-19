@@ -33,6 +33,7 @@ export async function getAllContacts() {
       phone: true,
       position: true,
       createdAt: true,
+      updatedAt: true,
       company: {
         select: { id: true, name: true },
       },
