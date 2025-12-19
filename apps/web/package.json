@@ -9,11 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nukleo/db": "workspace:*",
+    "@nukleo/ui": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "next": "^15.1.0"
   },
   "devDependencies": {
+    "@nukleo/eslint-config": "workspace:*",
+    "@nukleo/tailwind-config": "workspace:*",
+    "@nukleo/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
