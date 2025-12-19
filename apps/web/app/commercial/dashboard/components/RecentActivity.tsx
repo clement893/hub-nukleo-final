@@ -73,7 +73,7 @@ export function RecentActivity({
       </CardHeader>
       <CardContent>
         {allActivities.length === 0 ? (
-          <p className="text-gray-500 text-sm text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
             Aucune activité récente
           </p>
         ) : (

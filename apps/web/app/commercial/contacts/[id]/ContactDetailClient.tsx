@@ -185,7 +185,7 @@ export function ContactDetailClient({
               <CardContent>
                 {contact.opportunities.length === 0 ? (
                   <p className="text-sm text-gray-500">
-                    Aucune opportunité associée
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
                   </p>
                 ) : (
                   <div className="space-y-2">

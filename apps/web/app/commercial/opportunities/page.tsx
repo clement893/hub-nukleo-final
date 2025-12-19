@@ -150,7 +150,7 @@ function KanbanColumn({
 
   return (
     <div className="flex-shrink-0 w-80" ref={setNodeRef}>
-      <Card className="h-full">
+      <Card className="h-full glass">
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle className="text-base">{stageLabels[stage]}</CardTitle>
@@ -169,7 +169,7 @@ function KanbanColumn({
             strategy={verticalListSortingStrategy}
           >
             {opportunities.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-4">
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
                 Aucune opportunité
               </p>
             ) : (
@@ -424,15 +424,17 @@ export default function OpportunitiesPage() {
     : null;
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   return (
     <>
       <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Opportunités</h1>
-            <p className="text-gray-600 mt-2">Gérez votre pipeline de vente</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+              Opportunités
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">Gérez votre pipeline de vente</p>
           </div>
           <Button variant="primary" onClick={handleCreateOpportunity}>
             Nouvelle opportunité

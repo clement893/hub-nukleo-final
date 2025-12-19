@@ -184,7 +184,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
               </CardHeader>
               <CardContent>
                 {company.contacts.length === 0 ? (
-                  <p className="text-sm text-gray-500">Aucun contact associé</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Aucun contact associé</p>
                 ) : (
                   <div className="space-y-2">
                     {company.contacts.map((contact) => (
@@ -226,7 +226,7 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
               <CardContent>
                 {company.opportunities.length === 0 ? (
                   <p className="text-sm text-gray-500">
-                    Aucune opportunité associée
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
                   </p>
                 ) : (
                   <div className="space-y-2">

@@ -181,7 +181,7 @@ export default function CompaniesPage() {
           <CardContent>
             {filteredCompanies.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
                   {searchTerm
                     ? "Aucune entreprise trouvée"
                     : "Aucune entreprise pour le moment"}

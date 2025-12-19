@@ -547,7 +547,7 @@ export default function ContactsPage() {
           <CardContent>
             {filteredContacts.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
                   {hasActiveFilters
                     ? "Aucun contact ne correspond aux filtres"
                     : "Aucun contact pour le moment"}
