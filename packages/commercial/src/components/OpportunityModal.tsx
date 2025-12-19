@@ -143,6 +143,7 @@ export function OpportunityModal({
             <Select
               label="Étape"
               options={stageOptions}
+              {...field}
               value={field.value}
               onChange={(e) => field.onChange(e.target.value)}
               error={errors.stage?.message}
@@ -165,8 +166,12 @@ export function OpportunityModal({
             <Select
               label="Entreprise"
               options={companyOptions}
+              {...field}
               value={field.value || ""}
-              onChange={(e) => field.onChange(e.target.value || undefined)}
+              onChange={(e) => {
+                const value = e.target.value;
+                field.onChange(value === "" ? undefined : value);
+              }}
               error={errors.companyId?.message}
             />
           )}
@@ -179,8 +184,12 @@ export function OpportunityModal({
             <Select
               label="Contact"
               options={contactOptions}
+              {...field}
               value={field.value || ""}
-              onChange={(e) => field.onChange(e.target.value || undefined)}
+              onChange={(e) => {
+                const value = e.target.value;
+                field.onChange(value === "" ? undefined : value);
+              }}
               error={errors.contactId?.message}
             />
           )}

@@ -113,8 +113,12 @@ export function ContactModal({
             <Select
               label="Entreprise"
               options={companyOptions}
+              {...field}
               value={field.value || ""}
-              onChange={(e) => field.onChange(e.target.value || undefined)}
+              onChange={(e) => {
+                const value = e.target.value;
+                field.onChange(value === "" ? undefined : value);
+              }}
               error={errors.companyId?.message}
             />
           )}
