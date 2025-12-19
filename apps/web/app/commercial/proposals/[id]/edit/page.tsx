@@ -219,20 +219,15 @@ export default function EditProposalPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Opportunité *
-            </label>
             <Select
               {...register("opportunityId")}
               error={errors.opportunityId?.message}
-            >
-              <option value="">Sélectionner une opportunité</option>
-              {opportunities.map((opp) => (
-                <option key={opp.id} value={opp.id}>
-                  {opp.title} {opp.company ? `- ${opp.company.name}` : ""}
-                </option>
-              ))}
-            </Select>
+              placeholder="Sélectionner une opportunité"
+              options={opportunities.map((opp) => ({
+                value: opp.id,
+                label: `${opp.title}${opp.company ? ` - ${opp.company.name}` : ""}`,
+              }))}
+            />
           </div>
 
           <div>
@@ -260,16 +255,16 @@ export default function EditProposalPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Statut
-              </label>
-              <Select {...register("status")}>
-                <option value="DRAFT">Brouillon</option>
-                <option value="SUBMITTED">Soumis</option>
-                <option value="ACCEPTED">Accepté</option>
-                <option value="REJECTED">Rejeté</option>
-                <option value="REVISED">Révisé</option>
-              </Select>
+              <Select
+                {...register("status")}
+                options={[
+                  { value: "DRAFT", label: "Brouillon" },
+                  { value: "SUBMITTED", label: "Soumis" },
+                  { value: "ACCEPTED", label: "Accepté" },
+                  { value: "REJECTED", label: "Rejeté" },
+                  { value: "REVISED", label: "Révisé" },
+                ]}
+              />
             </div>
 
             <div>
@@ -571,15 +566,15 @@ function ItemForm({
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">
-            Type
-          </label>
-          <Select {...register(`sections.${sectionIndex}.items.${itemIndex}.type`)}>
-            <option value="DELIVERABLE">Livrable</option>
-            <option value="SERVICE">Service</option>
-            <option value="PRODUCT">Produit</option>
-            <option value="OTHER">Autre</option>
-          </Select>
+          <Select
+            {...register(`sections.${sectionIndex}.items.${itemIndex}.type`)}
+            options={[
+              { value: "DELIVERABLE", label: "Livrable" },
+              { value: "SERVICE", label: "Service" },
+              { value: "PRODUCT", label: "Produit" },
+              { value: "OTHER", label: "Autre" },
+            ]}
+          />
         </div>
       </div>
 
