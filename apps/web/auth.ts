@@ -4,6 +4,7 @@ import { prisma } from "@nukleo/db";
 import Google from "next-auth/providers/google";
 import type { NextAuthConfig } from "next-auth";
 import type { Role } from "@prisma/client";
+import type { DefaultSession } from "next-auth";
 
 // Extended types for NextAuth
 declare module "next-auth" {
