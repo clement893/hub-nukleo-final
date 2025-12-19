@@ -9,6 +9,7 @@ import {
   Input,
   Select,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import {
   projectSchema,
   type ProjectFormData,
@@ -80,15 +81,17 @@ export default function NewProjectPage() {
   };
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Nouveau projet</h1>
-          <p className="text-gray-600 mt-2">Créez un nouveau projet</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+            Nouveau projet
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Créez un nouveau projet</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -110,7 +113,7 @@ export default function NewProjectPage() {
         </GlassCardHeader>
         <GlassCardContent className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Nom du projet *
             </label>
             <Input
@@ -121,12 +124,12 @@ export default function NewProjectPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
             <textarea
               {...register("description")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
               rows={4}
               placeholder="Description du projet"
             />
@@ -134,7 +137,7 @@ export default function NewProjectPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Statut
               </label>
               <Select
@@ -150,7 +153,7 @@ export default function NewProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Budget
               </label>
               <Input
@@ -164,7 +167,7 @@ export default function NewProjectPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Date de début
               </label>
               <Input
@@ -174,7 +177,7 @@ export default function NewProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Date de fin
               </label>
               <Input
@@ -183,8 +186,8 @@ export default function NewProjectPage() {
               />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       <div className="flex justify-end gap-2 pb-8">
         <Button
