@@ -62,7 +62,15 @@ export default async function CommercialDashboard() {
           }))}
         />
         <RecentActivity
-          opportunities={recentOpportunities}
+          opportunities={recentOpportunities.map((opp) => ({
+            ...opp,
+            value: opp.value
+              ? typeof opp.value === "number"
+                ? opp.value
+                : Number(opp.value)
+              : 0,
+            stage: String(opp.stage),
+          }))}
           contacts={recentContacts}
           companies={recentCompanies}
         />
