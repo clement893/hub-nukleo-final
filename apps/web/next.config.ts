@@ -32,6 +32,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@nukleo/ui", "@nukleo/db"],
   },
+  
+  // Turbopack configuration (empty to allow Sentry webpack config)
+  // Sentry doesn't fully support Turbopack yet, so we use webpack for builds
+  turbopack: {},
 };
 
 // Wrap with Sentry configuration
