@@ -15,6 +15,10 @@ COPY apps/web ./apps/web
 # Ignore scripts to avoid conflicts with postinstall hooks
 RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
+# Build packages first (UI, DB, etc.)
+RUN pnpm --filter @nukleo/ui build || true
+RUN pnpm --filter @nukleo/db build || true
+
 # Build the web app
 WORKDIR /app/apps/web
 RUN pnpm build
