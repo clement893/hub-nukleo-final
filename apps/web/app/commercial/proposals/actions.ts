@@ -81,7 +81,8 @@ export async function createProposalAction(data: unknown) {
 export async function updateProposalAction(id: string, data: unknown) {
   try {
     // Validate with Zod
-    const validationResult = updateProposalSchema.safeParse({ id, ...data });
+    const dataObj = typeof data === "object" && data !== null ? data : {};
+    const validationResult = updateProposalSchema.safeParse({ id, ...dataObj });
     if (!validationResult.success) {
       return {
         success: false,
