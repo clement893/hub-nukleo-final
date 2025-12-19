@@ -8,7 +8,10 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./schemas": "./src/schemas/index.ts",
-    "./services": "./src/services/index.ts"
+    "./services": "./src/services/index.ts",
+    "./services/opportunities": "./src/services/opportunities.ts",
+    "./services/contacts": "./src/services/contacts.ts",
+    "./services/companies": "./src/services/companies.ts"
   },
   "scripts": {
     "lint": "eslint .",
