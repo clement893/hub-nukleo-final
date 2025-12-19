@@ -71,7 +71,10 @@ export default async function CommercialDashboard() {
               : 0,
             stage: String(opp.stage),
           }))}
-          contacts={recentContacts}
+          contacts={recentContacts.map((contact) => ({
+            ...contact,
+            email: contact.email || "",
+          }))}
           companies={recentCompanies}
         />
       </div>
