@@ -8,7 +8,12 @@ export async function getRecentContacts(limit = 5) {
   return prisma.contact.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
-    include: {
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      createdAt: true,
       company: {
         select: { name: true },
       },
@@ -19,7 +24,14 @@ export async function getRecentContacts(limit = 5) {
 export async function getAllContacts() {
   return prisma.contact.findMany({
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
-    include: {
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+      position: true,
+      createdAt: true,
       company: {
         select: { id: true, name: true },
       },

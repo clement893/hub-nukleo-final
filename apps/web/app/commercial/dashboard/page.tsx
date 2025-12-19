@@ -12,6 +12,8 @@ import { RecentActivity } from "./components/RecentActivity";
 
 // Force dynamic rendering to avoid SSR issues with Prisma during build
 export const dynamic = "force-dynamic";
+// Cache for 60 seconds to improve performance
+export const revalidate = 60;
 
 export default async function CommercialDashboard() {
   let opportunitiesStats: Awaited<ReturnType<typeof getOpportunitiesStats>>;

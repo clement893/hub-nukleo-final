@@ -1,26 +1,21 @@
 import { prisma } from "@nukleo/db";
 
 export async function getOpportunitiesStats() {
-  const [
-    totalOpportunities,
-    wonOpportunities,
-    totalRevenue,
-    opportunitiesByStage,
-  ] = await Promise.all([
-    prisma.opportunity.count(),
-    prisma.opportunity.count({
-      where: { stage: "WON" },
-    }),
-    prisma.opportunity.aggregate({
-      where: { stage: "WON" },
-      _sum: { value: true },
-    }),
-    prisma.opportunity.groupBy({
-      by: ["stage"],
-      _sum: { value: true },
-      _count: { id: true },
-    }),
-  ]);
+  // Optimize: Use a single groupBy query to get all stats at once
+  const opportunitiesByStage = await prisma.opportunity.groupBy({
+    by: ["stage"],
+    _sum: { value: true },
+    _count: { id: true },
+  });
+
+  // Calculate stats from groupBy result
+  const totalOpportunities = opportunitiesByStage.reduce(
+    (sum, stage) => sum + stage._count.id,
+    0
+  );
+  const wonStage = opportunitiesByStage.find((stage) => stage.stage === "WON");
+  const wonOpportunities = wonStage?._count.id || 0;
+  const totalRevenue = wonStage?._sum.value || 0;
 
   const conversionRate =
     totalOpportunities > 0
@@ -37,7 +32,7 @@ export async function getOpportunitiesStats() {
     totalOpportunities,
     wonOpportunities,
     conversionRate: Math.round(conversionRate * 100) / 100,
-    totalRevenue: totalRevenue._sum.value || 0,
+    totalRevenue: totalRevenue,
     pipelineByStage,
   };
 }
@@ -46,7 +41,15 @@ export async function getRecentOpportunities(limit = 5) {
   return prisma.opportunity.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      value: true,
+      stage: true,
+      probability: true,
+      expectedCloseDate: true,
+      createdAt: true,
       company: {
         select: { name: true },
       },

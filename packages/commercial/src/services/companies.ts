@@ -8,6 +8,12 @@ export async function getRecentCompanies(limit = 5) {
   return prisma.company.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      name: true,
+      industry: true,
+      createdAt: true,
+    },
   });
 }
 
