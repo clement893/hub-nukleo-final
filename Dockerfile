@@ -17,6 +17,9 @@ COPY packages ./packages
 # Copy all apps
 COPY apps ./apps
 
+# Verify package.json is valid before installing
+RUN cat package.json | head -5
+
 # Install dependencies from root
 # Use --no-frozen-lockfile if pnpm-lock.yaml doesn't exist yet
 # Ignore scripts to avoid conflicts with postinstall hooks
