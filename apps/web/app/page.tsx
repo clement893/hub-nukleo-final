@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Card,
   CardHeader,
@@ -24,9 +25,11 @@ export default function Home() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
-          <Button variant="primary" size="lg">
-            Commencer
-          </Button>
+          <Link href="/commercial/dashboard">
+            <Button variant="primary" size="lg">
+              Commencer
+            </Button>
+          </Link>
           <Button variant="outline" size="lg">
             En savoir plus
           </Button>
@@ -49,9 +52,11 @@ export default function Home() {
               </p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full">
-                Accéder au module
-              </Button>
+              <Link href="/commercial/dashboard" className="w-full">
+                <Button variant="outline" className="w-full">
+                  Accéder au module
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
 
