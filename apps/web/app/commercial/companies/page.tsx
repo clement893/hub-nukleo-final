@@ -163,7 +163,7 @@ export default function CompaniesPage() {
           </Button>
         </div>
 
-        <Card className="mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardContent className="pt-6">
             <Input
               placeholder="Rechercher une entreprise..."
@@ -174,7 +174,7 @@ export default function CompaniesPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Liste des entreprises</CardTitle>
           </CardHeader>

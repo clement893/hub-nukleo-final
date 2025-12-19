@@ -397,7 +397,7 @@ export default function ContactsPage() {
         </div>
 
         {/* Advanced Filters */}
-        <Card className="mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Filtres et recherche</CardTitle>
           </CardHeader>
@@ -514,25 +514,25 @@ export default function ContactsPage() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Total contacts</div>
             </CardContent>
           </Card>
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withEmail}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Avec email</div>
             </CardContent>
           </Card>
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withPhone}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Avec téléphone</div>
             </CardContent>
           </Card>
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withCompany}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Avec entreprise</div>
@@ -540,7 +540,7 @@ export default function ContactsPage() {
           </Card>
         </div>
 
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Liste des contacts</CardTitle>
           </CardHeader>

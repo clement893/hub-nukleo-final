@@ -99,13 +99,13 @@ export default function ContactsStatsPage() {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardContent className="pt-6">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.total}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total contacts</div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardContent className="pt-6">
             <div className="text-3xl font-bold text-green-600 dark:text-green-400">
               {stats.withEmail}
@@ -115,7 +115,7 @@ export default function ContactsStatsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardContent className="pt-6">
             <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
               {stats.withPhone}
@@ -125,7 +125,7 @@ export default function ContactsStatsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardContent className="pt-6">
             <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
               {stats.withCompany}
@@ -141,7 +141,7 @@ export default function ContactsStatsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Companies Distribution */}
         {companyData.length > 0 && (
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardHeader>
               <CardTitle className="text-gray-900 dark:text-white">Répartition par entreprise</CardTitle>
             </CardHeader>
@@ -172,7 +172,7 @@ export default function ContactsStatsPage() {
 
         {/* Positions Distribution */}
         {positionData.length > 0 && (
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardHeader>
               <CardTitle className="text-gray-900 dark:text-white">Répartition par poste</CardTitle>
             </CardHeader>
@@ -202,7 +202,7 @@ export default function ContactsStatsPage() {
         )}
 
         {/* Email Completeness */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Complétude des emails</CardTitle>
           </CardHeader>
@@ -233,7 +233,7 @@ export default function ContactsStatsPage() {
         </Card>
 
         {/* Phone Completeness */}
-        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">Complétude des téléphones</CardTitle>
           </CardHeader>
@@ -268,7 +268,7 @@ export default function ContactsStatsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Companies */}
         {stats.byCompany.length > 0 && (
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardHeader>
               <CardTitle className="text-gray-900 dark:text-white">Top entreprises</CardTitle>
             </CardHeader>
@@ -295,7 +295,7 @@ export default function ContactsStatsPage() {
 
         {/* Top Positions */}
         {stats.byPosition.length > 0 && (
-          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
             <CardHeader>
               <CardTitle className="text-gray-900 dark:text-white">Top postes</CardTitle>
             </CardHeader>

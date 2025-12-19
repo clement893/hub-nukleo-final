@@ -28,7 +28,7 @@ export function PipelineChart({ pipelineByStage }: PipelineChartProps) {
   }));
 
   return (
-    <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+    <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
       <CardHeader>
         <CardTitle className="text-gray-900 dark:text-white">Pipeline de vente</CardTitle>
         <CardDescription className="text-gray-600 dark:text-gray-400">

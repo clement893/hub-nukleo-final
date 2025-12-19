@@ -108,7 +108,7 @@ export function ContactDetailClient({
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <Avatar
@@ -178,7 +178,7 @@ export function ContactDetailClient({
               </CardContent>
             </Card>
 
-            <Card className="mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <Card className="mt-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
                 <CardTitle className="text-gray-900 dark:text-white">Opportunités</CardTitle>
               </CardHeader>

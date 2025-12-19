@@ -19,7 +19,7 @@ export function DashboardKPIs({
 }: DashboardKPIsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-      <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Opportunités totales
@@ -31,7 +31,7 @@ export function DashboardKPIs({
         </CardContent>
       </Card>
 
-      <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Taux de conversion
@@ -43,7 +43,7 @@ export function DashboardKPIs({
         </CardContent>
       </Card>
 
-      <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Revenu total
@@ -61,7 +61,7 @@ export function DashboardKPIs({
         </CardContent>
       </Card>
 
-      <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Contacts
@@ -73,7 +73,7 @@ export function DashboardKPIs({
         </CardContent>
       </Card>
 
-      <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Entreprises
