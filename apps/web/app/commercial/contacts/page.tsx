@@ -88,11 +88,6 @@ export default function ContactsPage() {
     setIsModalOpen(true);
   };
 
-  const handleEditContact = (contact: Contact) => {
-    setEditingContact(contact);
-    setIsModalOpen(true);
-  };
-
   const handleModalSubmit = async (data: ContactFormData) => {
     try {
       if (editingContact) {
