@@ -7,7 +7,7 @@ import { logger } from "@/lib/logger";
  * Get a presigned URL for downloading a file from S3
  */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ key: string }> }
 ) {
   try {
