@@ -2,7 +2,6 @@
     "extends":  "@nukleo/typescript-config/nextjs.json",
     "compilerOptions":  {
                             "skipLibCheck": true,
-                            "types": [],
                             "paths":  {
                                           "@/*":  [
                                                       "./*"
