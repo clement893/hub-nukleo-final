@@ -9,7 +9,7 @@ interface CompanyDetailPageProps {
 
 export default function CompanyDetailPage({ params }: CompanyDetailPageProps) {
   // TODO: Fetch company data using params.id
-  void params; // Will be used when implementing data fetching
+  void params; // Mark params as used to satisfy TypeScript
   const company = null;
 
   if (!company) {
