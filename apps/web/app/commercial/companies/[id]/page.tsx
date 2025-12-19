@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from "@nukleo/ui";
+import { Card, CardTitle, CardContent, Button, Badge } from "@nukleo/ui";
 import Link from "next/link";
 import { getCompanyById } from "@nukleo/commercial";
 import { CompanyDetailClient } from "./CompanyDetailClient";
