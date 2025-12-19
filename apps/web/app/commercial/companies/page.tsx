@@ -239,11 +239,20 @@ export default function CompaniesPage() {
                         )}
                       </TableCell>
                       <TableCell>
-                        <Link href={`/commercial/companies/${company.id}`}>
-                          <Button variant="ghost" size="sm">
-                            Voir
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditCompany(company)}
+                          >
+                            Modifier
                           </Button>
-                        </Link>
+                          <Link href={`/commercial/companies/${company.id}`}>
+                            <Button variant="ghost" size="sm">
+                              Voir
+                            </Button>
+                          </Link>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
