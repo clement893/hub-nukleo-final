@@ -10,6 +10,10 @@ PORT=${PORT:-3000}
 
 echo "📡 Server will listen on port $PORT"
 
+# Export PORT so Next.js can use it
+export PORT
+
 # Start Next.js server
 # Next.js automatically uses PORT environment variable
-exec next start -p $PORT
+# Using exec to replace shell process with Next.js process
+exec next start
