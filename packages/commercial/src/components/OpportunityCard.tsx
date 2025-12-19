@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Card } from "@nukleo/ui";
-import type { OpportunityStage } from "@nukleo/db";
+import type { OpportunityStage } from "@nukleo/db/types";
 
 export interface OpportunityCardProps {
   id: string;

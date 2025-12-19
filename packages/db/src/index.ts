@@ -17,10 +17,7 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
-// Export all Prisma types
-export * from "@prisma/client";
-
-// Export commonly used types
+// Export commonly used types (re-exported from types.ts for convenience)
 export type {
   User,
   Opportunity,
@@ -33,5 +30,5 @@ export type {
   ProjectStatus,
   TaskStatus,
   TaskPriority,
-} from "@prisma/client";
+} from "./types";
 

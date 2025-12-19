@@ -35,7 +35,7 @@ import {
   OpportunityModal,
 } from "@nukleo/commercial/client";
 import type { OpportunityFormData } from "@nukleo/commercial/client";
-import type { OpportunityStage } from "@nukleo/db";
+import type { OpportunityStage } from "@nukleo/db/types";
 import {
   getOpportunitiesAction,
   getCompaniesForOpportunitiesAction,

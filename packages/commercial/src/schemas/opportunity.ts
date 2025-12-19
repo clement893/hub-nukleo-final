@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { OpportunityStage } from "@nukleo/db";
+import type { OpportunityStage } from "@nukleo/db/types";
 
 export const opportunityStageSchema = z.enum([
   "NEW",
