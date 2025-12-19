@@ -13,7 +13,7 @@ export function exportToCSV(
   data: ExportableData[],
   filename: string = "export.csv"
 ): void {
-  if (data.length === 0) {
+  if (data.length === 0 || !data[0]) {
     return;
   }
 
@@ -60,7 +60,7 @@ export function exportToPDF(
   title: string,
   filename: string = "export.pdf"
 ): void {
-  if (data.length === 0) {
+  if (data.length === 0 || !data[0]) {
     return;
   }
 
