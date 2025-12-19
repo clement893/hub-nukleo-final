@@ -44,7 +44,7 @@ export default function ContactsStatsPage() {
   }, []);
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">Chargement...</p>;
   }
 
   const stats = calculateContactStats(contacts);
@@ -91,46 +91,46 @@ export default function ContactsStatsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Statistiques des contacts</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Statistiques des contacts</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
           Analyse détaillée de vos contacts commerciaux
         </p>
       </div>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-blue-600">{stats.total}</div>
-            <div className="text-sm text-gray-600 mt-1">Total contacts</div>
+            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.total}</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total contacts</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
               {stats.withEmail}
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Avec email ({((stats.withEmail / stats.total) * 100).toFixed(0)}%)
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-purple-600">
+            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
               {stats.withPhone}
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Avec téléphone ({((stats.withPhone / stats.total) * 100).toFixed(0)}%)
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-orange-600">
+            <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
               {stats.withCompany}
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Avec entreprise ({((stats.withCompany / stats.total) * 100).toFixed(0)}%)
             </div>
           </CardContent>
@@ -141,9 +141,9 @@ export default function ContactsStatsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Companies Distribution */}
         {companyData.length > 0 && (
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>Répartition par entreprise</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Répartition par entreprise</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -172,9 +172,9 @@ export default function ContactsStatsPage() {
 
         {/* Positions Distribution */}
         {positionData.length > 0 && (
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>Répartition par poste</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Répartition par poste</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -202,9 +202,9 @@ export default function ContactsStatsPage() {
         )}
 
         {/* Email Completeness */}
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle>Complétude des emails</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Complétude des emails</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -233,9 +233,9 @@ export default function ContactsStatsPage() {
         </Card>
 
         {/* Phone Completeness */}
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle>Complétude des téléphones</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Complétude des téléphones</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -268,9 +268,9 @@ export default function ContactsStatsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Companies */}
         {stats.byCompany.length > 0 && (
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>Top entreprises</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Top entreprises</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -280,10 +280,10 @@ export default function ContactsStatsPage() {
                     className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">#{index + 1}</span>
-                      <span className="font-medium">{item.company}</span>
+                      <span className="text-gray-500 dark:text-gray-400">#{index + 1}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{item.company}</span>
                     </div>
-                    <span className="text-blue-600 font-semibold">
+                    <span className="text-blue-600 dark:text-blue-400 font-semibold">
                       {item.count} contact{item.count > 1 ? "s" : ""}
                     </span>
                   </div>
@@ -295,9 +295,9 @@ export default function ContactsStatsPage() {
 
         {/* Top Positions */}
         {stats.byPosition.length > 0 && (
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>Top postes</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Top postes</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -307,10 +307,10 @@ export default function ContactsStatsPage() {
                     className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">#{index + 1}</span>
-                      <span className="font-medium">{item.position}</span>
+                      <span className="text-gray-500 dark:text-gray-400">#{index + 1}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{item.position}</span>
                     </div>
-                    <span className="text-green-600 font-semibold">
+                    <span className="text-green-600 dark:text-green-400 font-semibold">
                       {item.count} contact{item.count > 1 ? "s" : ""}
                     </span>
                   </div>

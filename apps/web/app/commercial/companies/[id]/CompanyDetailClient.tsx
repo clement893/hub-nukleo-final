@@ -109,11 +109,11 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle>{company.name}</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">{company.name}</CardTitle>
                     {company.industry && (
                       <CardContent className="pt-2">
                         <Badge variant="default">{company.industry}</Badge>
@@ -126,15 +126,15 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
                 <div className="space-y-4">
                   {company.website && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Site web
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         <a
                           href={company.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {company.website}
                         </a>
@@ -143,13 +143,13 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
                   )}
                   {company.phone && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Téléphone
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         <a
                           href={`tel:${company.phone}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {company.phone}
                         </a>
@@ -158,10 +158,10 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
                   )}
                   {(company.address || company.city || company.country) && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Adresse
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         {company.address && (
                           <>
                             {company.address}
@@ -178,9 +178,9 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
               </CardContent>
             </Card>
 
-            <Card className="mt-6">
+            <Card className="mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <CardHeader>
-                <CardTitle>Contacts ({company.contacts.length})</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Contacts ({company.contacts.length})</CardTitle>
               </CardHeader>
               <CardContent>
                 {company.contacts.length === 0 ? (
@@ -270,9 +270,9 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
           </div>
 
           <div>
-            <Card>
+            <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <CardHeader>
-                <CardTitle>Actions</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button variant="outline" className="w-full" onClick={handleEdit}>

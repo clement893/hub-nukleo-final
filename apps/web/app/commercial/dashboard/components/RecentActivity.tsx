@@ -64,16 +64,16 @@ export function RecentActivity({
     .slice(0, 10);
 
   return (
-    <Card>
+    <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle>Activité récente</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-gray-900 dark:text-white">Activité récente</CardTitle>
+        <CardDescription className="text-gray-600 dark:text-gray-400">
           Dernières actions sur les opportunités, contacts et entreprises
         </CardDescription>
       </CardHeader>
       <CardContent>
         {allActivities.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8">
+          <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
             Aucune activité récente
           </p>
         ) : (
@@ -87,7 +87,7 @@ export function RecentActivity({
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
                         {activity.title}
                       </span>
                       <span className="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
@@ -98,10 +98,10 @@ export function RecentActivity({
                           : "Entreprise"}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {activity.subtitle}
                       {activity.type === "opportunity" && activity.value && (
-                        <span className="ml-2 font-semibold">
+                        <span className="ml-2 font-semibold text-gray-700 dark:text-gray-300">
                           {activity.value.toLocaleString("fr-FR", {
                             style: "currency",
                             currency: "EUR",
@@ -110,7 +110,7 @@ export function RecentActivity({
                       )}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
                     {new Date(activity.date).toLocaleDateString("fr-FR", {
                       day: "numeric",
                       month: "short",

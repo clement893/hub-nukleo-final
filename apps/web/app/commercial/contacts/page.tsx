@@ -397,14 +397,14 @@ export default function ContactsPage() {
         </div>
 
         {/* Advanced Filters */}
-        <Card className="mb-6">
+        <Card className="mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle>Filtres et recherche</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Filtres et recherche</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Recherche
                 </label>
                 <Input
@@ -514,35 +514,35 @@ export default function ContactsPage() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{stats.total}</div>
-              <div className="text-sm text-gray-600">Total contacts</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total contacts</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{stats.withEmail}</div>
-              <div className="text-sm text-gray-600">Avec email</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withEmail}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Avec email</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{stats.withPhone}</div>
-              <div className="text-sm text-gray-600">Avec téléphone</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withPhone}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Avec téléphone</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">{stats.withCompany}</div>
-              <div className="text-sm text-gray-600">Avec entreprise</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.withCompany}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Avec entreprise</div>
             </CardContent>
           </Card>
         </div>
 
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle>Liste des contacts</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Liste des contacts</CardTitle>
           </CardHeader>
           <CardContent>
             {filteredContacts.length === 0 ? (

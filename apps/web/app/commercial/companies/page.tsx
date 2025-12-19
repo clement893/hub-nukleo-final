@@ -163,7 +163,7 @@ export default function CompaniesPage() {
           </Button>
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardContent className="pt-6">
             <Input
               placeholder="Rechercher une entreprise..."
@@ -174,9 +174,9 @@ export default function CompaniesPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <CardHeader>
-            <CardTitle>Liste des entreprises</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-white">Liste des entreprises</CardTitle>
           </CardHeader>
           <CardContent>
             {filteredCompanies.length === 0 ? (

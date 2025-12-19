@@ -151,13 +151,13 @@ function KanbanColumn({
 
   return (
     <div className="flex-shrink-0 w-80" ref={setNodeRef}>
-      <Card className="h-full glass">
+      <Card className="h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle className="text-base">{stageLabels[stage]}</CardTitle>
+            <CardTitle className="text-base text-gray-900 dark:text-white">{stageLabels[stage]}</CardTitle>
             <Badge variant={stageColors[stage]}>{opportunities.length}</Badge>
           </div>
-          <CardDescription className="text-sm font-medium">
+          <CardDescription className="text-sm font-medium text-gray-600 dark:text-gray-400">
             {stageValue.toLocaleString("fr-FR", {
               style: "currency",
               currency: "EUR",

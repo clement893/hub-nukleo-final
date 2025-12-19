@@ -108,7 +108,7 @@ export function ContactDetailClient({
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <Avatar
@@ -116,11 +116,11 @@ export function ContactDetailClient({
                     fallback={`${contact.firstName[0]}${contact.lastName[0]}`}
                   />
                   <div>
-                    <CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-white">
                       {contact.firstName} {contact.lastName}
                     </CardTitle>
                     <CardContent className="pt-2">
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {contact.position || "Aucun poste"}
                       </p>
                     </CardContent>
@@ -131,13 +131,13 @@ export function ContactDetailClient({
                 <div className="space-y-4">
                   {contact.email && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Email
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         <a
                           href={`mailto:${contact.email}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {contact.email}
                         </a>
@@ -146,13 +146,13 @@ export function ContactDetailClient({
                   )}
                   {contact.phone && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Téléphone
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         <a
                           href={`tel:${contact.phone}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {contact.phone}
                         </a>
@@ -161,13 +161,13 @@ export function ContactDetailClient({
                   )}
                   {contact.company && (
                     <div>
-                      <label className="text-sm font-medium text-gray-500">
+                      <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Entreprise
                       </label>
-                      <p className="text-sm">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         <Link
                           href={`/commercial/companies/${contact.company.id}`}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                           {contact.company.name}
                         </Link>
@@ -178,15 +178,13 @@ export function ContactDetailClient({
               </CardContent>
             </Card>
 
-            <Card className="mt-6">
+            <Card className="mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <CardHeader>
-                <CardTitle>Opportunités</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Opportunités</CardTitle>
               </CardHeader>
               <CardContent>
                 {contact.opportunities.length === 0 ? (
-                  <p className="text-sm text-gray-500">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
-                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Aucune opportunité associée</p>
                 ) : (
                   <div className="space-y-2">
                     {contact.opportunities.map((opp) => (

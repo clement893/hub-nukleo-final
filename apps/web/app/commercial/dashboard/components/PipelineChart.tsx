@@ -28,33 +28,37 @@ export function PipelineChart({ pipelineByStage }: PipelineChartProps) {
   }));
 
   return (
-    <Card>
+    <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle>Pipeline de vente</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-gray-900 dark:text-white">Pipeline de vente</CardTitle>
+        <CardDescription className="text-gray-600 dark:text-gray-400">
           Montant par étape du processus de vente
         </CardDescription>
       </CardHeader>
       <CardContent>
         {chartData.length === 0 ? (
-          <div className="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
             Aucune donnée disponible
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
               <XAxis
                 dataKey="name"
                 angle={-45}
                 textAnchor="end"
                 height={80}
                 interval={0}
+                stroke="#6b7280"
+                className="dark:stroke-gray-400"
               />
               <YAxis
                 tickFormatter={(value) =>
                   `${(value / 1000).toFixed(0)}k €`
                 }
+                stroke="#6b7280"
+                className="dark:stroke-gray-400"
               />
               <Tooltip
                 formatter={(value: number) => [
@@ -64,6 +68,11 @@ export function PipelineChart({ pipelineByStage }: PipelineChartProps) {
                   })}`,
                   "Montant",
                 ]}
+                contentStyle={{
+                  backgroundColor: "var(--background)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "8px",
+                }}
               />
               <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
