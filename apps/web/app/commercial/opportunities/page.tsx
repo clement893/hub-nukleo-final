@@ -44,6 +44,7 @@ import {
   createOpportunityAction,
   updateOpportunityAction,
 } from "./actions";
+import { logger } from "@/lib/logger";
 
 const stages: OpportunityStage[] = [
   "NEW",
@@ -230,7 +231,7 @@ export default function OpportunitiesPage() {
           setContacts(contsResult.data);
         }
       } catch (error) {
-        console.error("Error loading data:", error);
+        logger.error("Error loading data", error instanceof Error ? error : new Error(String(error)));
       } finally {
         setIsLoading(false);
       }
@@ -270,7 +271,7 @@ export default function OpportunitiesPage() {
           );
         }
       } catch (error) {
-        console.error("Error updating opportunity stage:", error);
+        logger.error("Error updating opportunity stage", error instanceof Error ? error : new Error(String(error)));
       }
       return;
     }
@@ -398,7 +399,7 @@ export default function OpportunitiesPage() {
       setIsModalOpen(false);
       setEditingOpportunity(null);
     } catch (error) {
-      console.error("Error saving opportunity:", error);
+      logger.error("Error saving opportunity", error instanceof Error ? error : new Error(String(error)));
     }
   };
 
