@@ -3,8 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getAllOpportunities, createProposal } from "@nukleo/commercial";
 import type { ProposalFormData } from "@nukleo/commercial";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { auth } from "@/auth";
 
 export async function getAllOpportunitiesAction() {
   try {
@@ -31,7 +30,7 @@ export async function getAllOpportunitiesAction() {
 
 export async function createProposalAction(data: ProposalFormData) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session?.user?.id) {
       return {
         success: false,
