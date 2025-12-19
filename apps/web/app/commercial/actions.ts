@@ -31,7 +31,7 @@ export async function getAllOpportunitiesAction() {
 
 export async function createProposalAction(data: ProposalFormData) {
   try {
-    const session = await auth();
+    const userId = await getCurrentUserId();
     if (!session?.user || !(session.user as any).id) {
       return {
         success: false,
