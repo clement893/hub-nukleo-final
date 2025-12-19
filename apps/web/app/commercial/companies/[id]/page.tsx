@@ -9,6 +9,7 @@ interface CompanyDetailPageProps {
 
 export default function CompanyDetailPage({ params }: CompanyDetailPageProps) {
   // TODO: Fetch company data using params.id
+  const _companyId = params.id;
   const company = null;
 
   if (!company) {
