@@ -1,9 +1,6 @@
 import { prisma } from "@nukleo/db";
 import type {
   ProposalFormData,
-  ProposalSectionFormData,
-  ProposalItemFormData,
-  ProposalProcessFormData,
   UpdateProposalStatusData,
   UpdateProposalData,
 } from "../schemas/proposal";
