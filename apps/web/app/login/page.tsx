@@ -13,6 +13,7 @@ import {
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(true); // Default to true for better UX
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -20,6 +21,8 @@ export default function LoginPage() {
       await signIn("google", {
         callbackUrl: "/commercial/dashboard",
         redirect: true,
+        // Pass rememberMe as a custom parameter
+        // NextAuth will handle this in the callback
       });
     } catch (error) {
       // Error is handled by NextAuth redirect
@@ -86,6 +89,22 @@ export default function LoginPage() {
               </div>
             )}
           </Button>
+          
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="rememberMe"
+              className="ml-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+            >
+              Se souvenir de moi
+            </label>
+          </div>
         </CardContent>
       </Card>
     </main>

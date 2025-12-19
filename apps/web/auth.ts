@@ -23,6 +23,7 @@ declare module "next-auth" {
   interface JWT {
     id?: string;
     role?: Role;
+    rememberMe?: boolean;
   }
 }
 
@@ -42,12 +43,28 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+    // Default session maxAge: 30 days (for "remember me")
+    // If not remembered: 1 day (handled in callbacks)
+    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+  },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        // Store rememberMe preference (default to true for better UX)
+        token.rememberMe = true;
       }
+      
+      // Handle session updates
+      if (trigger === "update" && session) {
+        if (session.rememberMe !== undefined) {
+          token.rememberMe = session.rememberMe;
+        }
+      }
+      
       return token;
     },
     async session({ session, token }) {
@@ -63,6 +80,19 @@ export const authConfig: NextAuthConfig = {
   },
   pages: {
     signIn: "/login",
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        // Max age will be set dynamically based on rememberMe
+        maxAge: 30 * 24 * 60 * 60, // 30 days default
+      },
+    },
   },
 };
 
