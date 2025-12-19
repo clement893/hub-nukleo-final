@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "sh -c 'cd ../../packages/db && echo \"Initializing database...\" && (pnpm db:push --accept-data-loss --skip-generate 2>&1 || pnpm db:migrate:deploy 2>&1 || echo \"Database init skipped\") && cd ../../apps/web && echo \"Starting Next.js on port ${PORT:-3000}...\" && PORT=${PORT:-3000} next start -p ${PORT:-3000} -H 0.0.0.0'",
+    "start": "sh -c 'cd ../../packages/db && echo \"Initializing database...\" && (pnpm db:push --accept-data-loss --skip-generate 2>&1 || pnpm db:migrate:deploy 2>&1 || echo \"Database init skipped\") && cd ../../apps/web && echo \"Starting Next.js...\" && next start'",
     "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
