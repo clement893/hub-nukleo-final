@@ -518,7 +518,6 @@ function ItemForm({
   sectionIndex,
   itemIndex,
   register,
-  control,
   errors,
   onRemove,
   watch,
@@ -526,7 +525,6 @@ function ItemForm({
   sectionIndex: number;
   itemIndex: number;
   register: any;
-  control: any;
   errors: any;
   onRemove: () => void;
   watch: any;
