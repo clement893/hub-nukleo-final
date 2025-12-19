@@ -12,7 +12,7 @@ export interface BreadcrumbProps {
   className?: string;
 }
 
-const Breadcrumb = React.forwardRef<HTMLNavElement, BreadcrumbProps>(
+const Breadcrumb = React.forwardRef<React.ElementRef<"nav">, BreadcrumbProps>(
   ({ items, separator = "/", className }, ref) => {
     return (
       <nav
