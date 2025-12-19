@@ -6,7 +6,7 @@ import type { NextAuthConfig } from "next-auth";
 import type { Role } from "@prisma/client";
 import type { DefaultSession } from "next-auth";
 
-// Extended types for NextAuth
+// Extended types for NextAuth v5
 declare module "next-auth" {
   interface User {
     role?: Role;
@@ -20,7 +20,8 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
+// JWT types are now part of the main next-auth module in v5
+declare module "next-auth" {
   interface JWT {
     id?: string;
     role?: Role;
