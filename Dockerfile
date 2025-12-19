@@ -46,7 +46,7 @@ EXPOSE 3000
 
 # Create startup script that runs migrations and starts the app
 WORKDIR /app/apps/web
-RUN echo '#!/bin/sh\nset -e\necho "Starting application..."\ncd /app/packages/db\nif [ -n "$DATABASE_URL" ]; then\n  echo "Running database migrations..."\n  pnpm db:migrate:deploy || echo "Migrations failed or already applied"\nelse\n  echo "DATABASE_URL not set, skipping migrations"\nfi\necho "Starting Next.js server..."\ncd /app/apps/web\nexec pnpm start' > /start.sh && chmod +x /start.sh
+RUN echo '#!/bin/sh\nset -e\necho "Starting application..."\ncd /app/packages/db\nif [ -n "$DATABASE_URL" ]; then\n  echo "DATABASE_URL is set, initializing database..."\n  echo "Attempting db:push (creates tables from schema)..."\n  pnpm db:push --accept-data-loss || echo "db:push failed"\n  echo "Attempting db:migrate:deploy (applies migrations)..."\n  pnpm db:migrate:deploy || echo "Migrations failed or already applied"\nelse\n  echo "WARNING: DATABASE_URL not set, skipping database initialization"\nfi\necho "Starting Next.js server..."\ncd /app/apps/web\nexec pnpm start' > /start.sh && chmod +x /start.sh
 
 # Start the application
 CMD ["/start.sh"]
