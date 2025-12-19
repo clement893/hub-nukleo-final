@@ -75,6 +75,7 @@ type Task = {
   status: string;
   priority: string;
   dueDate: Date | null;
+  assigneeId: string | null;
   assignee: {
     id: string;
     name: string | null;
