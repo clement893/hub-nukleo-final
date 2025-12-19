@@ -41,6 +41,9 @@ RUN echo "Checking .next directory structure:" && \
     ls -la .next/standalone/ || echo ".next/standalone directory not found" && \
     find .next -name "server.js" -type f || echo "server.js not found"
 
+# Make migration script executable
+RUN chmod +x /app/apps/web/scripts/run-migrations.sh
+
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
 
