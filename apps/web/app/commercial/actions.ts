@@ -22,7 +22,7 @@ export async function getAllOpportunitiesAction() {
     console.error("Error fetching opportunities:", error);
     return {
       success: false,
-      error: "Impossible de charger les opportunitÃƒÂ©s",
+      error: "Impossible de charger les opportunitÃƒÆ’Ã‚Â©s",
       data: [],
     };
   }
@@ -31,10 +31,10 @@ export async function getAllOpportunitiesAction() {
 export async function createProposalAction(data: ProposalFormData) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return {
         success: false,
-        error: "Vous devez ÃƒÂªtre connectÃƒÂ© pour crÃƒÂ©er une soumission",
+        error: "Vous devez ÃƒÆ’Ã‚Âªtre connectÃƒÆ’Ã‚Â© pour crÃƒÆ’Ã‚Â©er une soumission",
       };
     }
 
@@ -53,7 +53,7 @@ export async function createProposalAction(data: ProposalFormData) {
       error:
         error instanceof Error
           ? error.message
-          : "Impossible de crÃƒÂ©er la soumission",
+          : "Impossible de crÃƒÆ’Ã‚Â©er la soumission",
     };
   }
 }
