@@ -31,11 +31,14 @@ RUN pnpm db:generate || echo "Prisma client generation skipped (DATABASE_URL may
 WORKDIR /app/apps/web
 RUN pnpm build
 
+# Verify standalone build exists
+RUN ls -la .next/standalone || echo "Standalone build not found"
+
 # Expose port (Railway will use PORT env var, default to 3000)
 EXPOSE 3000
 
 # Start the application using standalone mode
+# Next.js standalone mode requires running from the web app directory
 WORKDIR /app/apps/web
-# Use PORT env var if set, otherwise default to 3000
-CMD node .next/standalone/server.js
+CMD ["node", ".next/standalone/server.js"]
 
