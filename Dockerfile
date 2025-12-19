@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
-# Install OpenSSL for Prisma
-RUN apk add --no-cache openssl1.1-compat
+# Install OpenSSL and libc6-compat for Prisma
+RUN apk add --no-cache openssl libc6-compat
 
 # Enable corepack for pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
