@@ -14,7 +14,12 @@ import { RecentActivity } from "./components/RecentActivity";
 export const dynamic = "force-dynamic";
 
 export default async function CommercialDashboard() {
-  let opportunitiesStats, contactsCount, companiesCount, recentOpportunities, recentContacts, recentCompanies;
+  let opportunitiesStats: Awaited<ReturnType<typeof getOpportunitiesStats>>;
+  let contactsCount: number;
+  let companiesCount: number;
+  let recentOpportunities: Awaited<ReturnType<typeof getRecentOpportunities>>;
+  let recentContacts: Awaited<ReturnType<typeof getRecentContacts>>;
+  let recentCompanies: Awaited<ReturnType<typeof getRecentCompanies>>;
 
   try {
     [
@@ -37,6 +42,7 @@ export default async function CommercialDashboard() {
     // Return default values if database is not accessible
     opportunitiesStats = {
       totalOpportunities: 0,
+      wonOpportunities: 0,
       conversionRate: 0,
       totalRevenue: 0,
       pipelineByStage: [],
