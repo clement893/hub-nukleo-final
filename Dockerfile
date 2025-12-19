@@ -34,6 +34,7 @@ RUN pnpm build
 # Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["pnpm", "start"]
+# Start the application using standalone mode
+WORKDIR /app/apps/web
+CMD ["pnpm", "start:standalone"]
 
