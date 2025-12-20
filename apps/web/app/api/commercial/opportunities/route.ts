@@ -54,7 +54,17 @@ export async function POST(request: NextRequest) {
 
     const data = validationResult.data;
 
-    const ownerId = await getCurrentUserId();
+    // Get current user ID with proper error handling
+    let ownerId: string;
+    try {
+      ownerId = await getCurrentUserId();
+    } catch (authError) {
+      logger.error("Authentication error", authError instanceof Error ? authError : new Error(String(authError)));
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
 
     const opportunity = await createOpportunity({
       title: data.title,
@@ -91,8 +101,9 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     logger.error("Error creating opportunity", error instanceof Error ? error : new Error(String(error)));
+    const errorMessage = error instanceof Error ? error.message : "Failed to create opportunity";
     return NextResponse.json(
-      { success: false, error: "Failed to create opportunity" },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

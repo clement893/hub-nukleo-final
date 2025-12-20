@@ -12,6 +12,24 @@ const getPrismaClient = () => {
   // Prisma will still validate the connection string format, but won't connect
   const databaseUrl = process.env.DATABASE_URL || "postgresql://dummy:dummy@dummy:5432/dummy";
   
+  // Parse DATABASE_URL to add connection pool parameters if not already present
+  // This helps prevent connection exhaustion on Railway PostgreSQL
+  let finalDatabaseUrl = databaseUrl;
+  
+  // Only modify if it's a real URL (not the dummy one) and doesn't already have params
+  if (databaseUrl !== "postgresql://dummy:dummy@dummy:5432/dummy" && !databaseUrl.includes("?")) {
+    try {
+      const url = new URL(databaseUrl);
+      url.searchParams.set("connection_limit", "10");
+      url.searchParams.set("pool_timeout", "10");
+      url.searchParams.set("connect_timeout", "10");
+      finalDatabaseUrl = url.toString();
+    } catch (e) {
+      // If URL parsing fails, use original URL
+      finalDatabaseUrl = databaseUrl;
+    }
+  }
+  
   return new PrismaClient({
     log:
       process.env.NODE_ENV === "development"
@@ -19,7 +37,7 @@ const getPrismaClient = () => {
         : ["error"],
     datasources: {
       db: {
-        url: databaseUrl,
+        url: finalDatabaseUrl,
       },
     },
   });
