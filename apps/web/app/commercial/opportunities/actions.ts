@@ -16,6 +16,10 @@ import { revalidatePath } from "next/cache";
 export async function getOpportunitiesAction() {
   try {
     const opportunities = await getAllOpportunities();
+    
+    // Log for debugging - remove in production if not needed
+    logger.info(`Fetched ${opportunities.length} opportunities`);
+    
     return {
       success: true,
       data: opportunities.map((opp) => ({
@@ -28,11 +32,15 @@ export async function getOpportunitiesAction() {
         expectedCloseDate: opp.expectedCloseDate,
         company: opp.company,
         contact: opp.contact,
+        // Include owner info if available (may be null for Manus-imported opportunities)
+        owner: opp.owner,
       })),
     };
   } catch (error) {
     logger.error("Error fetching opportunities", error instanceof Error ? error : new Error(String(error)));
-    return { success: false, error: "Failed to fetch opportunities" };
+    // Return empty array instead of failing completely
+    // This ensures the UI can still load even if there's a database issue
+    return { success: false, error: "Failed to fetch opportunities", data: [] };
   }
 }
 

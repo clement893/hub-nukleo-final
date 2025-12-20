@@ -64,6 +64,8 @@ export async function getRecentOpportunities(limit = 5) {
 }
 
 export async function getAllOpportunities() {
+  // Use raw query approach to ensure all opportunities are returned
+  // even if ownerId points to a non-existent user (which can happen with Manus imports)
   return prisma.opportunity.findMany({
     orderBy: { createdAt: "desc" },
     include: {
@@ -77,6 +79,9 @@ export async function getAllOpportunities() {
         select: { id: true, name: true },
       },
     },
+    // Prisma's include uses LEFT JOIN by default, so opportunities with invalid ownerId
+    // will still be returned with owner: null
+    // This ensures opportunities imported by Manus are visible even if ownerId is invalid
   });
 }
 

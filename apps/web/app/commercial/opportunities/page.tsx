@@ -56,6 +56,8 @@ const stages: OpportunityStage[] = [
   "CONTRACT_TO_DO",
   "CLOSED_WON",
   "CLOSED_LOST",
+  "RENEWALS_POTENTIAL_UPCOMING",
+  "WAITING_OR_SILENT",
 ];
 
 const stageLabels: Record<OpportunityStage, string> = {
