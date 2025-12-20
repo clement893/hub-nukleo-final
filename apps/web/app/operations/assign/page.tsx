@@ -188,7 +188,7 @@ export default function AssignTasksPage() {
       URGENT: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
     };
     const color = colors[priority];
-    return color ?? colors.MEDIUM;
+    return color ?? colors.MEDIUM ?? "";
   };
 
   if (isLoading) {
