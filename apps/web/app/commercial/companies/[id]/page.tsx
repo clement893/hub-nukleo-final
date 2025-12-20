@@ -43,6 +43,7 @@ export default async function CompanyDetailPage({
         address: company.address,
         city: company.city,
         country: company.country,
+        logoKey: company.logoKey,
         contacts: company.contacts.map((contact) => ({
           id: contact.id,
           firstName: contact.firstName,
