@@ -15,7 +15,7 @@ import {
   getEmployeesByDepartmentAction,
 } from "./actions";
 import { useToast } from "@/lib/toast";
-import type { Department, TaskZone } from "@prisma/client";
+import type { Department, TaskZone, TaskStatus, TaskPriority } from "@prisma/client";
 
 const departmentLabels: Record<Department, string> = {
   BUREAU: "Bureau",
@@ -55,8 +55,8 @@ type Task = {
   id: string;
   title: string;
   description: string | null;
-  status: string;
-  priority: string;
+  status: TaskStatus;
+  priority: TaskPriority;
   dueDate: Date | null;
   zone: TaskZone | null;
   department: Department | null;
