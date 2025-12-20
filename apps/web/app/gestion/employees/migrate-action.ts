@@ -64,10 +64,10 @@ export async function migrateUsersToEmployeesAction() {
 
         if (name) {
           const nameParts = name.trim().split(/\s+/);
-          if (nameParts.length >= 2) {
+          if (nameParts.length >= 2 && nameParts[0]) {
             firstName = nameParts[0];
-            lastName = nameParts.slice(1).join(" ");
-          } else if (nameParts.length === 1) {
+            lastName = nameParts.slice(1).join(" ") || null;
+          } else if (nameParts.length === 1 && nameParts[0]) {
             firstName = nameParts[0];
           }
         }
