@@ -124,7 +124,7 @@ export async function createInvoiceAction(data: {
     let nextNumber = 1;
     if (lastInvoice) {
       const parts = lastInvoice.number.split("-");
-      if (parts.length >= 3) {
+      if (parts.length >= 3 && parts[2]) {
         const lastNumber = parseInt(parts[2]);
         if (!isNaN(lastNumber)) {
           nextNumber = lastNumber + 1;
