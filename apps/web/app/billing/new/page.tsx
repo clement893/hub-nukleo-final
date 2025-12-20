@@ -147,8 +147,8 @@ export default function NewInvoicePage() {
       }
 
       // TypeScript guard: après la vérification ci-dessus, ces valeurs sont garanties d'exister
-      const issueDate: string = formData.issueDate;
-      const dueDate: string = formData.dueDate;
+      const issueDate = formData.issueDate as string;
+      const dueDate = formData.dueDate as string;
 
       const result = await createInvoiceAction({
         companyId: formData.companyId,
