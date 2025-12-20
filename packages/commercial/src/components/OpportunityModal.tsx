@@ -15,6 +15,7 @@ import {
   opportunitySchema,
   type OpportunityFormData,
 } from "../schemas/opportunity";
+import type { OpportunityStage } from "@nukleo/db/types";
 
 export interface OpportunityModalProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ export function OpportunityModal({
       title: "",
       description: "",
       value: undefined,
-      stage: "IDEAS_CONTACT_PROJECT",
+      stage: "IDEAS_CONTACT_PROJECT" as OpportunityStage,
       probability: undefined,
       expectedCloseDate: undefined,
       companyId: undefined,
@@ -75,7 +76,7 @@ export function OpportunityModal({
         title: "",
         description: "",
         value: undefined,
-        stage: "IDEAS_CONTACT_PROJECT",
+        stage: "IDEAS_CONTACT_PROJECT" as OpportunityStage,
         probability: undefined,
         expectedCloseDate: undefined,
         companyId: undefined,
