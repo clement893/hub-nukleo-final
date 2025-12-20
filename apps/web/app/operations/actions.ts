@@ -36,7 +36,6 @@ import {
   milestoneSchema,
   updateMilestoneSchema,
   projectNoteSchema,
-  updateProjectNoteSchema,
   getTasksByDepartment,
   moveTaskToZone,
   getEmployeesByDepartment,
