@@ -438,7 +438,7 @@ export default function EmployeesPage() {
                                 Actions
                               </Button>
                             </DropdownTrigger>
-                            <DropdownContent align="end">
+                            <DropdownContent>
                               <DropdownItem onClick={() => handleEditEmployee(employee)}>
                                 Modifier
                               </DropdownItem>
