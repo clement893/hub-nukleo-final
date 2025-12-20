@@ -79,7 +79,7 @@ export function ImportModal({
         .map((h) => h.trim().replace(/^"|"$/g, ""));
 
       // Parse data rows (limit to 10 for preview)
-      const previewData = lines.slice(1, 11).map((line, index) => {
+      const previewData = lines.slice(1, 11).map((line) => {
         const values = line.split(",").map((v) => v.trim().replace(/^"|"$/g, ""));
         const row: any = {};
         headers.forEach((header, i) => {
