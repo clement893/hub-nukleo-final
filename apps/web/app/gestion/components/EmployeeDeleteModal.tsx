@@ -25,18 +25,37 @@ export function EmployeeDeleteModal({
     return employee.name || employee.email;
   };
 
+  const employeeName = getEmployeeName();
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Supprimer l'employé">
-      <p className="mb-4 text-gray-900 dark:text-white">
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title="Supprimer l'employé"
+      aria-labelledby="delete-modal-title"
+      aria-describedby="delete-modal-description"
+    >
+      <p 
+        id="delete-modal-description"
+        className="mb-4 text-gray-900 dark:text-white"
+      >
         Êtes-vous sûr de vouloir supprimer l'employé{" "}
-        <strong className="text-gray-900 dark:text-white">{getEmployeeName()}</strong> ?
+        <strong className="text-gray-900 dark:text-white">{employeeName}</strong> ?
         Cette action est irréversible.
       </p>
       <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={onClose}>
+        <Button 
+          variant="outline" 
+          onClick={onClose}
+          aria-label="Annuler la suppression"
+        >
           Annuler
         </Button>
-        <Button variant="danger" onClick={onConfirm}>
+        <Button 
+          variant="danger" 
+          onClick={onConfirm}
+          aria-label={`Confirmer la suppression de ${employeeName}`}
+        >
           Supprimer
         </Button>
       </div>

@@ -200,18 +200,27 @@ export function EmployeeTable({
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownTrigger>
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            aria-label={`Actions pour ${fullName}`}
+                            aria-haspopup="true"
+                          >
                             Actions
                           </Button>
                         </DropdownTrigger>
                         <DropdownContent>
-                          <DropdownItem onClick={() => onEdit(employee)}>
+                          <DropdownItem 
+                            onClick={() => onEdit(employee)}
+                            aria-label={`Modifier ${fullName}`}
+                          >
                             Modifier
                           </DropdownItem>
                           <DropdownSeparator />
                           <DropdownItem
                             onClick={() => onDelete(employee)}
                             className="text-red-600 dark:text-red-400"
+                            aria-label={`Supprimer ${fullName}`}
                           >
                             Supprimer
                           </DropdownItem>

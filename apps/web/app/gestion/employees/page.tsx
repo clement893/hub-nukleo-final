@@ -9,6 +9,7 @@ import {
 } from "./actions";
 import { useToast } from "@/lib/toast";
 import type { EmployeeFormData } from "@nukleo/gestion/client";
+import { Loader } from "@nukleo/ui";
 import { PageHeader } from "../components/PageHeader";
 import { EmployeeFilters } from "../components/EmployeeFilters";
 import { EmployeeTable, type Employee } from "../components/EmployeeTable";
@@ -228,8 +229,14 @@ export default function EmployeesPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500 dark:text-gray-400">Chargement...</p>
+      <div 
+        className="flex items-center justify-center min-h-screen" 
+        role="status" 
+        aria-live="polite"
+        aria-label="Chargement des employés"
+      >
+        <Loader size="lg" />
+        <span className="sr-only">Chargement des employés...</span>
       </div>
     );
   }
