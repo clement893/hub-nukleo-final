@@ -33,6 +33,7 @@ import { useToast } from "../../../../lib/toast";
 import { exportToCSV, exportToPDF } from "../../../../lib/export";
 import { calculateContactStats, type Contact } from "../../../../lib/stats";
 import { ContactAvatar } from "../../../../components/ContactAvatar";
+import { UnifiedSearchBar } from "../../../../components/UnifiedSearchBar";
 
 type ContactWithPhoto = Contact & { photoKey?: string | null };
 
@@ -43,6 +44,8 @@ export default function ContactsGalleryPage() {
     Array<{ id: string; name: string }>
   >([]);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [unifiedSearchResults, setUnifiedSearchResults] = React.useState<Set<string>>(new Set());
+  const [isUnifiedSearchActive, setIsUnifiedSearchActive] = React.useState(false);
   const [filterCompany, setFilterCompany] = React.useState<string>("");
   const [filterPosition, setFilterPosition] = React.useState<string>("");
   const [hasEmail, setHasEmail] = React.useState<boolean | null>(null);
@@ -97,8 +100,13 @@ export default function ContactsGalleryPage() {
   // Advanced filtering
   const filteredContacts = React.useMemo(() => {
     return contacts.filter((contact) => {
-      // Search term filter
+      // Unified search filter (if active)
+      const matchesUnifiedSearch = 
+        !isUnifiedSearchActive || unifiedSearchResults.has(contact.id);
+
+      // Search term filter (fallback if unified search not active)
       const matchesSearch =
+        isUnifiedSearchActive ||
         !searchTerm ||
         contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -123,6 +131,7 @@ export default function ContactsGalleryPage() {
         hasPhone === null || (hasPhone ? !!contact.phone : !contact.phone);
 
       return (
+        matchesUnifiedSearch &&
         matchesSearch &&
         matchesCompany &&
         matchesPosition &&
@@ -130,7 +139,7 @@ export default function ContactsGalleryPage() {
         matchesPhone
       );
     });
-  }, [contacts, searchTerm, filterCompany, filterPosition, hasEmail, hasPhone]);
+  }, [contacts, searchTerm, unifiedSearchResults, isUnifiedSearchActive, filterCompany, filterPosition, hasEmail, hasPhone]);
 
   // Get unique positions for filter
   const uniquePositions = React.useMemo(() => {
@@ -333,6 +342,8 @@ export default function ContactsGalleryPage() {
 
   const handleResetFilters = () => {
     setSearchTerm("");
+    setUnifiedSearchResults(new Set());
+    setIsUnifiedSearchActive(false);
     setFilterCompany("");
     setFilterPosition("");
     setHasEmail(null);
@@ -419,23 +430,39 @@ export default function ContactsGalleryPage() {
         </div>
       </div>
 
+      {/* Unified Search Bar */}
+      <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
+        <CardHeader>
+          <CardTitle className="text-gray-900 dark:text-white">Recherche unifiée</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <UnifiedSearchBar
+            placeholder="Rechercher dans les contacts et entreprises..."
+            onSearch={(results) => {
+              if (results.contacts.length === 0 && results.companies.length === 0) {
+                // No search term, clear unified search
+                setIsUnifiedSearchActive(false);
+                setUnifiedSearchResults(new Set());
+                setSearchTerm("");
+              } else {
+                // Set unified search results
+                const resultContactIds = new Set(results.contacts.map(c => c.id));
+                setUnifiedSearchResults(resultContactIds);
+                setIsUnifiedSearchActive(true);
+                setSearchTerm(""); // Clear local search term
+              }
+            }}
+          />
+        </CardContent>
+      </Card>
+
       {/* Advanced Filters */}
       <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Filtres et recherche</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-white">Filtres</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Recherche
-              </label>
-              <Input
-                placeholder="Rechercher un contact..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Entreprise

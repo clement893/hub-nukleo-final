@@ -2,12 +2,17 @@ import { z } from "zod";
 import type { OpportunityStage } from "@nukleo/db/types";
 
 export const opportunityStageSchema = z.enum([
-  "NEW",
-  "QUALIFIED",
-  "PROPOSAL",
-  "NEGOTIATION",
-  "WON",
-  "LOST",
+  "IDEAS_CONTACT_PROJECT",
+  "FOLLOW_UP_EMAILS",
+  "MEETING_BOOKED",
+  "IN_DISCUSSION",
+  "PROPOSAL_TO_DO",
+  "PROPOSAL_SENT",
+  "CONTRACT_TO_DO",
+  "CLOSED_WON",
+  "CLOSED_LOST",
+  "RENEWALS_POTENTIAL_UPCOMING",
+  "WAITING_OR_SILENT",
 ]) as z.ZodType<OpportunityStage>;
 
 export const opportunitySchema = z.object({

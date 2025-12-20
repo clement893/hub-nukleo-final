@@ -26,12 +26,17 @@ export interface OpportunityModalProps {
 }
 
 const stageOptions: SelectOption[] = [
-  { value: "NEW", label: "Nouvelle" },
-  { value: "QUALIFIED", label: "Qualifiée" },
-  { value: "PROPOSAL", label: "Proposition" },
-  { value: "NEGOTIATION", label: "Négociation" },
-  { value: "WON", label: "Gagnée" },
-  { value: "LOST", label: "Perdue" },
+  { value: "IDEAS_CONTACT_PROJECT", label: "Idées de contact/projet" },
+  { value: "FOLLOW_UP_EMAILS", label: "Suivi/Emails" },
+  { value: "MEETING_BOOKED", label: "Rencontre bookée" },
+  { value: "IN_DISCUSSION", label: "En discussion" },
+  { value: "PROPOSAL_TO_DO", label: "Proposal to do" },
+  { value: "PROPOSAL_SENT", label: "Proposal sent" },
+  { value: "CONTRACT_TO_DO", label: "Contract to do" },
+  { value: "CLOSED_WON", label: "Closed Won" },
+  { value: "CLOSED_LOST", label: "Closed Lost" },
+  { value: "RENEWALS_POTENTIAL_UPCOMING", label: "Renouvellements (potentiels, à venir)" },
+  { value: "WAITING_OR_SILENT", label: "En attente ou Silence radio" },
 ];
 
 export function OpportunityModal({
@@ -54,7 +59,7 @@ export function OpportunityModal({
       title: "",
       description: "",
       value: undefined,
-      stage: "NEW",
+      stage: "IDEAS_CONTACT_PROJECT",
       probability: undefined,
       expectedCloseDate: undefined,
       companyId: undefined,
@@ -70,7 +75,7 @@ export function OpportunityModal({
         title: "",
         description: "",
         value: undefined,
-        stage: "NEW",
+        stage: "IDEAS_CONTACT_PROJECT",
         probability: undefined,
         expectedCloseDate: undefined,
         companyId: undefined,
