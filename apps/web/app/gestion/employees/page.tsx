@@ -7,9 +7,10 @@ import {
   updateEmployeeAction,
   deleteEmployeeAction,
 } from "./actions";
+import { migrateUsersToEmployeesAction } from "./migrate-action";
 import { useToast } from "@/lib/toast";
 import type { EmployeeFormData } from "@nukleo/gestion/client";
-import { Loader } from "@nukleo/ui";
+import { Loader, Button } from "@nukleo/ui";
 import { PageHeader } from "../components/PageHeader";
 import { EmployeeFilters } from "../components/EmployeeFilters";
 import { EmployeeTable, type Employee } from "../components/EmployeeTable";
@@ -42,6 +43,7 @@ export default function EmployeesPage() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(50);
   const [formData, setFormData] = React.useState<EmployeeFormData>(initialFormData);
+  const [isMigrating, setIsMigrating] = React.useState(false);
   const { addToast } = useToast();
 
   React.useEffect(() => {
@@ -238,6 +240,45 @@ export default function EmployeesPage() {
     setFormData(initialFormData);
   };
 
+  const handleMigrateUsers = async () => {
+    if (!confirm("Voulez-vous migrer les utilisateurs (role: USER) de la table User vers Employee ?")) {
+      return;
+    }
+
+    try {
+      setIsMigrating(true);
+      const result = await migrateUsersToEmployeesAction();
+      
+      if (result.success) {
+        addToast({
+          variant: "success",
+          title: "Migration réussie",
+          description: result.message,
+        });
+        // Recharger les employés
+        const employeesResult = await getEmployeesAction();
+        if (employeesResult.success && employeesResult.data) {
+          setEmployees(employeesResult.data);
+        }
+      } else {
+        addToast({
+          variant: "error",
+          title: "Erreur de migration",
+          description: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error migrating users:", error);
+      addToast({
+        variant: "error",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la migration",
+      });
+    } finally {
+      setIsMigrating(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div 
@@ -254,12 +295,24 @@ export default function EmployeesPage() {
 
   return (
     <>
-      <PageHeader
-        title="Employés"
-        description="Gérez les employés de l'entreprise"
-        actionLabel="Nouvel employé"
-        onAction={handleCreateEmployee}
-      />
+      <div className="mb-8">
+        <PageHeader
+          title="Employés"
+          description="Gérez les employés de l'entreprise"
+          actionLabel="Nouvel employé"
+          onAction={handleCreateEmployee}
+        />
+        <div className="mt-4 flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleMigrateUsers}
+            disabled={isMigrating}
+            size="sm"
+          >
+            {isMigrating ? "Migration en cours..." : "Migrer les utilisateurs (User → Employee)"}
+          </Button>
+        </div>
+      </div>
 
       <EmployeeFilters
         searchTerm={searchTerm}
