@@ -114,14 +114,14 @@ export default function AdminAuditPage() {
     URL.revokeObjectURL(url);
   };
 
-  const getActionBadgeVariant = (action: string) => {
+  const getActionBadgeVariant = (action: string): "error" | "warning" | "default" | "primary" | "secondary" | "outline" | "success" => {
     switch (action) {
       case "CREATE":
         return "success";
       case "UPDATE":
         return "primary";
       case "DELETE":
-        return "destructive";
+        return "error";
       default:
         return "secondary";
     }
