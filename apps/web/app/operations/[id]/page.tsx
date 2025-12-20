@@ -492,7 +492,7 @@ export default function ProjectDetailPage() {
                     <Button
                       onClick={() => {
                         setEditingMilestone(milestone);
-                        const dueDateValue = milestone.dueDate
+                        const dueDateValue: string = milestone.dueDate
                           ? new Date(milestone.dueDate).toISOString().split("T")[0]
                           : "";
                         setMilestoneFormData({
