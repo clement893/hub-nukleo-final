@@ -23,6 +23,7 @@ CREATE TABLE users (
   "lastName" TEXT,          -- Nom de famille
   linkedin TEXT,            -- LinkedIn URL
   department TEXT,          -- Département
+  title TEXT,               -- Titre/Poste
   birthday TIMESTAMP,       -- Anniversaire
   "hireDate" TIMESTAMP,     -- Anniversaire embauche
   password TEXT,
@@ -48,6 +49,7 @@ CREATE INDEX users_department_idx ON users(department);
 | `lastName` | TEXT | Nom de famille de l'employé | Non |
 | `linkedin` | TEXT | URL du profil LinkedIn | Non |
 | `department` | TEXT | Département de l'employé (ex: Commercial, Technique, RH...) | Non |
+| `title` | TEXT | Titre/Poste de l'employé (ex: Développeur Senior, Chef de projet...) | Non |
 | `birthday` | TIMESTAMP | Date d'anniversaire | Non |
 | `hireDate` | TIMESTAMP | Date d'embauche (anniversaire embauche) | Non |
 | `role` | TEXT | Rôle: `ADMIN`, `MANAGER`, ou `USER` (défaut: `USER`) | Non |
@@ -82,6 +84,7 @@ INSERT INTO users (
   name,
   linkedin,
   department,
+  title,
   birthday,
   "hireDate",
   role,
@@ -97,6 +100,7 @@ VALUES (
   'Jean Dupont',             -- Nom complet (peut être généré automatiquement)
   'https://linkedin.com/in/jean-dupont',  -- LinkedIn URL
   'Commercial',              -- Département
+  'Développeur Senior',      -- Titre/Poste
   '1990-05-15',              -- Anniversaire (format DATE ou TIMESTAMP)
   '2020-01-15',              -- Date d'embauche
   'USER',                    -- ou 'MANAGER' ou 'ADMIN'
@@ -122,10 +126,10 @@ INSERT INTO users (
   image
 )
 VALUES
-  ('jean.dupont@example.com', 'Jean', 'Dupont', 'Jean Dupont', 'https://linkedin.com/in/jean-dupont', 'Commercial', '1990-05-15', '2020-01-15', 'USER', NULL),
-  ('marie.martin@example.com', 'Marie', 'Martin', 'Marie Martin', 'https://linkedin.com/in/marie-martin', 'Technique', '1988-03-20', '2019-06-01', 'MANAGER', NULL),
-  ('pierre.durand@example.com', 'Pierre', 'Durand', 'Pierre Durand', NULL, 'RH', '1992-11-10', '2021-09-01', 'USER', NULL),
-  ('sophie.bernard@example.com', 'Sophie', 'Bernard', 'Sophie Bernard', 'https://linkedin.com/in/sophie-bernard', 'Direction', '1985-07-25', '2018-01-01', 'ADMIN', NULL);
+  ('jean.dupont@example.com', 'Jean', 'Dupont', 'Jean Dupont', 'https://linkedin.com/in/jean-dupont', 'Commercial', 'Développeur Senior', '1990-05-15', '2020-01-15', 'USER', NULL),
+  ('marie.martin@example.com', 'Marie', 'Martin', 'Marie Martin', 'https://linkedin.com/in/marie-martin', 'Technique', 'Chef de projet', '1988-03-20', '2019-06-01', 'MANAGER', NULL),
+  ('pierre.durand@example.com', 'Pierre', 'Durand', 'Pierre Durand', NULL, 'RH', 'Responsable RH', '1992-11-10', '2021-09-01', 'USER', NULL),
+  ('sophie.bernard@example.com', 'Sophie', 'Bernard', 'Sophie Bernard', 'https://linkedin.com/in/sophie-bernard', 'Direction', 'Directrice Générale', '1985-07-25', '2018-01-01', 'ADMIN', NULL);
 ```
 
 **Note :** Les champs `id`, `createdAt` et `updatedAt` seront générés automatiquement si non fournis.
@@ -236,16 +240,17 @@ INSERT INTO users (
   name,
   linkedin,
   department,
+  title,
   birthday,
   "hireDate",
   role,
   image
 )
 VALUES
-  ('jean.dupont@acme.com', 'Jean', 'Dupont', 'Jean Dupont', 'https://linkedin.com/in/jean-dupont', 'Commercial', '1990-05-15', '2020-01-15', 'USER', NULL),
-  ('marie.martin@acme.com', 'Marie', 'Martin', 'Marie Martin', 'https://linkedin.com/in/marie-martin', 'Technique', '1988-03-20', '2019-06-01', 'MANAGER', NULL),
-  ('pierre.durand@acme.com', 'Pierre', 'Durand', 'Pierre Durand', NULL, 'RH', '1992-11-10', '2021-09-01', 'USER', NULL),
-  ('sophie.bernard@acme.com', 'Sophie', 'Bernard', 'Sophie Bernard', 'https://linkedin.com/in/sophie-bernard', 'Direction', '1985-07-25', '2018-01-01', 'ADMIN', NULL);
+  ('jean.dupont@acme.com', 'Jean', 'Dupont', 'Jean Dupont', 'https://linkedin.com/in/jean-dupont', 'Commercial', 'Développeur Senior', '1990-05-15', '2020-01-15', 'USER', NULL),
+  ('marie.martin@acme.com', 'Marie', 'Martin', 'Marie Martin', 'https://linkedin.com/in/marie-martin', 'Technique', 'Chef de projet', '1988-03-20', '2019-06-01', 'MANAGER', NULL),
+  ('pierre.durand@acme.com', 'Pierre', 'Durand', 'Pierre Durand', NULL, 'RH', 'Responsable RH', '1992-11-10', '2021-09-01', 'USER', NULL),
+  ('sophie.bernard@acme.com', 'Sophie', 'Bernard', 'Sophie Bernard', 'https://linkedin.com/in/sophie-bernard', 'Direction', 'Directrice Générale', '1985-07-25', '2018-01-01', 'ADMIN', NULL);
 
 -- 3. Vérifier
 SELECT 
@@ -280,7 +285,7 @@ Voici un script SQL complet que MANUS peut adapter :
 -- ============================================
 
 -- Option 1 : Insertion simple avec gestion des conflits
-INSERT INTO users (email, "firstName", "lastName", name, linkedin, department, birthday, "hireDate", role, image)
+INSERT INTO users (email, "firstName", "lastName", name, linkedin, department, title, birthday, "hireDate", role, image)
 SELECT 
   'email@example.com',
   'Prénom',
@@ -288,6 +293,7 @@ SELECT
   'Prénom Nom',
   'https://linkedin.com/in/profil',
   'Département',
+  'Titre/Poste',
   '1990-01-01',
   '2020-01-01',
   'USER',
@@ -298,17 +304,18 @@ WHERE NOT EXISTS (
 RETURNING id, email, "firstName", "lastName", name;
 
 -- Option 2 : Insertion en masse avec gestion des conflits
-INSERT INTO users (email, "firstName", "lastName", name, linkedin, department, birthday, "hireDate", role, image)
+INSERT INTO users (email, "firstName", "lastName", name, linkedin, department, title, birthday, "hireDate", role, image)
 VALUES
-  ('email1@example.com', 'Prénom1', 'Nom1', 'Prénom1 Nom1', 'https://linkedin.com/in/profil1', 'Commercial', '1990-01-01', '2020-01-01', 'USER', NULL),
-  ('email2@example.com', 'Prénom2', 'Nom2', 'Prénom2 Nom2', 'https://linkedin.com/in/profil2', 'Technique', '1988-05-15', '2019-06-01', 'MANAGER', NULL),
-  ('email3@example.com', 'Prénom3', 'Nom3', 'Prénom3 Nom3', NULL, 'RH', '1992-11-20', '2021-09-01', 'USER', NULL)
+  ('email1@example.com', 'Prénom1', 'Nom1', 'Prénom1 Nom1', 'https://linkedin.com/in/profil1', 'Commercial', 'Développeur', '1990-01-01', '2020-01-01', 'USER', NULL),
+  ('email2@example.com', 'Prénom2', 'Nom2', 'Prénom2 Nom2', 'https://linkedin.com/in/profil2', 'Technique', 'Chef de projet', '1988-05-15', '2019-06-01', 'MANAGER', NULL),
+  ('email3@example.com', 'Prénom3', 'Nom3', 'Prénom3 Nom3', NULL, 'RH', 'Responsable RH', '1992-11-20', '2021-09-01', 'USER', NULL)
 ON CONFLICT (email) DO UPDATE
 SET "firstName" = EXCLUDED."firstName",
     "lastName" = EXCLUDED."lastName",
     name = EXCLUDED.name,
     linkedin = EXCLUDED.linkedin,
     department = EXCLUDED.department,
+    title = EXCLUDED.title,
     birthday = EXCLUDED.birthday,
     "hireDate" = EXCLUDED."hireDate",
     role = EXCLUDED.role,
