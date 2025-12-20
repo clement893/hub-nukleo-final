@@ -143,7 +143,7 @@ export default function AdminRolesPage() {
       }
     } catch (err) {
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: "Une erreur est survenue",
       });
@@ -177,7 +177,7 @@ export default function AdminRolesPage() {
       }
     } catch (err) {
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: "Une erreur est survenue",
       });
