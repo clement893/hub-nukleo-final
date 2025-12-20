@@ -493,7 +493,7 @@ export default function ProjectDetailPage() {
                           status: milestone.status,
                           dueDate: milestone.dueDate
                             ? new Date(milestone.dueDate).toISOString().split("T")[0]
-                            : "",
+                            : "" as string,
                         });
                         setIsMilestoneModalOpen(true);
                       }}
