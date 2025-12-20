@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, Input, Select, Label, Textarea } from "@nukleo/ui";
+import { Button, Input, Select, Textarea } from "@nukleo/ui";
 import { X } from "lucide-react";
 import { format } from "date-fns";
 
@@ -171,7 +171,7 @@ export function EventModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Title */}
           <div>
-            <Label htmlFor="title">Titre *</Label>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Titre *</label>
             <Input
               id="title"
               value={formData.title}
@@ -186,7 +186,7 @@ export function EventModal({
           {/* Type and Color */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="type">Type</Label>
+              <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
               <Select
                 id="type"
                 value={formData.type}
@@ -202,7 +202,7 @@ export function EventModal({
               </Select>
             </div>
             <div>
-              <Label htmlFor="color">Couleur</Label>
+              <label htmlFor="color" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Couleur</label>
               <Select
                 id="color"
                 value={formData.color}
@@ -230,15 +230,15 @@ export function EventModal({
               }
               className="rounded border-gray-300"
             />
-            <Label htmlFor="allDay" className="mb-0">
+            <label htmlFor="allDay" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Toute la journée
-            </Label>
+            </label>
           </div>
 
           {/* Start Date/Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="startDate">Date de début *</Label>
+              <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date de début *</label>
               <Input
                 type="date"
                 id="startDate"
@@ -251,7 +251,7 @@ export function EventModal({
             </div>
             {!formData.allDay && (
               <div>
-                <Label htmlFor="startTime">Heure de début</Label>
+                <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Heure de début</label>
                 <Input
                   type="time"
                   id="startTime"
@@ -267,7 +267,7 @@ export function EventModal({
           {/* End Date/Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="endDate">Date de fin *</Label>
+              <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date de fin *</label>
               <Input
                 type="date"
                 id="endDate"
@@ -280,7 +280,7 @@ export function EventModal({
             </div>
             {!formData.allDay && (
               <div>
-                <Label htmlFor="endTime">Heure de fin</Label>
+                <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Heure de fin</label>
                 <Input
                   type="time"
                   id="endTime"
@@ -295,7 +295,7 @@ export function EventModal({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
             <Textarea
               id="description"
               value={formData.description}
@@ -309,7 +309,7 @@ export function EventModal({
 
           {/* Location */}
           <div>
-            <Label htmlFor="location">Lieu</Label>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lieu</label>
             <Input
               id="location"
               value={formData.location}
@@ -324,7 +324,7 @@ export function EventModal({
           <div className="grid grid-cols-2 gap-4">
             {opportunities.length > 0 && (
               <div>
-                <Label htmlFor="opportunityId">Opportunité</Label>
+                <label htmlFor="opportunityId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Opportunité</label>
                 <Select
                   id="opportunityId"
                   value={formData.opportunityId}
@@ -344,7 +344,7 @@ export function EventModal({
 
             {projects.length > 0 && (
               <div>
-                <Label htmlFor="projectId">Projet</Label>
+                <label htmlFor="projectId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Projet</label>
                 <Select
                   id="projectId"
                   value={formData.projectId}
@@ -365,7 +365,7 @@ export function EventModal({
 
           {/* Notes */}
           <div>
-            <Label htmlFor="notes">Notes</Label>
+            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
             <Textarea
               id="notes"
               value={formData.notes}
