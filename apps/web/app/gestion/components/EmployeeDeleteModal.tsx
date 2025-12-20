@@ -52,7 +52,7 @@ export function EmployeeDeleteModal({
           Annuler
         </Button>
         <Button 
-          variant="danger" 
+          variant="destructive" 
           onClick={onConfirm}
           aria-label={`Confirmer la suppression de ${employeeName}`}
         >

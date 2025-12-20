@@ -248,7 +248,7 @@ export function ContactDetailClient({
                   </Button>
                 </Link>
                 <Button
-                  variant="danger"
+                  variant="destructive"
                   className="w-full"
                   onClick={handleDelete}
                   disabled={isDeleting}

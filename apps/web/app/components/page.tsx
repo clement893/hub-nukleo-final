@@ -61,7 +61,7 @@ export default function ComponentsShowcase() {
               <Button variant="secondary">Secondary</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
-              <Button variant="danger">Danger</Button>
+              <Button variant="destructive">Danger</Button>
               <Button variant="link">Link</Button>
               <Button size="sm">Small</Button>
               <Button size="md">Medium</Button>
