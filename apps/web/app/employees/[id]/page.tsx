@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -40,7 +40,6 @@ interface Employee {
 
 export default function EmployeeDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const employeeId = params?.id as string;
   const [employee, setEmployee] = React.useState<Employee | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
