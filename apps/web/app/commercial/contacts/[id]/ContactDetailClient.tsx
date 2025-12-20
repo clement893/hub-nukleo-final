@@ -111,7 +111,7 @@ export function ContactDetailClient({
           <div className="lg:col-span-2">
             <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <ContactAvatar
                     firstName={contact.firstName}
                     lastName={contact.lastName}
@@ -119,7 +119,7 @@ export function ContactDetailClient({
                     size="lg"
                   />
                   <div>
-                    <CardTitle className="text-gray-900 dark:text-white">
+                    <CardTitle className="text-gray-900 dark:text-white text-xl sm:text-2xl">
                       {contact.firstName} {contact.lastName}
                     </CardTitle>
                     <CardContent className="pt-2">

@@ -398,27 +398,27 @@ export default function ContactsPage() {
   return (
     <>
       <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Contacts</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
               Gérez vos contacts commerciaux ({stats.total} contact{stats.total > 1 ? "s" : ""})
             </p>
           </div>
-          <div className="flex gap-2">
-            <Link href="/commercial/contacts/stats">
-              <Button variant="outline">Statistiques</Button>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/commercial/contacts/stats" className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full sm:w-auto">Statistiques</Button>
             </Link>
             <DropdownMenu>
               <DropdownTrigger>
-                <Button variant="outline">Exporter</Button>
+                <Button variant="outline" className="w-full sm:w-auto">Exporter</Button>
               </DropdownTrigger>
               <DropdownContent>
                 <DropdownItem onClick={handleExportCSV}>Exporter en CSV</DropdownItem>
                 <DropdownItem onClick={handleExportPDF}>Exporter en PDF</DropdownItem>
               </DropdownContent>
             </DropdownMenu>
-            <Button variant="primary" onClick={handleCreateContact}>
+            <Button variant="primary" onClick={handleCreateContact} className="w-full sm:w-auto">
               Nouveau contact
             </Button>
           </div>
@@ -635,7 +635,8 @@ export default function ContactsPage() {
                 )}
               </div>
             ) : (
-              <Table>
+              <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Contact</TableHead>
@@ -702,6 +703,7 @@ export default function ContactsPage() {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             )}
           </CardContent>
         </Card>

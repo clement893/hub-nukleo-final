@@ -389,14 +389,14 @@ export default function ContactsGalleryPage() {
   return (
     <>
       <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Galerie des contacts</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
               Visualisez les photos de vos contacts ({stats.total} contact{stats.total > 1 ? "s" : ""})
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link href="/commercial/contacts/stats">
               <Button variant="outline">Statistiques</Button>
             </Link>

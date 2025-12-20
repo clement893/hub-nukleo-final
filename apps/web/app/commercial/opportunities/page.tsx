@@ -163,7 +163,7 @@ function KanbanColumn({
   );
 
   return (
-    <div className="flex-shrink-0 w-80" ref={setNodeRef}>
+    <div className="flex-shrink-0 w-72 sm:w-80" ref={setNodeRef}>
       <Card className="h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -456,14 +456,14 @@ export default function OpportunitiesPage() {
 
   return (
     <>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
               Opportunités
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">Gérez votre pipeline de vente</p>
+            <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg">Gérez votre pipeline de vente</p>
           </div>
-          <Button variant="primary" onClick={handleCreateOpportunity}>
+          <Button variant="primary" onClick={handleCreateOpportunity} className="w-full sm:w-auto">
             Nouvelle opportunité
           </Button>
         </div>
@@ -474,8 +474,8 @@ export default function OpportunitiesPage() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="overflow-x-auto">
-            <div className="flex gap-4 min-w-max pb-4">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex gap-3 sm:gap-4 min-w-max pb-4">
               {stages.map((stage) => (
                 <KanbanColumn
                   key={stage}

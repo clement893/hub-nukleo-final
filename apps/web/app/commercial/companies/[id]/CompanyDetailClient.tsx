@@ -113,15 +113,17 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
           <div className="lg:col-span-2">
             <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center gap-4">
-                    <CompanyLogo
-                      companyName={company.name}
-                      logoKey={company.logoKey}
-                      size={64}
-                    />
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
+                      <CompanyLogo
+                        companyName={company.name}
+                        logoKey={company.logoKey}
+                        size={48}
+                      />
+                    </div>
                     <div>
-                      <CardTitle className="text-gray-900 dark:text-white">{company.name}</CardTitle>
+                      <CardTitle className="text-gray-900 dark:text-white text-xl sm:text-2xl">{company.name}</CardTitle>
                       {company.industry && (
                         <CardContent className="pt-2">
                           <Badge variant="default">{company.industry}</Badge>
