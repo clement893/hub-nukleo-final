@@ -67,7 +67,7 @@ export default function AdminAuditPage() {
       } else {
         setError(result.error || "Erreur");
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Impossible de charger les logs",
         });
@@ -76,7 +76,7 @@ export default function AdminAuditPage() {
       const message = err instanceof Error ? err.message : "Une erreur est survenue";
       setError(message);
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: message,
       });

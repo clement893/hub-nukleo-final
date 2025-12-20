@@ -82,7 +82,7 @@ export default function AdminRolesPage() {
       } else {
         setError(result.error || "Erreur");
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Impossible de charger les rôles",
         });
@@ -91,7 +91,7 @@ export default function AdminRolesPage() {
       const message = err instanceof Error ? err.message : "Une erreur est survenue";
       setError(message);
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: message,
       });
@@ -136,7 +136,7 @@ export default function AdminRolesPage() {
         loadRoles();
       } else {
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Impossible de supprimer",
         });
@@ -170,7 +170,7 @@ export default function AdminRolesPage() {
         loadRoles();
       } else {
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Une erreur est survenue",
         });

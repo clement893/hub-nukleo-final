@@ -56,7 +56,7 @@ export default function AdminUsersPage() {
       } else {
         setError(result.error || "Erreur");
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Impossible de charger les utilisateurs",
         });
@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
       const message = err instanceof Error ? err.message : "Une erreur est survenue";
       setError(message);
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: message,
       });
@@ -92,14 +92,14 @@ export default function AdminUsersPage() {
         loadUsers();
       } else {
         addToast({
-          variant: "destructive",
+          variant: "error",
           title: "Erreur",
           description: result.error || "Impossible de mettre à jour",
         });
       }
     } catch (err) {
       addToast({
-        variant: "destructive",
+        variant: "error",
         title: "Erreur",
         description: "Une erreur est survenue",
       });
