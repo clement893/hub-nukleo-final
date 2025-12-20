@@ -10,7 +10,6 @@ interface EventModalProps {
   onClose: () => void;
   onSubmit: (data: any) => Promise<void>;
   initialData?: any;
-  users?: Array<{ id: string; name: string | null; email: string }>;
   opportunities?: Array<{ id: string; title: string }>;
   projects?: Array<{ id: string; name: string }>;
   contacts?: Array<{ id: string; firstName: string; lastName: string }>;
@@ -42,7 +41,6 @@ export function EventModal({
   onClose,
   onSubmit,
   initialData,
-  users = [],
   opportunities = [],
   projects = [],
   contacts = [],
