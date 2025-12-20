@@ -22,11 +22,11 @@ export function EmployeeAvatar({
   const [error, setError] = React.useState(false);
   const fallback = `${firstName[0] || ""}${lastName[0] || ""}`.toUpperCase();
   
-  // Priorité: photoKey via API, puis photoUrl, puis fallback
+  // Priorité: photoKey via API, puis photoUrl (qui peut être image depuis Employee), puis fallback
   const src = React.useMemo(() => {
     if (error) return undefined;
     if (photoKey) return `/api/files/${encodeURIComponent(photoKey)}`;
-    if (photoUrl) return photoUrl;
+    if (photoUrl) return photoUrl; // Peut être l'URL directe ou le chemin image
     return undefined;
   }, [photoKey, photoUrl, error]);
 

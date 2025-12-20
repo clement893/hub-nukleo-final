@@ -5,7 +5,7 @@ import type { Department } from "@prisma/client";
 // Récupère tous les employés
 export async function getEmployeesAction() {
   try {
-    const employees = await prisma.user.findMany({
+    const employees = await prisma.employee.findMany({
       where: {
         firstName: { not: null },
       },
@@ -15,10 +15,8 @@ export async function getEmployeesAction() {
         lastName: true,
         email: true,
         department: true,
-        operationsDepartment: true,
         linkedin: true,
-        photoKey: true,
-        photoUrl: true,
+        image: true,
         birthday: true,
         hireDate: true,
       },
@@ -26,7 +24,19 @@ export async function getEmployeesAction() {
         firstName: "asc",
       },
     });
-    return { success: true, data: employees };
+    
+    // Mapper les employés pour inclure operationsDepartment (convertir department String en Department enum)
+    const departmentValues: Department[] = ["BUREAU", "LAB", "STUDIO"];
+    const mappedEmployees = employees.map((emp) => ({
+      ...emp,
+      operationsDepartment: (emp.department && departmentValues.indexOf(emp.department as Department) !== -1) 
+        ? (emp.department as Department) 
+        : null,
+      photoKey: null, // Employee n'a pas photoKey, utiliser image à la place
+      photoUrl: emp.image || null,
+    }));
+    
+    return { success: true, data: mappedEmployees };
   } catch (error) {
     console.error("Error fetching employees:", error);
     return {
@@ -42,10 +52,10 @@ export async function updateEmployeeDepartmentAction(
   department: Department
 ) {
   try {
-    await prisma.user.update({
+    await prisma.employee.update({
       where: { id: employeeId },
       data: {
-        operationsDepartment: department,
+        department: department, // Stocker comme String dans Employee
       },
     });
     return { success: true };
