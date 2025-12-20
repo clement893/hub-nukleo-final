@@ -187,13 +187,8 @@ export function EventModal({
                 onChange={(e) =>
                   setFormData({ ...formData, type: e.target.value })
                 }
-              >
-                {EVENT_TYPES.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </Select>
+                options={EVENT_TYPES}
+              />
             </div>
             <div>
               <label htmlFor="color" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Couleur</label>
@@ -203,13 +198,8 @@ export function EventModal({
                 onChange={(e) =>
                   setFormData({ ...formData, color: e.target.value })
                 }
-              >
-                {COLORS.map((color) => (
-                  <option key={color.value} value={color.value}>
-                    {color.label}
-                  </option>
-                ))}
-              </Select>
+                options={COLORS}
+              />
             </div>
           </div>
 
@@ -325,14 +315,14 @@ export function EventModal({
                   onChange={(e) =>
                     setFormData({ ...formData, opportunityId: e.target.value })
                   }
-                >
-                  <option value="">Aucune</option>
-                  {opportunities.map((opp) => (
-                    <option key={opp.id} value={opp.id}>
-                      {opp.title}
-                    </option>
-                  ))}
-                </Select>
+                  options={[
+                    { value: "", label: "Aucune" },
+                    ...opportunities.map((opp) => ({
+                      value: opp.id,
+                      label: opp.title,
+                    })),
+                  ]}
+                />
               </div>
             )}
 
@@ -345,14 +335,14 @@ export function EventModal({
                   onChange={(e) =>
                     setFormData({ ...formData, projectId: e.target.value })
                   }
-                >
-                  <option value="">Aucun</option>
-                  {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
-                      {project.name}
-                    </option>
-                  ))}
-                </Select>
+                  options={[
+                    { value: "", label: "Aucun" },
+                    ...projects.map((project) => ({
+                      value: project.id,
+                      label: project.name,
+                    })),
+                  ]}
+                />
               </div>
             )}
           </div>
