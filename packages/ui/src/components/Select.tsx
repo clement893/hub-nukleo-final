@@ -40,7 +40,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="mb-2 block text-sm font-medium text-gray-700"
+            className="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400"
           >
             {label}
             {required && <span className="ml-1 text-red-500">*</span>}
@@ -49,8 +49,13 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <select
           id={selectId}
           className={cn(
-            "flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            hasError && "border-red-500 focus-visible:ring-red-500",
+            "flex h-9 w-full rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-900 transition-all",
+            "ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 dark:ring-offset-gray-900",
+            "dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-gray-900",
+            "hover:border-gray-300 dark:hover:border-gray-600",
+            hasError && "border-red-500 focus-visible:ring-red-500 dark:border-red-500 dark:focus-visible:ring-red-500",
             className
           )}
           ref={ref}
