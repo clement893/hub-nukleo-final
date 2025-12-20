@@ -256,9 +256,6 @@ export default function EmployeesPage() {
         onEdit={handleEditEmployee}
         onDelete={handleDeleteClick}
         onCreateClick={handleCreateEmployee}
-      />
-
-      <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}

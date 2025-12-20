@@ -16,6 +16,7 @@ import {
   DropdownSeparator,
 } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
+import { Pagination } from "./Pagination";
 
 export type Employee = {
   id: string;
@@ -51,9 +52,20 @@ interface EmployeeTableProps {
   onEdit: (employee: Employee) => void;
   onDelete: (employee: Employee) => void;
   onCreateClick?: () => void;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
-export function EmployeeTable({ employees, onEdit, onDelete, onCreateClick }: EmployeeTableProps) {
+export function EmployeeTable({
+  employees,
+  onEdit,
+  onDelete,
+  onCreateClick,
+  currentPage,
+  totalPages,
+  onPageChange,
+}: EmployeeTableProps) {
   const getFullName = (employee: Employee) => {
     return employee.firstName && employee.lastName
       ? `${employee.firstName} ${employee.lastName}`
@@ -186,6 +198,13 @@ export function EmployeeTable({ employees, onEdit, onDelete, onCreateClick }: Em
             </TableBody>
           </Table>
         </div>
+        {currentPage !== undefined && totalPages !== undefined && onPageChange && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        )}
       </GlassCardContent>
     </GlassCard>
   );
