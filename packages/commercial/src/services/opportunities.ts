@@ -13,7 +13,7 @@ export async function getOpportunitiesStats() {
     (sum, stage) => sum + stage._count.id,
     0
   );
-  const wonStage = opportunitiesByStage.find((stage) => stage.stage === "WON");
+  const wonStage = opportunitiesByStage.find((stage) => stage.stage === "CLOSED_WON");
   const wonOpportunities = wonStage?._count.id || 0;
   const totalRevenue = wonStage?._sum.value || 0;
 
