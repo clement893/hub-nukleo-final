@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Button,
   Badge,
@@ -117,23 +118,42 @@ export function EmployeeTable({
             <TableBody>
               {employees.map((employee) => {
                 const fullName = getFullName(employee);
+                const EmployeeAvatar = () => {
+                  const [imageError, setImageError] = React.useState(false);
+                  const [imageSrc, setImageSrc] = React.useState(employee.image);
+
+                  React.useEffect(() => {
+                    setImageError(false);
+                    setImageSrc(employee.image);
+                  }, [employee.image]);
+
+                  if (!imageSrc || imageError) {
+                    return (
+                      <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                        <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                          {fullName.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                      <img
+                        src={imageSrc}
+                        alt={fullName}
+                        className="w-full h-full object-cover"
+                        onError={() => setImageError(true)}
+                        onLoad={() => setImageError(false)}
+                      />
+                    </div>
+                  );
+                };
 
                 return (
                   <TableRow key={employee.id}>
                     <TableCell>
-                      {employee.image ? (
-                        <img
-                          src={employee.image}
-                          alt={fullName}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                          <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                            {fullName.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                      <EmployeeAvatar />
                     </TableCell>
                     <TableCell className="font-medium">
                       <div>
