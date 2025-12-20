@@ -49,6 +49,7 @@ export async function getAllEmployees() {
       lastName: true,
       linkedin: true,
       department: true,
+      title: true,
       birthday: true,
       hireDate: true,
       role: true,
@@ -70,6 +71,7 @@ export async function getEmployeeById(id: string) {
       lastName: true,
       linkedin: true,
       department: true,
+      title: true,
       birthday: true,
       hireDate: true,
       role: true,
@@ -89,6 +91,7 @@ export async function createEmployee(data: EmployeeFormData) {
       lastName: data.lastName || null,
       linkedin: data.linkedin || null,
       department: data.department || null,
+      title: data.title || null,
       birthday: data.birthday ? new Date(data.birthday) : null,
       hireDate: data.hireDate ? new Date(data.hireDate) : null,
       role: data.role,
@@ -102,6 +105,7 @@ export async function createEmployee(data: EmployeeFormData) {
       lastName: true,
       linkedin: true,
       department: true,
+      title: true,
       birthday: true,
       hireDate: true,
       role: true,
@@ -121,6 +125,7 @@ export async function updateEmployee(id: string, data: UpdateEmployeeData) {
   if (data.lastName !== undefined) updateData.lastName = data.lastName || null;
   if (data.linkedin !== undefined) updateData.linkedin = data.linkedin || null;
   if (data.department !== undefined) updateData.department = data.department || null;
+  if (data.title !== undefined) updateData.title = data.title || null;
   if (data.birthday !== undefined) updateData.birthday = data.birthday ? new Date(data.birthday) : null;
   if (data.hireDate !== undefined) updateData.hireDate = data.hireDate ? new Date(data.hireDate) : null;
   if (data.role) updateData.role = data.role;
@@ -147,6 +152,7 @@ export async function updateEmployee(id: string, data: UpdateEmployeeData) {
       lastName: true,
       linkedin: true,
       department: true,
+      title: true,
       birthday: true,
       hireDate: true,
       role: true,

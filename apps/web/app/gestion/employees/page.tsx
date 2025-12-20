@@ -39,6 +39,7 @@ type Employee = {
   lastName: string | null;
   linkedin: string | null;
   department: string | null;
+  title: string | null;
   birthday: Date | null;
   hireDate: Date | null;
   role: "ADMIN" | "MANAGER" | "USER";
@@ -80,6 +81,7 @@ export default function EmployeesPage() {
     lastName: "",
     linkedin: "",
     department: "",
+    title: "",
     birthday: "",
     hireDate: "",
     role: "USER",
@@ -127,7 +129,8 @@ export default function EmployeesPage() {
         employee.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         employee.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.department?.toLowerCase().includes(searchTerm.toLowerCase());
+        employee.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.title?.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesRole = filterRole === "all" || employee.role === filterRole;
 
@@ -155,6 +158,7 @@ export default function EmployeesPage() {
       lastName: "",
       linkedin: "",
       department: "",
+      title: "",
       birthday: "",
       hireDate: "",
       role: "USER",
@@ -172,6 +176,7 @@ export default function EmployeesPage() {
       lastName: employee.lastName || "",
       linkedin: employee.linkedin || "",
       department: employee.department || "",
+      title: employee.title || "",
       birthday: employee.birthday ? new Date(employee.birthday).toISOString().split("T")[0] : "",
       hireDate: employee.hireDate ? new Date(employee.hireDate).toISOString().split("T")[0] : "",
       role: employee.role,
@@ -258,6 +263,7 @@ export default function EmployeesPage() {
           lastName: "",
           linkedin: "",
           department: "",
+          title: "",
           birthday: "",
           hireDate: "",
           role: "USER",
@@ -406,6 +412,9 @@ export default function EmployeesPage() {
                           {employee.department || "-"}
                         </TableCell>
                         <TableCell>
+                          {employee.title || "-"}
+                        </TableCell>
+                        <TableCell>
                           <Badge variant={roleColors[employee.role]}>
                             {roleLabels[employee.role]}
                           </Badge>
@@ -490,6 +499,7 @@ export default function EmployeesPage() {
             lastName: "",
             linkedin: "",
             department: "",
+            title: "",
             birthday: "",
             hireDate: "",
             role: "USER",
@@ -571,6 +581,18 @@ export default function EmployeesPage() {
                 setFormData({ ...formData, department: e.target.value })
               }
               placeholder="Ex: Commercial, Technique, RH..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Titre/Poste
+            </label>
+            <Input
+              value={formData.title || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              placeholder="Ex: Développeur Senior, Chef de projet..."
             />
           </div>
           <div className="grid grid-cols-2 gap-4">

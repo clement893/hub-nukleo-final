@@ -61,6 +61,7 @@ model User {
   lastName      String?       // Nom de famille
   linkedin      String?       // LinkedIn URL
   department    String?       // Département
+  title         String?       // Titre/Poste
   birthday      DateTime?     // Anniversaire
   hireDate      DateTime?     // Anniversaire embauche
   password      String?

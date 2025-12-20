@@ -7,6 +7,7 @@ export const employeeSchema = z.object({
   lastName: z.string().optional(), // Nom de famille
   linkedin: z.string().url().optional().or(z.literal("")), // LinkedIn URL
   department: z.string().optional(), // Département
+  title: z.string().optional(), // Titre/Poste
   birthday: z.string().optional(), // Anniversaire (format ISO date)
   hireDate: z.string().optional(), // Anniversaire embauche (format ISO date)
   role: z.enum(["ADMIN", "MANAGER", "USER"], {
