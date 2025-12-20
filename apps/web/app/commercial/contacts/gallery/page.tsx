@@ -30,7 +30,7 @@ import {
 } from "../actions";
 import { useToast } from "../../../../lib/toast";
 import { exportToCSV, exportToPDF } from "../../../../lib/export";
-import { calculateContactStats, type Contact } from "../../../../lib/stats";
+import { calculateContactStats, type Contact } from "@/lib/stats";
 import { ContactAvatar } from "../../../../components/ContactAvatar";
 import { UnifiedSearchBar } from "../../../../components/UnifiedSearchBar";
 
