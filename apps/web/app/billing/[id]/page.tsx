@@ -110,9 +110,9 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     if (!invoice || !invoiceId) return;
     
     const paidAmount = window.prompt(
-      `Montant payé (Total: ${new Intl.NumberFormat("fr-CA", {
+      `Montant payé (Total: ${new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "CAD",
+        currency: "USD",
       }).format(invoice.total)})`,
       invoice.total.toString()
     );
@@ -352,15 +352,15 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                       {item.quantity}
                     </td>
                     <td className="p-3 text-right text-gray-900 dark:text-white">
-                      {new Intl.NumberFormat("fr-CA", {
+                      {new Intl.NumberFormat("en-US", {
                         style: "currency",
-                        currency: "CAD",
+                        currency: "USD",
                       }).format(item.unitPrice)}
                     </td>
                     <td className="p-3 text-right font-semibold text-gray-900 dark:text-white">
-                      {new Intl.NumberFormat("fr-CA", {
+                      {new Intl.NumberFormat("en-US", {
                         style: "currency",
-                        currency: "CAD",
+                        currency: "USD",
                       }).format(item.amount)}
                     </td>
                   </tr>
@@ -379,29 +379,29 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Sous-total:</span>
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {new Intl.NumberFormat("fr-CA", {
+                  {new Intl.NumberFormat("en-US", {
                     style: "currency",
-                    currency: "CAD",
+                    currency: "USD",
                   }).format(invoice.subtotal)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">
-                  TPS/TVH ({invoice.taxRate * 100}%):
+                  Tax ({invoice.taxRate * 100}%):
                 </span>
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {new Intl.NumberFormat("fr-CA", {
+                  {new Intl.NumberFormat("en-US", {
                     style: "currency",
-                    currency: "CAD",
+                    currency: "USD",
                   }).format(invoice.taxAmount)}
                 </span>
               </div>
               <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200 dark:border-gray-700">
                 <span className="text-gray-900 dark:text-white">Total:</span>
                 <span className="text-gray-900 dark:text-white">
-                  {new Intl.NumberFormat("fr-CA", {
+                  {new Intl.NumberFormat("en-US", {
                     style: "currency",
-                    currency: "CAD",
+                    currency: "USD",
                   }).format(invoice.total)}
                 </span>
               </div>
@@ -409,9 +409,9 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                 <div className="flex justify-between pt-2">
                   <span className="text-gray-600 dark:text-gray-400">Montant payé:</span>
                   <span className="font-semibold text-green-600 dark:text-green-400">
-                    {new Intl.NumberFormat("fr-CA", {
+                    {new Intl.NumberFormat("en-US", {
                       style: "currency",
-                      currency: "CAD",
+                      currency: "USD",
                     }).format(invoice.paidAmount)}
                   </span>
                 </div>

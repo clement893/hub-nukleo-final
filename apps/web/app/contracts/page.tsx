@@ -75,9 +75,9 @@ export default async function ContractsPage() {
               {stats?.activeContracts || 0}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {new Intl.NumberFormat("fr-CA", {
+              {new Intl.NumberFormat("en-US", {
                 style: "currency",
-                currency: "CAD",
+                currency: "USD",
               }).format(stats?.totalValue || 0)}
             </div>
           </GlassCardContent>
@@ -171,9 +171,9 @@ export default async function ContractsPage() {
                         {new Date(contract.endDate).toLocaleDateString("fr-CA")}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {new Intl.NumberFormat("fr-CA", {
+                        {new Intl.NumberFormat("en-US", {
                           style: "currency",
-                          currency: contract.currency,
+                          currency: contract.currency || "USD",
                         }).format(contract.value)}
                       </TableCell>
                       <TableCell className="text-center">

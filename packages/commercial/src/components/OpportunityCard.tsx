@@ -48,9 +48,9 @@ export function OpportunityCard({
       {/* Value */}
       {value && (
         <div className="text-base font-bold text-primary dark:text-primary-light mb-3">
-          {value.toLocaleString("fr-FR", {
+          {value.toLocaleString("en-US", {
             style: "currency",
-            currency: "EUR",
+            currency: "USD",
             maximumFractionDigits: 0,
           })}
         </div>

@@ -61,9 +61,9 @@ export default async function BillingPage() {
           <GlassCardContent className="pt-6">
             <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Revenus payés</div>
             <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">
-              {new Intl.NumberFormat("fr-CA", {
+              {new Intl.NumberFormat("en-US", {
                 style: "currency",
-                currency: "CAD",
+                currency: "USD",
               }).format(stats?.totalRevenue || 0)}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -76,9 +76,9 @@ export default async function BillingPage() {
           <GlassCardContent className="pt-6">
             <div className="text-sm font-medium text-gray-600 dark:text-gray-400">En attente</div>
             <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-2">
-              {new Intl.NumberFormat("fr-CA", {
+              {new Intl.NumberFormat("en-US", {
                 style: "currency",
-                currency: "CAD",
+                currency: "USD",
               }).format(stats?.pendingRevenue || 0)}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -135,9 +135,9 @@ export default async function BillingPage() {
                         {new Date(invoice.issueDate).toLocaleDateString("fr-CA")}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
-                        {new Intl.NumberFormat("fr-CA", {
+                        {new Intl.NumberFormat("en-US", {
                           style: "currency",
-                          currency: "CAD",
+                          currency: "USD",
                         }).format(invoice.total)}
                       </TableCell>
                       <TableCell className="text-center">

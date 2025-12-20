@@ -272,9 +272,9 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
             <div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Valeur</div>
               <div className="font-semibold text-gray-900 dark:text-white">
-                {new Intl.NumberFormat("fr-CA", {
+                {new Intl.NumberFormat("en-US", {
                   style: "currency",
-                  currency: contract.currency,
+                  currency: contract.currency || "USD",
                 }).format(contract.value)}
               </div>
             </div>

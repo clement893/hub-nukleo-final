@@ -148,9 +148,9 @@ export default function CommercialDashboardPage() {
   }, [addToast]);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("fr-FR", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "EUR",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);

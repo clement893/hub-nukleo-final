@@ -214,9 +214,9 @@ function KanbanColumn({
             </Badge>
           </div>
           <CardDescription className="text-sm font-semibold text-gray-700 dark:text-gray-300 mt-2">
-            {stageValue.toLocaleString("fr-FR", {
+            {stageValue.toLocaleString("en-US", {
               style: "currency",
-              currency: "EUR",
+              currency: "USD",
               maximumFractionDigits: 0,
             })}
           </CardDescription>
