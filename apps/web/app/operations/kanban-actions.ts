@@ -3,7 +3,6 @@
 import {
   getTasksByDepartment,
   moveTaskToZone,
-  assignTaskToUser,
   getEmployeesByDepartment,
   assignTaskToDepartment,
 } from "@nukleo/commercial";
