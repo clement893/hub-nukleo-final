@@ -8,7 +8,7 @@ export interface OpportunityCardProps {
   id: string;
   title: string;
   company?: string | null;
-  contact?: { firstName: string; lastName: string } | null;
+  contact?: { firstName: string | null; lastName: string | null } | null;
   value?: number | null;
   probability?: number | null;
   expectedCloseDate?: Date | null;
@@ -27,39 +27,62 @@ export function OpportunityCard({
 }: OpportunityCardProps) {
   return (
     <Card
-      className="p-3 hover:shadow-md transition-shadow cursor-pointer"
+      className="p-4 hover:shadow-lg hover:scale-[1.02] transition-all cursor-pointer bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700"
       onClick={onClick}
     >
-      <div className="font-medium text-sm text-gray-900">{title}</div>
+      {/* Title */}
+      <div className="font-semibold text-sm text-gray-900 dark:text-white mb-2 line-clamp-2">
+        {title}
+      </div>
+
+      {/* Company or Contact */}
       {(company || contact) && (
-        <div className="text-xs text-gray-500 mt-1">
-          {company || `${contact?.firstName} ${contact?.lastName}`}
+        <div className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-gray-300 mb-2">
+          <span className="text-gray-400 dark:text-gray-500">🏢</span>
+          <span className="font-medium">
+            {company || `${contact?.firstName || ''} ${contact?.lastName || ''}`}
+          </span>
         </div>
       )}
+
+      {/* Value */}
       {value && (
-        <div className="text-sm font-semibold mt-2 text-gray-900">
+        <div className="text-base font-bold text-primary dark:text-primary-light mb-3">
           {value.toLocaleString("fr-FR", {
             style: "currency",
             currency: "EUR",
+            maximumFractionDigits: 0,
           })}
         </div>
       )}
-      <div className="flex justify-between items-center mt-2">
-        {probability !== null && probability !== undefined && (
-          <span className="text-xs text-gray-500">
-            {probability}% de chance
-          </span>
+
+      {/* Footer: Probability and Date */}
+      <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
+        {probability !== null && probability !== undefined ? (
+          <div className="flex items-center gap-1">
+            <span className="text-xs font-medium text-gray-900 dark:text-white">
+              {probability}%
+            </span>
+            <span className="text-xs text-gray-600 dark:text-gray-400">
+              chance
+            </span>
+          </div>
+        ) : (
+          <div></div>
         )}
+        
         {expectedCloseDate && (
-          <span className="text-xs text-gray-500">
-            {expectedCloseDate.toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "short",
-            })}
-          </span>
+          <div className="flex items-center gap-1 text-xs">
+            <span className="text-gray-400 dark:text-gray-500">📅</span>
+            <span className="font-medium text-gray-900 dark:text-white">
+              {expectedCloseDate.toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+              })}
+            </span>
+          </div>
         )}
       </div>
     </Card>
   );
 }
-
