@@ -171,7 +171,7 @@ export async function createProject(data: ProjectFormData, managerId: string) {
       endDate: data.endDate || null,
       budget: data.budget || null,
       department: data.department || null,
-      links: data.links || null,
+      links: data.links ?? undefined,
       companyId: data.companyId || null,
       leadId: data.leadId || null,
       managerId,
@@ -216,7 +216,7 @@ export async function updateProject(id: string, data: UpdateProjectData) {
 
   if (data.type !== undefined) updateData.type = data.type || null;
   if (data.department !== undefined) updateData.department = data.department || null;
-  if (data.links !== undefined) updateData.links = data.links || null;
+  if (data.links !== undefined) updateData.links = data.links ?? undefined;
   if (data.leadId !== undefined) updateData.leadId = data.leadId || null;
 
   return prisma.project.update({
