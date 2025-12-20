@@ -23,7 +23,7 @@
     "@nukleo/db": "workspace:*",
     "@nukleo/ui": "workspace:*",
     "zod": "^3.23.8",
-    "@hookform/resolvers": "^3.9.0",
+    "@hookform/resolvers": "^5.2.2",
     "react-hook-form": "^7.53.0"
   },
   "peerDependencies": {
