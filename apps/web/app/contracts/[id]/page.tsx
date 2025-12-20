@@ -84,9 +84,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
     if (!contractId) return;
     try {
       setIsUpdating(true);
-      const result = await signContractAction(contractId, signatureId, {
-        signedAt: new Date(),
-      });
+      const result = await signContractAction(contractId as string, signatureId, {});
       if (result.success) {
         addToast({
           variant: "success",
