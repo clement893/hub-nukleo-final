@@ -199,7 +199,7 @@ export default function ProjectsPage() {
 
   if (error) {
     return (
-      <Alert variant="error">
+      <Alert variant="destructive">
         <AlertTitle>Erreur</AlertTitle>
         <AlertDescription>{error}</AlertDescription>
       </Alert>
