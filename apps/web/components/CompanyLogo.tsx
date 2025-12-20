@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 
 interface CompanyLogoProps {
   companyName: string;
@@ -22,38 +21,61 @@ export function CompanyLogo({
 }: CompanyLogoProps) {
   const [photoUrl, setPhotoUrl] = React.useState<string | null>(null);
   const [error, setError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if (logoKey && !error) {
-      // Fetch presigned URL from API
-      fetch(`/api/files/${encodeURIComponent(logoKey)}/presigned?type=download&expiresIn=3600`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success && data.url) {
-            setPhotoUrl(data.url);
-          } else {
-            setError(true);
-          }
-        })
-        .catch(() => {
-          setError(true);
-        });
-    }
-  }, [logoKey, error]);
+    // Reset states when logoKey changes
+    setPhotoUrl(null);
+    setError(false);
+    setIsLoading(true);
 
-  if (photoUrl && !error) {
+    if (!logoKey) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Fetch presigned URL from API
+    fetch(`/api/files/${encodeURIComponent(logoKey)}/presigned?type=download&expiresIn=3600`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.success && data.url) {
+          setPhotoUrl(data.url);
+          setError(false);
+        } else {
+          setError(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching logo URL:", err);
+        setError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [logoKey]); // Removed 'error' from dependencies to avoid infinite loops
+
+  // Show logo if URL is loaded and no error
+  if (photoUrl && !error && !isLoading) {
     return (
       <div
         className={`relative flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 ${className}`}
         style={{ width: size, height: size }}
       >
-        <Image
+        <img
           src={photoUrl}
           alt={`${companyName} logo`}
-          width={size}
-          height={size}
-          className="object-contain"
-          onError={() => setError(true)}
+          className="object-contain w-full h-full"
+          style={{ width: size, height: size }}
+          onError={() => {
+            setError(true);
+            setPhotoUrl(null);
+          }}
+          loading="lazy"
         />
       </div>
     );
