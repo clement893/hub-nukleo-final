@@ -149,7 +149,7 @@ export default function EmployeesPage() {
         const key = dept as keyof typeof statsMap;
         statsMap[key] = (statsMap[key] || 0) + 1;
       } else {
-        statsMap.none++;
+        statsMap.none = (statsMap.none || 0) + 1;
       }
     });
     return statsMap;
