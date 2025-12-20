@@ -304,7 +304,7 @@ export default function OpportunitiesPage() {
           title: data.title,
           description: data.description,
           value: data.value,
-          stage: data.stage,
+          stage: data.stage, as OpportunityStage,
           probability: data.probability,
           expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
@@ -320,7 +320,7 @@ export default function OpportunitiesPage() {
                     title: data.title,
                     description: data.description,
                     value: data.value ?? null,
-                    stage: data.stage,
+                    stage: data.stage, as OpportunityStage, as OpportunityStage,
                     probability: data.probability,
                     expectedCloseDate: data.expectedCloseDate
                       ? new Date(data.expectedCloseDate)
@@ -354,7 +354,7 @@ export default function OpportunitiesPage() {
           title: data.title,
           description: data.description,
           value: data.value,
-          stage: data.stage,
+          stage: data.stage, as OpportunityStage,
           probability: data.probability,
           expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
