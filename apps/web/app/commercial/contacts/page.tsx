@@ -42,7 +42,7 @@ import { exportToCSV, exportToPDF } from "../../../lib/export";
 import { calculateContactStats, type Contact } from "../../../lib/stats";
 import { ContactAvatar } from "../../../components/ContactAvatar";
 import { UnifiedSearchBar } from "../../../components/UnifiedSearchBar";
-import { ImportModal } from "../../../components/ImportModal";
+import { ImportModal } from "../../components/ImportModal";
 
 export default function ContactsPage() {
   const pathname = usePathname();
