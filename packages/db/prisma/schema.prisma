@@ -97,17 +97,10 @@ model User {
   email         String        @unique
   emailVerified DateTime?
   name          String?
-  firstName     String?       // Prénom
-  lastName      String?       // Nom de famille
-  linkedin      String?       // LinkedIn URL
-  department    String?       // Département (ancien champ texte)
-  operationsDepartment Department? // Département Opérations (Bureau, Lab, Studio)
-  title         String?       // Titre/Poste
-  birthday      DateTime?     // Anniversaire
-  hireDate      DateTime?     // Anniversaire embauche
   password      String?
   role          Role          @default(USER)
   image         String?       // Photo
+  operationsDepartment Department? // Département Opérations (Bureau, Lab, Studio)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
