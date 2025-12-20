@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -36,6 +37,7 @@ import { ContactAvatar } from "../../../../components/ContactAvatar";
 type ContactWithPhoto = Contact & { photoKey?: string | null };
 
 export default function ContactsGalleryPage() {
+  const pathname = usePathname();
   const [contacts, setContacts] = React.useState<ContactWithPhoto[]>([]);
   const [companies, setCompanies] = React.useState<
     Array<{ id: string; name: string }>
@@ -358,34 +360,62 @@ export default function ContactsGalleryPage() {
     ? `/api/files/${encodeURIComponent(selectedContact.photoKey)}`
     : null;
 
+  const isGalleryView = pathname?.includes('/gallery');
+  const isTableView = !isGalleryView && pathname?.includes('/contacts') && !pathname?.includes('/stats');
+
   return (
     <>
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Galerie des contacts</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Visualisez les photos de vos contacts ({stats.total} contact{stats.total > 1 ? "s" : ""})
-          </p>
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Galerie des contacts</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
+              Visualisez les photos de vos contacts ({stats.total} contact{stats.total > 1 ? "s" : ""})
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Link href="/commercial/contacts/stats">
+              <Button variant="outline">Statistiques</Button>
+            </Link>
+            <DropdownMenu>
+              <DropdownTrigger>
+                <Button variant="outline">Exporter</Button>
+              </DropdownTrigger>
+              <DropdownContent>
+                <DropdownItem onClick={handleExportCSV}>Exporter en CSV</DropdownItem>
+                <DropdownItem onClick={handleExportPDF}>Exporter en PDF</DropdownItem>
+              </DropdownContent>
+            </DropdownMenu>
+            <Button variant="primary" onClick={handleCreateContact}>
+              Nouveau contact
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
+        
+        {/* Vue Selector */}
+        <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700 mb-6">
           <Link href="/commercial/contacts">
-            <Button variant="outline">Vue tableau</Button>
+            <button
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                isTableView
+                  ? "border-b-2 border-blue-600 text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              📋 Vue tableau
+            </button>
           </Link>
-          <Link href="/commercial/contacts/stats">
-            <Button variant="outline">Statistiques</Button>
+          <Link href="/commercial/contacts/gallery">
+            <button
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                isGalleryView
+                  ? "border-b-2 border-blue-600 text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              🖼️ Vue galerie
+            </button>
           </Link>
-          <DropdownMenu>
-            <DropdownTrigger>
-              <Button variant="outline">Exporter</Button>
-            </DropdownTrigger>
-            <DropdownContent>
-              <DropdownItem onClick={handleExportCSV}>Exporter en CSV</DropdownItem>
-              <DropdownItem onClick={handleExportPDF}>Exporter en PDF</DropdownItem>
-            </DropdownContent>
-          </DropdownMenu>
-          <Button variant="primary" onClick={handleCreateContact}>
-            Nouveau contact
-          </Button>
         </div>
       </div>
 
