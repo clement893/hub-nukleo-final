@@ -65,7 +65,7 @@ export async function getContractsAction(filters?: {
 // Get Contract
 export async function getContractAction(id: string) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const contract = await prisma.contract.findUnique({
       where: { id },
@@ -196,7 +196,7 @@ export async function updateContractAction(
   }
 ) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const contract = await prisma.contract.update({
       where: { id },
@@ -226,7 +226,7 @@ export async function signContractAction(
   }
 ) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const signature = await prisma.signature.update({
       where: { id: signatureId },
@@ -273,7 +273,7 @@ export async function signContractAction(
 // Get Expiring Contracts
 export async function getExpiringContractsAction(days: number = 30) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const expiringDate = new Date();
     expiringDate.setDate(expiringDate.getDate() + days);
@@ -306,7 +306,7 @@ export async function getExpiringContractsAction(days: number = 30) {
 // Get Stats
 export async function getContractsStatsAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const [
       totalContracts,
@@ -352,7 +352,7 @@ export async function getContractsStatsAction() {
 // Get Companies (for contract creation)
 export async function getCompaniesAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
     const companies = await prisma.company.findMany({
       select: {
         id: true,
@@ -370,7 +370,7 @@ export async function getCompaniesAction() {
 // Get Projects (for contract creation)
 export async function getProjectsAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
     const projects = await prisma.project.findMany({
       select: {
         id: true,
