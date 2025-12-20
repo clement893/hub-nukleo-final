@@ -31,7 +31,19 @@ export default function ContactsStatsPage() {
       try {
         const result = await getContactsAction();
         if (result.success && result.data) {
-          setContacts(result.data);
+          // Filter out contacts with null firstName or lastName and ensure proper typing
+          const validContacts = result.data
+            .filter((contact) => contact.firstName !== null && contact.lastName !== null)
+            .map((contact) => ({
+              id: contact.id,
+              firstName: contact.firstName!,
+              lastName: contact.lastName!,
+              email: contact.email,
+              phone: contact.phone,
+              position: contact.position,
+              company: contact.company as { id: string; name: string } | null,
+            }));
+          setContacts(validContacts);
         }
       } catch (error) {
         console.error("Error loading contacts:", error);

@@ -69,7 +69,20 @@ export default function ContactsGalleryPage() {
         ]);
 
         if (contactsResult.success && contactsResult.data) {
-          setContacts(contactsResult.data as ContactWithPhoto[]);
+          // Filter out contacts with null firstName or lastName and ensure proper typing
+          const validContacts = contactsResult.data
+            .filter((contact) => contact.firstName !== null && contact.lastName !== null)
+            .map((contact) => ({
+              id: contact.id,
+              firstName: contact.firstName!,
+              lastName: contact.lastName!,
+              email: contact.email,
+              phone: contact.phone,
+              position: contact.position,
+              photoKey: contact.photoKey,
+              company: contact.company as { id: string; name: string } | null,
+            }));
+          setContacts(validContacts);
         } else {
           addToast({
             variant: "error",
