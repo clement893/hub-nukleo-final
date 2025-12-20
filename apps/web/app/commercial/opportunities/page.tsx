@@ -47,33 +47,46 @@ import {
 import { logger } from "@/lib/logger";
 
 const stages: OpportunityStage[] = [
-  "NEW",
-  "QUALIFIED",
-  "PROPOSAL",
-  "NEGOTIATION",
-  "WON",
-  "LOST",
+  "IDEAS_CONTACT_PROJECT",
+  "FOLLOW_UP_EMAILS",
+  "MEETING_BOOKED",
+  "IN_DISCUSSION",
+  "PROPOSAL_TO_DO",
+  "PROPOSAL_SENT",
+  "CONTRACT_TO_DO",
+  "CLOSED_WON",
+  "CLOSED_LOST",
 ];
 
 const stageLabels: Record<OpportunityStage, string> = {
-  NEW: "Nouvelle",
-  QUALIFIED: "Qualifiée",
-  PROPOSAL: "Proposition",
-  NEGOTIATION: "Négociation",
-  WON: "Gagnée",
-  LOST: "Perdue",
+  IDEAS_CONTACT_PROJECT: "Idée/Contact/Projet",
+  FOLLOW_UP_EMAILS: "Relances emails",
+  MEETING_BOOKED: "RDV planifié",
+  IN_DISCUSSION: "En discussion",
+  PROPOSAL_TO_DO: "Proposition à faire",
+  PROPOSAL_SENT: "Proposition envoyée",
+  CONTRACT_TO_DO: "Contrat à faire",
+  CLOSED_WON: "Gagnée",
+  CLOSED_LOST: "Perdue",
+  RENEWALS_POTENTIAL_UPCOMING: "Renouvellements potentiels",
+  WAITING_OR_SILENT: "En attente/Silencieux",
 };
 
 const stageColors: Record<
   OpportunityStage,
   "default" | "primary" | "success" | "warning" | "error"
 > = {
-  NEW: "default",
-  QUALIFIED: "primary",
-  PROPOSAL: "primary",
-  NEGOTIATION: "warning",
-  WON: "success",
-  LOST: "error",
+  IDEAS_CONTACT_PROJECT: "default",
+  FOLLOW_UP_EMAILS: "primary",
+  MEETING_BOOKED: "primary",
+  IN_DISCUSSION: "primary",
+  PROPOSAL_TO_DO: "warning",
+  PROPOSAL_SENT: "warning",
+  CONTRACT_TO_DO: "warning",
+  CLOSED_WON: "success",
+  CLOSED_LOST: "error",
+  RENEWALS_POTENTIAL_UPCOMING: "default",
+  WAITING_OR_SILENT: "default",
 };
 
 interface Opportunity {
@@ -405,12 +418,17 @@ export default function OpportunitiesPage() {
 
   const opportunitiesByStage = React.useMemo(() => {
     const grouped: Record<OpportunityStage, Opportunity[]> = {
-      NEW: [],
-      QUALIFIED: [],
-      PROPOSAL: [],
-      NEGOTIATION: [],
-      WON: [],
-      LOST: [],
+      IDEAS_CONTACT_PROJECT: [],
+      FOLLOW_UP_EMAILS: [],
+      MEETING_BOOKED: [],
+      IN_DISCUSSION: [],
+      PROPOSAL_TO_DO: [],
+      PROPOSAL_SENT: [],
+      CONTRACT_TO_DO: [],
+      CLOSED_WON: [],
+      CLOSED_LOST: [],
+      RENEWALS_POTENTIAL_UPCOMING: [],
+      WAITING_OR_SILENT: [],
     };
 
     opportunities.forEach((opp) => {
