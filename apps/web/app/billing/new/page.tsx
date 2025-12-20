@@ -92,6 +92,8 @@ export default function NewInvoicePage() {
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
     const newItems = [...items];
     const currentItem = newItems[index];
+    if (!currentItem) return;
+    
     if (field === "description" && typeof value === "string") {
       newItems[index] = {
         description: value,
