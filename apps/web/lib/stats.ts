@@ -4,12 +4,13 @@
 
 export interface Contact {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   email?: string | null;
   phone?: string | null;
   position?: string | null;
   company?: { id: string; name: string } | null;
+  photoKey?: string | null;
 }
 
 export interface ContactStats {

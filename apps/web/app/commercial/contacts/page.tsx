@@ -114,8 +114,8 @@ export default function ContactsPage() {
       const matchesSearch =
         isUnifiedSearchActive || 
         !searchTerm ||
-        contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.company?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.position?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -197,7 +197,7 @@ export default function ContactsPage() {
         addToast({
           variant: "success",
           title: "Contact supprimé",
-          description: `${contactToDelete.firstName} ${contactToDelete.lastName} a été supprimé avec succès`,
+          description: `${contactToDelete.firstName || ""} ${contactToDelete.lastName || ""}`.trim() + " a été supprimé avec succès",
         });
         setIsDeleteModalOpen(false);
         setContactToDelete(null);
@@ -323,8 +323,8 @@ export default function ContactsPage() {
 
   const handleExportCSV = () => {
     const exportData = filteredContacts.map((contact) => ({
-      Prénom: contact.firstName,
-      Nom: contact.lastName,
+      Prénom: contact.firstName || "",
+      Nom: contact.lastName || "",
       Email: contact.email || "",
       Téléphone: contact.phone || "",
       Poste: contact.position || "",
@@ -341,8 +341,8 @@ export default function ContactsPage() {
 
   const handleExportPDF = () => {
     const exportData = filteredContacts.map((contact) => ({
-      Prénom: contact.firstName,
-      Nom: contact.lastName,
+      Prénom: contact.firstName || "",
+      Nom: contact.lastName || "",
       Email: contact.email || "",
       Téléphone: contact.phone || "",
       Poste: contact.position || "",
@@ -640,14 +640,14 @@ export default function ContactsPage() {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <ContactAvatar
-                            firstName={contact.firstName}
-                            lastName={contact.lastName}
+                            firstName={contact.firstName || ""}
+                            lastName={contact.lastName || ""}
                             photoKey={(contact as any).photoKey}
                             size="md"
                           />
                           <div>
                             <div className="font-medium">
-                              {contact.firstName} {contact.lastName}
+                              {contact.firstName || ""} {contact.lastName || ""}
                             </div>
                           </div>
                         </div>
@@ -757,8 +757,8 @@ export default function ContactsPage() {
         initialData={
           editingContact
             ? {
-                firstName: editingContact.firstName,
-                lastName: editingContact.lastName,
+                firstName: editingContact.firstName || "",
+                lastName: editingContact.lastName || "",
                 email: editingContact.email || undefined,
                 phone: editingContact.phone || undefined,
                 position: editingContact.position || undefined,
