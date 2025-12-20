@@ -44,14 +44,14 @@ export default async function CompanyDetailPage({
         city: company.city,
         country: company.country,
         logoKey: company.logoKey,
-        contacts: company.contacts.map((contact) => ({
+        contacts: company.contacts.map((contact: { id: string; firstName: string | null; lastName: string | null; email: string | null; position: string | null }) => ({
           id: contact.id,
           firstName: contact.firstName,
           lastName: contact.lastName,
           email: contact.email,
           position: contact.position,
         })),
-        opportunities: company.opportunities.map((opp) => ({
+        opportunities: company.opportunities.map((opp: { id: string; title: string; value: unknown; stage: string; contact: { firstName: string | null; lastName: string | null } | null }) => ({
           id: opp.id,
           title: opp.title,
           value: opp.value ? Number(opp.value) : null,

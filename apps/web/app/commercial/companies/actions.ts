@@ -14,7 +14,7 @@ export async function getCompaniesListAction() {
     const companies = await getAllCompanies();
     return {
       success: true,
-      data: companies.map((company) => ({
+      data: companies.map((company: { id: string; name: string; industry: string | null; website: string | null; phone: string | null; city: string | null; country: string | null; logoKey: string | null }) => ({
         id: company.id,
         name: company.name,
         industry: company.industry,

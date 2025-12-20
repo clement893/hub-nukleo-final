@@ -51,7 +51,7 @@ export default async function ContactDetailPage({
         position: contact.position,
         photoKey: contact.photoKey,
         company: contact.company,
-        opportunities: contact.opportunities.map((opp) => ({
+        opportunities: contact.opportunities.map((opp: { id: string; title: string; value: unknown; stage: string; company: { name: string } | null }) => ({
           id: opp.id,
           title: opp.title,
           value: opp.value ? Number(opp.value) : null,
@@ -59,7 +59,7 @@ export default async function ContactDetailPage({
           company: opp.company?.name || null,
         })),
       }}
-      companies={companies.map((c) => ({ id: c.id, name: c.name }))}
+      companies={companies.map((c: { id: string; name: string }) => ({ id: c.id, name: c.name }))}
     />
   );
 }

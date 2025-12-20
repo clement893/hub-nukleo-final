@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   Button,
-  Input,
   Table,
   TableHeader,
   TableBody,
@@ -27,6 +27,7 @@ import {
   updateCompanyAction,
 } from "./actions";
 import { CompanyLogo } from "../../../components/CompanyLogo";
+import { UnifiedSearchBar } from "../../../components/UnifiedSearchBar";
 
 interface Company {
   id: string;
@@ -40,8 +41,11 @@ interface Company {
 }
 
 export default function CompaniesPage() {
+  const pathname = usePathname();
   const [companies, setCompanies] = React.useState<Company[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [unifiedSearchResults, setUnifiedSearchResults] = React.useState<Set<string>>(new Set());
+  const [isUnifiedSearchActive, setIsUnifiedSearchActive] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingCompany, setEditingCompany] = React.useState<Company | null>(
     null
@@ -66,12 +70,26 @@ export default function CompaniesPage() {
     loadData();
   }, []);
 
-  const filteredCompanies = companies.filter(
-    (company) =>
-      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.city?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCompanies = React.useMemo(() => {
+    return companies.filter((company) => {
+      // Unified search filter (if active)
+      const matchesUnifiedSearch = 
+        !isUnifiedSearchActive || unifiedSearchResults.has(company.id);
+
+      // Search term filter (fallback if unified search not active)
+      const matchesSearch =
+        isUnifiedSearchActive ||
+        !searchTerm ||
+        company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.website?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.phone?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return matchesUnifiedSearch && matchesSearch;
+    });
+  }, [companies, searchTerm, unifiedSearchResults, isUnifiedSearchActive]);
 
   const handleCreateCompany = () => {
     setEditingCompany(null);
@@ -151,12 +169,16 @@ export default function CompaniesPage() {
     return <p className="text-gray-500">Chargement...</p>;
   }
 
+  const isGalleryView = pathname?.includes('/gallery');
+  const isTableView = !isGalleryView && pathname?.includes('/companies');
+
   return (
     <>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Entreprises</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Entreprises</h1>
+            <p className="text-gray-600 dark:text-gray-200 mt-2">
               Gérez vos entreprises clientes et prospects
             </p>
           </div>
@@ -164,14 +186,55 @@ export default function CompaniesPage() {
             Nouvelle entreprise
           </Button>
         </div>
+        
+        {/* Vue Selector */}
+        <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700 mb-6">
+          <Link href="/commercial/companies">
+            <button
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                isTableView
+                  ? "border-b-2 border-blue-600 text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              📋 Vue tableau
+            </button>
+          </Link>
+          <Link href="/commercial/companies/gallery">
+            <button
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                isGalleryView
+                  ? "border-b-2 border-blue-600 text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              }`}
+            >
+              🖼️ Vue galerie
+            </button>
+          </Link>
+        </div>
+      </div>
 
         <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
-          <CardContent className="pt-6">
-            <Input
-              placeholder="Rechercher une entreprise..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-md"
+          <CardHeader>
+            <CardTitle className="text-gray-900 dark:text-white">Recherche unifiée</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <UnifiedSearchBar
+              placeholder="Rechercher dans les contacts et entreprises..."
+              onSearch={(results) => {
+                if (results.contacts.length === 0 && results.companies.length === 0) {
+                  // No search term, clear unified search
+                  setIsUnifiedSearchActive(false);
+                  setUnifiedSearchResults(new Set());
+                  setSearchTerm("");
+                } else {
+                  // Set unified search results
+                  const resultCompanyIds = new Set(results.companies.map(c => c.id));
+                  setUnifiedSearchResults(resultCompanyIds);
+                  setIsUnifiedSearchActive(true);
+                  setSearchTerm(""); // Clear local search term
+                }
+              }}
             />
           </CardContent>
         </Card>

@@ -15,7 +15,7 @@ export async function getContactsAction() {
     const contacts = await getAllContacts();
     return {
       success: true,
-      data: contacts.map((contact) => ({
+      data: contacts.map((contact: { id: string; firstName: string | null; lastName: string | null; email: string | null; phone: string | null; position: string | null; company: unknown; photoKey: string | null; createdAt: Date; updatedAt: Date }) => ({
         id: contact.id,
         firstName: contact.firstName,
         lastName: contact.lastName,
@@ -37,7 +37,7 @@ export async function getCompaniesAction() {
     const companies = await getAllCompanies();
     return {
       success: true,
-      data: companies.map((c) => ({ id: c.id, name: c.name })),
+      data: companies.map((c: { id: string; name: string }) => ({ id: c.id, name: c.name })),
     };
   } catch (error) {
     logger.error("Error fetching companies", error instanceof Error ? error : new Error(String(error)));

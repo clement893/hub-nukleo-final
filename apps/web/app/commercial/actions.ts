@@ -11,7 +11,7 @@ export async function getAllOpportunitiesAction() {
     const opportunities = await getAllOpportunities();
     return {
       success: true,
-      data: opportunities.map((opp) => ({
+      data: opportunities.map((opp: { id: string; title: string; company: { id: string; name: string } | null }) => ({
         id: opp.id,
         title: opp.title,
         company: opp.company

@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   // output: "standalone", // Disabled to allow next start to work properly
   transpilePackages: ["@nukleo/ui", "@nukleo/db", "@nukleo/commercial"],
   
+  // Webpack configuration for production builds
+  // Turbopack is disabled for production builds via --webpack flag to avoid Windows symlink issues
+  webpack: (config, { isServer, dev }) => {
+    // Webpack configuration
+    return config;
+  },
+  
   // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],

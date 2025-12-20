@@ -48,7 +48,7 @@ export async function GET(
         phone: contact.phone,
         position: contact.position,
         company: contact.company,
-        opportunities: contact.opportunities.map((opp) => ({
+        opportunities: contact.opportunities.map((opp: { id: string; title: string; value: unknown; stage: string; company: { name: string } | null }) => ({
           id: opp.id,
           title: opp.title,
           value: opp.value ? Number(opp.value) : null,

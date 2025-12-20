@@ -12,7 +12,7 @@ export async function GET() {
     const opportunities = await getAllOpportunities();
     return NextResponse.json({
       success: true,
-      data: opportunities.map((opp) => ({
+      data: opportunities.map((opp: { id: string; title: string; description: string | null; value: unknown; stage: string; probability: number | null; expectedCloseDate: Date | null; company: unknown; contact: unknown; createdAt: Date; updatedAt: Date }) => ({
         id: opp.id,
         title: opp.title,
         description: opp.description,

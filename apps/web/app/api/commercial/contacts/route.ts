@@ -12,7 +12,7 @@ export async function GET() {
     const contacts = await getAllContacts();
     return NextResponse.json({
       success: true,
-      data: contacts.map((contact) => ({
+      data: contacts.map((contact: { id: string; firstName: string | null; lastName: string | null; email: string | null; phone: string | null; position: string | null; company: unknown; createdAt: Date; updatedAt: Date }) => ({
         id: contact.id,
         firstName: contact.firstName,
         lastName: contact.lastName,

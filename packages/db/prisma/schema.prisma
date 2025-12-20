@@ -17,12 +17,17 @@ enum Role {
 }
 
 enum OpportunityStage {
-  NEW
-  QUALIFIED
-  PROPOSAL
-  NEGOTIATION
-  WON
-  LOST
+  IDEAS_CONTACT_PROJECT
+  FOLLOW_UP_EMAILS
+  MEETING_BOOKED
+  IN_DISCUSSION
+  PROPOSAL_TO_DO
+  PROPOSAL_SENT
+  CONTRACT_TO_DO
+  CLOSED_WON
+  CLOSED_LOST
+  RENEWALS_POTENTIAL_UPCOMING
+  WAITING_OR_SILENT
 }
 
 enum ProjectStatus {
@@ -118,7 +123,7 @@ model Opportunity {
   title             String
   description       String?
   value             Decimal?          @db.Decimal(10, 2)
-  stage             OpportunityStage  @default(NEW)
+  stage             OpportunityStage  @default(IDEAS_CONTACT_PROJECT)
   probability       Int?              @default(0) // 0-100
   expectedCloseDate DateTime?
   actualCloseDate   DateTime?

@@ -320,7 +320,7 @@ export default function OpportunitiesPage() {
                     title: data.title,
                     description: data.description,
                     value: data.value ?? null,
-                    stage: data.stage as OpportunityStage, as OpportunityStage,
+                    stage: data.stage,
                     probability: data.probability,
                     expectedCloseDate: data.expectedCloseDate
                       ? new Date(data.expectedCloseDate)

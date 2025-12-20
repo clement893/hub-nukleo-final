@@ -41,7 +41,7 @@ export async function getCompaniesForOpportunitiesAction() {
     const companies = await getAllCompanies();
     return {
       success: true,
-      data: companies.map((c) => ({ id: c.id, name: c.name })),
+      data: companies.map((c: { id: string; name: string }) => ({ id: c.id, name: c.name })),
     };
   } catch (error) {
     logger.error("Error fetching companies", error instanceof Error ? error : new Error(String(error)));
@@ -54,7 +54,7 @@ export async function getContactsForOpportunitiesAction() {
     const contacts = await getAllContacts();
     return {
       success: true,
-      data: contacts.map((c) => ({
+      data: contacts.map((c: { id: string; firstName: string | null; lastName: string | null }) => ({
         id: c.id,
         firstName: c.firstName,
         lastName: c.lastName,

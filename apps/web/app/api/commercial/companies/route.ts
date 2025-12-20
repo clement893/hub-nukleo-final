@@ -12,7 +12,7 @@ export async function GET() {
     const companies = await getAllCompanies();
     return NextResponse.json({
       success: true,
-      data: companies.map((company) => ({
+      data: companies.map((company: { id: string; name: string; industry: string | null; website: string | null; phone: string | null; address: string | null; city: string | null; country: string | null; createdAt: Date; updatedAt: Date }) => ({
         id: company.id,
         name: company.name,
         industry: company.industry,

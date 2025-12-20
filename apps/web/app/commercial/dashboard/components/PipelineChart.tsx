@@ -12,12 +12,17 @@ interface PipelineChartProps {
 }
 
 const stageLabels: Record<string, string> = {
-  NEW: "Nouvelle",
-  QUALIFIED: "Qualifiée",
-  PROPOSAL: "Proposition",
-  NEGOTIATION: "Négociation",
-  WON: "Gagnée",
-  LOST: "Perdue",
+  IDEAS_CONTACT_PROJECT: "Idées de contact/projet",
+  FOLLOW_UP_EMAILS: "Suivi/Emails",
+  MEETING_BOOKED: "Rencontre bookée",
+  IN_DISCUSSION: "En discussion",
+  PROPOSAL_TO_DO: "Proposal to do",
+  PROPOSAL_SENT: "Proposal sent",
+  CONTRACT_TO_DO: "Contract to do",
+  CLOSED_WON: "Closed Won",
+  CLOSED_LOST: "Closed Lost",
+  RENEWALS_POTENTIAL_UPCOMING: "Renouvellements (potentiels, à venir)",
+  WAITING_OR_SILENT: "En attente ou Silence radio",
 };
 
 export function PipelineChart({ pipelineByStage }: PipelineChartProps) {
