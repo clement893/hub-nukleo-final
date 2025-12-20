@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@nukleo/ui";
-import { ChevronLeft, ChevronRight, Calendar, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 export type CalendarView = "month" | "week" | "day";
 
