@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@nukleo/db";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth-helpers";
 import { revalidatePath } from "next/cache";
 
 // Get all tenants
