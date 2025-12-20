@@ -258,7 +258,7 @@ export default function OpportunitiesPage() {
     Array<{ id: string; name: string }>
   >([]);
   const [contacts, setContacts] = React.useState<
-    Array<{ id: string; firstName: string; lastName: string }>
+    Array<{ id: string; firstName: string | null; lastName: string | null }>
   >([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingOpportunity, setEditingOpportunity] =
