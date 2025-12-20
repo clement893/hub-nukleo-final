@@ -103,6 +103,13 @@ model User {
   operationsDepartment Department? // Département Opérations (Bureau, Lab, Studio)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  
+  // Admin module
+  roleId        String?
+  customRole    RoleModel?    @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  isActive      Boolean       @default(true)
+  lastLoginAt   DateTime?
+  auditLogs    AuditLog[]
 
   // NextAuth relations
   accounts      Account[]
@@ -121,6 +128,8 @@ model User {
   activityLogs  ActivityLog[]
 
   @@index([operationsDepartment])
+  @@index([roleId])
+  @@index([isActive])
   @@map("users")
 }
 
@@ -503,6 +512,38 @@ model ActivityLog {
   @@index([type])
   @@index([createdAt])
   @@map("activity_logs")
+}
+
+// Admin Module
+model RoleModel {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  permissions Json     // Array de permissions: ["users:read", "users:write", "projects:read", etc.]
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("roles")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT, etc.
+  entity    String   // User, Project, Contact, Invoice, etc.
+  entityId  String?
+  changes   Json?    // Détails des changements (before/after)
+  ipAddress String?
+  userAgent String?  @db.Text
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
 
 
