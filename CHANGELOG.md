@@ -81,3 +81,4 @@ Pour activer Sentry :
 - **Code ajouté** : ~150 lignes de code propre et documenté
 - **Score** : 7.5/10 → 9/10 → **9.5/10** ⭐
 
+

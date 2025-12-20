@@ -1,6 +1,6 @@
 import { Sidebar } from "../commercial/components/Sidebar";
 
-export default function ProjectsLayout({
+export default function GestionLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -9,8 +9,10 @@ export default function ProjectsLayout({
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 transition-all duration-300">
       <Sidebar />
       <main className="flex-1 lg:ml-64 w-full">
-        <div className="pt-16 lg:pt-0 p-4 lg:p-8 max-w-full overflow-x-hidden">
-          {children}
+        <div className="pt-16 lg:pt-0 p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </div>
       </main>
     </div>

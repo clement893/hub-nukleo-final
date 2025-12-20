@@ -57,9 +57,15 @@ model User {
   email         String        @unique
   emailVerified DateTime?
   name          String?
+  firstName     String?       // Prénom
+  lastName      String?       // Nom de famille
+  linkedin      String?       // LinkedIn URL
+  department    String?       // Département
+  birthday      DateTime?     // Anniversaire
+  hireDate      DateTime?     // Anniversaire embauche
   password      String?
   role          Role          @default(USER)
-  image         String?
+  image         String?       // Photo
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 

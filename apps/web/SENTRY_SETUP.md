@@ -96,3 +96,4 @@ pnpm test lib/__tests__/auth-helpers.test.ts
 
 3. **Performance** : Le taux d'échantillonnage est configuré à 10% en production pour éviter d'impacter les performances.
 
+

@@ -9,6 +9,7 @@ import {
   CardTitle,
   CardContent,
   Button,
+  Input,
   Table,
   TableHeader,
   TableBody,
@@ -175,14 +176,14 @@ export default function CompaniesPage() {
   return (
     <>
       <div className="mb-8">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+        <div className="flex justify-between items-center mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Entreprises</h1>
             <p className="text-gray-600 dark:text-gray-200 mt-2">
               Gérez vos entreprises clientes et prospects
             </p>
           </div>
-          <Button variant="primary" onClick={handleCreateCompany} className="w-full sm:w-auto">
+          <Button variant="primary" onClick={handleCreateCompany}>
             Nouvelle entreprise
           </Button>
         </div>
@@ -258,8 +259,7 @@ export default function CompaniesPage() {
                 )}
               </div>
             ) : (
-              <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-                <Table>
+              <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Nom</TableHead>
@@ -326,7 +326,6 @@ export default function CompaniesPage() {
                   ))}
                 </TableBody>
               </Table>
-              </div>
             )}
           </CardContent>
         </Card>

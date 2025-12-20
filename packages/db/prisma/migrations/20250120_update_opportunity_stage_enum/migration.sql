@@ -42,3 +42,4 @@ ALTER TABLE "Opportunity"
 DROP TYPE "OpportunityStage";
 ALTER TYPE "OpportunityStage_new" RENAME TO "OpportunityStage";
 
+

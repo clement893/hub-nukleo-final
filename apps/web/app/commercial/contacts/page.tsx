@@ -12,6 +12,7 @@ import {
   CardTitle,
   CardContent,
   Button,
+  Input,
   Table,
   TableHeader,
   TableBody,
@@ -42,7 +43,6 @@ import { exportToCSV, exportToPDF } from "../../../lib/export";
 import { calculateContactStats, type Contact } from "../../../lib/stats";
 import { ContactAvatar } from "../../../components/ContactAvatar";
 import { UnifiedSearchBar } from "../../../components/UnifiedSearchBar";
-import { ImportModal } from "../../components/ImportModal";
 
 export default function ContactsPage() {
   const pathname = usePathname();
@@ -66,56 +66,43 @@ export default function ContactsPage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(50); // Pagination: 50 items per page
-  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const { addToast } = useToast();
 
-  const loadContacts = React.useCallback(async () => {
-    try {
-      const [contactsResult, companiesResult] = await Promise.all([
-        getContactsAction(),
-        getCompaniesAction(),
-      ]);
+  React.useEffect(() => {
+    async function loadData() {
+      try {
+        const [contactsResult, companiesResult] = await Promise.all([
+          getContactsAction(),
+          getCompaniesAction(),
+        ]);
 
-      if (contactsResult.success && contactsResult.data) {
-        // Filter out contacts with null firstName or lastName and ensure proper typing
-        const validContacts = contactsResult.data
-          .filter((contact) => contact.firstName !== null && contact.lastName !== null)
-          .map((contact) => ({
-            id: contact.id,
-            firstName: contact.firstName!,
-            lastName: contact.lastName!,
-            email: contact.email,
-            phone: contact.phone,
-            position: contact.position,
-            company: contact.company as { id: string; name: string } | null,
-          }));
-        setContacts(validContacts);
-      } else {
+        if (contactsResult.success && contactsResult.data) {
+          setContacts(contactsResult.data);
+        } else {
+          addToast({
+            variant: "error",
+            title: "Erreur",
+            description: contactsResult.error || "Impossible de charger les contacts",
+          });
+        }
+
+        if (companiesResult.success && companiesResult.data) {
+          setCompanies(companiesResult.data);
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
         addToast({
           variant: "error",
           title: "Erreur",
-          description: contactsResult.error || "Impossible de charger les contacts",
+          description: "Une erreur est survenue lors du chargement des données",
         });
+      } finally {
+        setIsLoading(false);
       }
-
-      if (companiesResult.success && companiesResult.data) {
-        setCompanies(companiesResult.data);
-      }
-    } catch (error) {
-      console.error("Error loading data:", error);
-      addToast({
-        variant: "error",
-        title: "Erreur",
-        description: "Une erreur est survenue lors du chargement des données",
-      });
-    } finally {
-      setIsLoading(false);
     }
-  }, [addToast]);
 
-  React.useEffect(() => {
-    loadContacts();
-  }, [loadContacts]);
+    loadData();
+  }, [addToast]);
 
   // Advanced filtering
   const filteredContacts = React.useMemo(() => {
@@ -400,30 +387,27 @@ export default function ContactsPage() {
   return (
     <>
       <div className="mb-8">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+        <div className="flex justify-between items-center mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Contacts</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
               Gérez vos contacts commerciaux ({stats.total} contact{stats.total > 1 ? "s" : ""})
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Link href="/commercial/contacts/stats" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto">Statistiques</Button>
+          <div className="flex gap-2">
+            <Link href="/commercial/contacts/stats">
+              <Button variant="outline">Statistiques</Button>
             </Link>
-            <Button variant="outline" onClick={() => setIsImportModalOpen(true)} className="w-full sm:w-auto">
-              Importer CSV
-            </Button>
             <DropdownMenu>
               <DropdownTrigger>
-                <Button variant="outline" className="w-full sm:w-auto">Exporter</Button>
+                <Button variant="outline">Exporter</Button>
               </DropdownTrigger>
               <DropdownContent>
                 <DropdownItem onClick={handleExportCSV}>Exporter en CSV</DropdownItem>
                 <DropdownItem onClick={handleExportPDF}>Exporter en PDF</DropdownItem>
               </DropdownContent>
             </DropdownMenu>
-            <Button variant="primary" onClick={handleCreateContact} className="w-full sm:w-auto">
+            <Button variant="primary" onClick={handleCreateContact}>
               Nouveau contact
             </Button>
           </div>
@@ -482,99 +466,111 @@ export default function ContactsPage() {
           </CardContent>
         </Card>
 
-        {/* Filters - Minimalist Design */}
-        <div className="mb-6 flex flex-wrap items-end gap-3 px-1">
-          <div className="flex-1 min-w-[140px]">
-            <Select
-              value={filterCompany}
-              onChange={(e) => setFilterCompany(e.target.value)}
-              options={[
-                { value: "", label: "Toutes les entreprises" },
-                ...companies.map((c) => ({
-                  value: c.id,
-                  label: c.name,
-                })),
-              ]}
-              placeholder="Entreprise"
-            />
-          </div>
-          <div className="flex-1 min-w-[140px]">
-            <Select
-              value={filterPosition}
-              onChange={(e) => setFilterPosition(e.target.value)}
-              options={[
-                { value: "", label: "Tous les postes" },
-                ...uniquePositions.map((p) => ({
-                  value: p,
-                  label: p,
-                })),
-              ]}
-              placeholder="Poste"
-            />
-          </div>
-          <div className="flex-1 min-w-[120px]">
-            <Select
-              value={
-                hasEmail === null
-                  ? ""
-                  : hasEmail
-                  ? "yes"
-                  : "no"
-              }
-              onChange={(e) =>
-                setHasEmail(
-                  e.target.value === ""
-                    ? null
-                    : e.target.value === "yes"
-                    ? true
-                    : false
-                )
-              }
-              options={[
-                { value: "", label: "Email: Tous" },
-                { value: "yes", label: "Email: Avec" },
-                { value: "no", label: "Email: Sans" },
-              ]}
-              placeholder="Email"
-            />
-          </div>
-          <div className="flex-1 min-w-[120px]">
-            <Select
-              value={
-                hasPhone === null
-                  ? ""
-                  : hasPhone
-                  ? "yes"
-                  : "no"
-              }
-              onChange={(e) =>
-                setHasPhone(
-                  e.target.value === ""
-                    ? null
-                    : e.target.value === "yes"
-                    ? true
-                    : false
-                )
-              }
-              options={[
-                { value: "", label: "Tél: Tous" },
-                { value: "yes", label: "Tél: Avec" },
-                { value: "no", label: "Tél: Sans" },
-              ]}
-              placeholder="Téléphone"
-            />
-          </div>
-          {hasActiveFilters && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleResetFilters}
-              className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-2 py-1 h-auto"
-            >
-              ✕ Réinitialiser
-            </Button>
-          )}
-        </div>
+        {/* Advanced Filters */}
+        <Card className="mb-6 glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
+          <CardHeader>
+            <CardTitle className="text-gray-900 dark:text-white">Filtres</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Entreprise
+                </label>
+                <Select
+                  value={filterCompany}
+                  onChange={(e) => setFilterCompany(e.target.value)}
+                  options={[
+                    { value: "", label: "Toutes les entreprises" },
+                    ...companies.map((c) => ({
+                      value: c.id,
+                      label: c.name,
+                    })),
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Poste
+                </label>
+                <Select
+                  value={filterPosition}
+                  onChange={(e) => setFilterPosition(e.target.value)}
+                  options={[
+                    { value: "", label: "Tous les postes" },
+                    ...uniquePositions.map((p) => ({
+                      value: p,
+                      label: p,
+                    })),
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <Select
+                  value={
+                    hasEmail === null
+                      ? ""
+                      : hasEmail
+                      ? "yes"
+                      : "no"
+                  }
+                  onChange={(e) =>
+                    setHasEmail(
+                      e.target.value === ""
+                        ? null
+                        : e.target.value === "yes"
+                        ? true
+                        : false
+                    )
+                  }
+                  options={[
+                    { value: "", label: "Tous" },
+                    { value: "yes", label: "Avec email" },
+                    { value: "no", label: "Sans email" },
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Téléphone
+                </label>
+                <Select
+                  value={
+                    hasPhone === null
+                      ? ""
+                      : hasPhone
+                      ? "yes"
+                      : "no"
+                  }
+                  onChange={(e) =>
+                    setHasPhone(
+                      e.target.value === ""
+                        ? null
+                        : e.target.value === "yes"
+                        ? true
+                        : false
+                    )
+                  }
+                  options={[
+                    { value: "", label: "Tous" },
+                    { value: "yes", label: "Avec téléphone" },
+                    { value: "no", label: "Sans téléphone" },
+                  ]}
+                />
+              </div>
+            </div>
+            {hasActiveFilters && (
+              <div className="mt-4">
+                <Button variant="ghost" size="sm" onClick={handleResetFilters}>
+                  Réinitialiser les filtres
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -628,8 +624,7 @@ export default function ContactsPage() {
                 )}
               </div>
             ) : (
-              <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-                <Table>
+              <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Contact</TableHead>
@@ -696,7 +691,6 @@ export default function ContactsPage() {
                   ))}
                 </TableBody>
               </Table>
-              </div>
             )}
           </CardContent>
         </Card>
@@ -813,17 +807,6 @@ export default function ContactsPage() {
           ? Cette action est irréversible.
         </p>
       </Modal>
-
-      <ImportModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
-        onImportComplete={() => {
-          setIsLoading(true);
-          loadContacts();
-        }}
-        importEndpoint="/api/contacts/import"
-        expectedColumns={["firstName", "lastName", "email", "phone", "position", "companyName"]}
-      />
     </>
   );
 }

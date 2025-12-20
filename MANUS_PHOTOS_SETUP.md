@@ -104,3 +104,4 @@ Après la mise à jour, vérifiez que les photos s'affichent en :
 2. Vérifiant que les avatars affichent les photos au lieu des initiales
 3. Cliquant sur un contact pour voir la photo en grand format
 
+

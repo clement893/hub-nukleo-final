@@ -56,3 +56,4 @@ WHERE table_name = 'companies' AND column_name = 'logoKey';
 
 Les deux requêtes doivent retourner une ligne chacune.
 
+

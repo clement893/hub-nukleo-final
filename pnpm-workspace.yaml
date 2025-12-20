@@ -3,4 +3,5 @@ packages:
   - "packages/*"
   - "packages/config/*"
   - "packages/commercial"
+  - "packages/gestion"
 

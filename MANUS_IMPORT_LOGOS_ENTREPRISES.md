@@ -191,3 +191,4 @@ Après la mise à jour, vérifiez que les logos s'affichent en :
 
 Ce guide devrait permettre à MANUS d'importer les logos d'entreprises directement dans la base de données avec succès.
 
+

@@ -17,6 +17,7 @@
   "dependencies": {
     "@nukleo/commercial": "workspace:*",
     "@nukleo/db": "workspace:*",
+    "@nukleo/gestion": "workspace:*",
     "@nukleo/ui": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

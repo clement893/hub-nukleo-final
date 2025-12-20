@@ -239,3 +239,4 @@ Le code est **bien construit** avec une architecture solide. Les problèmes iden
 
 Avec les corrections proposées, le score pourrait facilement atteindre **9/10**.
 
+
