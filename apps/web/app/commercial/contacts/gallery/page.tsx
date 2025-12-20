@@ -120,8 +120,8 @@ export default function ContactsGalleryPage() {
       const matchesSearch =
         isUnifiedSearchActive ||
         !searchTerm ||
-        contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.company?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.position?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -191,7 +191,7 @@ export default function ContactsGalleryPage() {
         addToast({
           variant: "success",
           title: "Contact supprimé",
-          description: `${contactToDelete.firstName} ${contactToDelete.lastName} a été supprimé avec succès`,
+          description: `${contactToDelete.firstName || ""} ${contactToDelete.lastName || ""}`.trim() + " a été supprimé avec succès",
         });
         setIsDeleteModalOpen(false);
         setContactToDelete(null);
@@ -318,8 +318,8 @@ export default function ContactsGalleryPage() {
 
   const handleExportCSV = () => {
     const exportData = filteredContacts.map((contact) => ({
-      Prénom: contact.firstName,
-      Nom: contact.lastName,
+      Prénom: contact.firstName || "",
+      Nom: contact.lastName || "",
       Email: contact.email || "",
       Téléphone: contact.phone || "",
       Poste: contact.position || "",
@@ -336,8 +336,8 @@ export default function ContactsGalleryPage() {
 
   const handleExportPDF = () => {
     const exportData = filteredContacts.map((contact) => ({
-      Prénom: contact.firstName,
-      Nom: contact.lastName,
+      Prénom: contact.firstName || "",
+      Nom: contact.lastName || "",
       Email: contact.email || "",
       Téléphone: contact.phone || "",
       Poste: contact.position || "",
@@ -628,7 +628,7 @@ export default function ContactsGalleryPage() {
                       {hasPhoto ? (
                         <img
                           src={`/api/files/${encodeURIComponent(contact.photoKey!)}`}
-                          alt={`${contact.firstName} ${contact.lastName}`}
+                          alt={`${contact.firstName || ""} ${contact.lastName || ""}`}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
                             // Fallback to avatar if image fails to load
@@ -636,10 +636,12 @@ export default function ContactsGalleryPage() {
                             target.style.display = 'none';
                             const parent = target.parentElement;
                             if (parent) {
+                              const firstInitial = contact.firstName?.[0] || "";
+                              const lastInitial = contact.lastName?.[0] || "";
                               parent.innerHTML = `
                                 <div class="w-full h-full flex items-center justify-center">
                                   <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
-                                    ${contact.firstName[0]}${contact.lastName[0]}
+                                    ${firstInitial}${lastInitial}
                                   </div>
                                 </div>
                               `;
@@ -649,8 +651,8 @@ export default function ContactsGalleryPage() {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <ContactAvatar
-                            firstName={contact.firstName}
-                            lastName={contact.lastName}
+                            firstName={contact.firstName || ""}
+                            lastName={contact.lastName || ""}
                             photoKey={contact.photoKey}
                             size="lg"
                             className="w-32 h-32"
@@ -667,7 +669,7 @@ export default function ContactsGalleryPage() {
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-gray-900 dark:text-white text-lg mb-1">
-                        {contact.firstName} {contact.lastName}
+                        {contact.firstName || ""} {contact.lastName || ""}
                       </h3>
                       {contact.position && (
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
@@ -733,14 +735,14 @@ export default function ContactsGalleryPage() {
           setIsImageModalOpen(false);
           setSelectedContact(null);
         }}
-        title={`${selectedContact?.firstName} ${selectedContact?.lastName}`}
+        title={`${selectedContact?.firstName || ""} ${selectedContact?.lastName || ""}`}
         size="lg"
       >
         {selectedContact && photoUrl && (
           <div className="flex flex-col items-center">
             <img
               src={photoUrl}
-              alt={`${selectedContact.firstName} ${selectedContact.lastName}`}
+              alt={`${selectedContact.firstName || ""} ${selectedContact.lastName || ""}`}
               className="w-full max-w-2xl h-auto rounded-lg shadow-lg"
             />
             <div className="mt-4 w-full text-center">
@@ -779,8 +781,8 @@ export default function ContactsGalleryPage() {
         initialData={
           editingContact
             ? {
-                firstName: editingContact.firstName,
-                lastName: editingContact.lastName,
+                firstName: editingContact.firstName || "",
+                lastName: editingContact.lastName || "",
                 email: editingContact.email || undefined,
                 phone: editingContact.phone || undefined,
                 position: editingContact.position || undefined,
