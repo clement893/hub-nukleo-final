@@ -129,9 +129,21 @@ export default function NewContractPage() {
       return;
     }
 
+    if (!formData.startDate || !formData.endDate) {
+      addToast({
+        variant: "error",
+        title: "Erreur",
+        description: "Veuillez saisir les dates de début et de fin",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       setError(null);
+
+      const startDate: string = formData.startDate;
+      const endDate: string = formData.endDate;
 
       const result = await createContractAction({
         title: formData.title,
@@ -139,8 +151,8 @@ export default function NewContractPage() {
         companyId: formData.companyId,
         projectId: formData.projectId || undefined,
         contactId: formData.contactId || undefined,
-        startDate: new Date(formData.startDate),
-        endDate: new Date(formData.endDate),
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
         value: formData.value,
         currency: formData.currency,
         terms: formData.terms || undefined,
