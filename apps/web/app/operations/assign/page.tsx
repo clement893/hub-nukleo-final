@@ -187,7 +187,8 @@ export default function AssignTasksPage() {
       HIGH: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
       URGENT: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
     };
-    return colors[priority] ?? colors.MEDIUM ?? "";
+    const color = colors[priority];
+    return color || colors.MEDIUM;
   };
 
   if (isLoading) {
