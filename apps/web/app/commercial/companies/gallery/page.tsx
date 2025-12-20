@@ -69,10 +69,16 @@ export default function CompaniesGalleryPage() {
   }, []);
 
   const filteredCompanies = companies.filter(
-    (company) =>
-      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      company.city?.toLowerCase().includes(searchTerm.toLowerCase())
+    (company) => {
+      if (isUnifiedSearchActive) {
+        return unifiedSearchResults.has(company.id);
+      }
+      return (
+        company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.city?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
   );
 
   const handleCreateCompany = () => {
