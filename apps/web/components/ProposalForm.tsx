@@ -238,8 +238,8 @@ export function ProposalForm({
           >
             + Ajouter une section
           </Button>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        </GlassCardHeader>
+        <GlassCardContent className="space-y-4">
           {sections.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400 text-center py-8">
               Aucune section. Cliquez sur "Ajouter une section" pour commencer.
@@ -259,7 +259,7 @@ export function ProposalForm({
               />
             ))
           )}
-        </CardContent>
+        </GlassCardContent>
       </GlassCard>
 
       <GlassCard>
@@ -280,8 +280,8 @@ export function ProposalForm({
           >
             + Ajouter un processus
           </Button>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        </GlassCardHeader>
+        <GlassCardContent className="space-y-4">
           {processes.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400 text-center py-8">
               Aucun processus. Cliquez sur "Ajouter un processus" pour commencer.
@@ -299,7 +299,7 @@ export function ProposalForm({
               />
             ))
           )}
-        </CardContent>
+        </GlassCardContent>
       </GlassCard>
 
       <div className="flex justify-end gap-2 pb-8">
