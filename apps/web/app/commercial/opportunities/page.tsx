@@ -196,15 +196,15 @@ function KanbanColumn({
   );
 
   return (
-    <div className="flex-shrink-0 w-80" ref={setNodeRef}>
+    <div className="flex-shrink-0 w-80 h-full" ref={setNodeRef}>
       <Card 
-        className={`h-full transition-all duration-200 ${
+        className={`h-full flex flex-col transition-all duration-200 ${
           isOver 
             ? 'ring-2 ring-primary shadow-lg scale-[1.02]' 
             : 'shadow-md hover:shadow-lg'
         } bg-gradient-to-br ${stageGradients[stage]} border-2 ${stageBorderColors[stage]}`}
       >
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 flex-shrink-0">
           <div className="flex justify-between items-start gap-2">
             <CardTitle className="text-base font-bold text-gray-900 dark:text-white leading-tight">
               {stageLabels[stage]}
@@ -221,7 +221,7 @@ function KanbanColumn({
             })}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3 min-h-[300px] max-h-[calc(100vh-300px)] overflow-y-auto">
+        <CardContent className="flex-1 min-h-0 overflow-y-auto space-y-3">
           <SortableContext
             items={opportunities.map((opp) => opp.id)}
             strategy={verticalListSortingStrategy}
@@ -521,8 +521,9 @@ export default function OpportunitiesPage() {
   }
 
   return (
-    <>
-      <div className="mb-6 space-y-4">
+    <div className="flex flex-col h-full w-full p-4 sm:p-6 lg:p-8">
+      {/* Header avec stats - fixe en haut */}
+      <div className="flex-shrink-0 mb-4 space-y-4">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent mb-2">
@@ -556,9 +557,9 @@ export default function OpportunitiesPage() {
           <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-green-700 dark:text-green-300">
-                {totalValue.toLocaleString("fr-FR", {
+                {totalValue.toLocaleString("en-US", {
                   style: "currency",
-                  currency: "EUR",
+                  currency: "USD",
                   maximumFractionDigits: 0,
                 })}
               </div>
@@ -580,47 +581,50 @@ export default function OpportunitiesPage() {
         </div>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-          <div className="flex gap-4 min-w-max pb-6">
-            {stages.map((stage) => (
-              <KanbanColumn
-                key={stage}
-                stage={stage}
-                opportunities={opportunitiesByStage[stage]}
-                onOpportunityClick={handleEditOpportunity}
-              />
-            ))}
-          </div>
-        </div>
-        <DragOverlay>
-          {activeOpportunity ? (
-            <div className="opacity-80 rotate-3 scale-105">
-              <OpportunityCard
-                id={activeOpportunity.id}
-                title={activeOpportunity.title}
-                company={activeOpportunity.company?.name}
-                contact={activeOpportunity.contact}
-                value={
-                  activeOpportunity.value
-                    ? Number(activeOpportunity.value)
-                    : undefined
-                }
-                probability={activeOpportunity.probability ?? undefined}
-                expectedCloseDate={
-                  activeOpportunity.expectedCloseDate ?? undefined
-                }
-                stage={activeOpportunity.stage}
-              />
+      {/* Kanban - prend tout l'espace restant */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="h-full overflow-x-auto overflow-y-hidden">
+            <div className="flex gap-4 h-full min-w-max pb-4">
+              {stages.map((stage) => (
+                <KanbanColumn
+                  key={stage}
+                  stage={stage}
+                  opportunities={opportunitiesByStage[stage]}
+                  onOpportunityClick={handleEditOpportunity}
+                />
+              ))}
             </div>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+          </div>
+          <DragOverlay>
+            {activeOpportunity ? (
+              <div className="opacity-80 rotate-3 scale-105">
+                <OpportunityCard
+                  id={activeOpportunity.id}
+                  title={activeOpportunity.title}
+                  company={activeOpportunity.company?.name}
+                  contact={activeOpportunity.contact}
+                  value={
+                    activeOpportunity.value
+                      ? Number(activeOpportunity.value)
+                      : undefined
+                  }
+                  probability={activeOpportunity.probability ?? undefined}
+                  expectedCloseDate={
+                    activeOpportunity.expectedCloseDate ?? undefined
+                  }
+                  stage={activeOpportunity.stage}
+                />
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
 
       <OpportunityModal
         isOpen={isModalOpen}
@@ -648,6 +652,6 @@ export default function OpportunitiesPage() {
         companies={companies}
         contacts={contacts}
       />
-    </>
+    </div>
   );
 }
