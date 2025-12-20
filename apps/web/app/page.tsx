@@ -46,6 +46,19 @@ const modules = [
     gradient: "from-pink-500 via-pink-600 to-red-600",
   },
   {
+    icon: "⚙️",
+    title: "Module Admin",
+    description: "Administrez les utilisateurs, rôles et surveillez l'activité système",
+    features: [
+      "Gestion des utilisateurs et permissions",
+      "Création et gestion des rôles",
+      "Journal d'audit complet",
+      "Statistiques système",
+    ],
+    href: "/admin",
+    gradient: "from-red-500 via-red-600 to-orange-600",
+  },
+  {
     icon: "📝",
     title: "Propositions",
     description: "Créez et gérez vos propositions commerciales détaillées",
