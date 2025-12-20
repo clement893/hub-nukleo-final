@@ -22,6 +22,7 @@ export async function getCompaniesListAction() {
         phone: company.phone,
         city: company.city,
         country: company.country,
+        logoKey: company.logoKey,
       })),
     };
   } catch (error) {

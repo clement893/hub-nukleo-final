@@ -12,6 +12,7 @@ export async function getRecentCompanies(limit = 5) {
       id: true,
       name: true,
       industry: true,
+      logoKey: true,
       createdAt: true,
     },
   });
@@ -50,6 +51,7 @@ export async function createCompany(data: {
   address?: string;
   city?: string;
   country?: string;
+  logoKey?: string;
   ownerId: string;
 }) {
   return prisma.company.create({
@@ -61,6 +63,7 @@ export async function createCompany(data: {
       address: data.address,
       city: data.city,
       country: data.country,
+      logoKey: data.logoKey,
       ownerId: data.ownerId,
     },
   });
@@ -76,6 +79,7 @@ export async function updateCompany(
     address?: string;
     city?: string;
     country?: string;
+    logoKey?: string;
   }
 ) {
   return prisma.company.update({
@@ -88,6 +92,7 @@ export async function updateCompany(
       ...(data.address !== undefined && { address: data.address }),
       ...(data.city !== undefined && { city: data.city }),
       ...(data.country !== undefined && { country: data.country }),
+      ...(data.logoKey !== undefined && { logoKey: data.logoKey }),
     },
   });
 }

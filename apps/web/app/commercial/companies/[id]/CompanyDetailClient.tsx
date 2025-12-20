@@ -19,6 +19,7 @@ import {
   deleteCompanyAction,
 } from "../actions";
 import { useRouter } from "next/navigation";
+import { CompanyLogo } from "../../../../components/CompanyLogo";
 
 interface CompanyDetailClientProps {
   company: {
@@ -30,6 +31,7 @@ interface CompanyDetailClientProps {
     address?: string | null;
     city?: string | null;
     country?: string | null;
+    logoKey?: string | null;
     contacts: Array<{
       id: string;
       firstName: string;
@@ -112,13 +114,20 @@ export function CompanyDetailClient({ company }: CompanyDetailClientProps) {
             <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300 animate-fade-in">
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-gray-900 dark:text-white">{company.name}</CardTitle>
-                    {company.industry && (
-                      <CardContent className="pt-2">
-                        <Badge variant="default">{company.industry}</Badge>
-                      </CardContent>
-                    )}
+                  <div className="flex items-center gap-4">
+                    <CompanyLogo
+                      companyName={company.name}
+                      logoKey={company.logoKey}
+                      size={64}
+                    />
+                    <div>
+                      <CardTitle className="text-gray-900 dark:text-white">{company.name}</CardTitle>
+                      {company.industry && (
+                        <CardContent className="pt-2">
+                          <Badge variant="default">{company.industry}</Badge>
+                        </CardContent>
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardHeader>

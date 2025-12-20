@@ -26,6 +26,7 @@ import {
   createCompanyAction,
   updateCompanyAction,
 } from "./actions";
+import { CompanyLogo } from "../../../components/CompanyLogo";
 
 interface Company {
   id: string;
@@ -35,6 +36,7 @@ interface Company {
   phone?: string | null;
   city?: string | null;
   country?: string | null;
+  logoKey?: string | null;
 }
 
 export default function CompaniesPage() {
@@ -208,7 +210,14 @@ export default function CompaniesPage() {
                   {filteredCompanies.map((company) => (
                     <TableRow key={company.id}>
                       <TableCell>
-                        <div className="font-medium">{company.name}</div>
+                        <div className="flex items-center gap-3">
+                          <CompanyLogo
+                            companyName={company.name}
+                            logoKey={company.logoKey}
+                            size={32}
+                          />
+                          <div className="font-medium">{company.name}</div>
+                        </div>
                       </TableCell>
                       <TableCell>
                         {company.industry ? (
