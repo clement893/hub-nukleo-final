@@ -179,12 +179,16 @@ interface KanbanColumnProps {
   stage: OpportunityStage;
   opportunities: Opportunity[];
   onOpportunityClick: (opportunity: Opportunity) => void;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 function KanbanColumn({
   stage,
   opportunities,
   onOpportunityClick,
+  isCollapsed,
+  onToggleCollapse,
 }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: stage,
@@ -196,7 +200,7 @@ function KanbanColumn({
   );
 
   return (
-    <div className="flex-shrink-0 w-80 h-full" ref={setNodeRef}>
+    <div className={`flex-shrink-0 ${isCollapsed ? 'w-16' : 'w-80'} h-full transition-all duration-300`} ref={setNodeRef}>
       <Card 
         className={`h-full flex flex-col transition-all duration-200 ${
           isOver 
@@ -204,49 +208,90 @@ function KanbanColumn({
             : 'shadow-md hover:shadow-lg'
         } bg-gradient-to-br ${stageGradients[stage]} border-2 ${stageBorderColors[stage]}`}
       >
-        <CardHeader className="pb-3 flex-shrink-0">
-          <div className="flex justify-between items-start gap-2">
-            <CardTitle className="text-base font-bold text-gray-900 dark:text-white leading-tight">
-              {stageLabels[stage]}
-            </CardTitle>
-            <Badge variant={stageColors[stage]} className="shrink-0">
-              {opportunities.length}
-            </Badge>
-          </div>
-          <CardDescription className="text-sm font-semibold text-gray-700 dark:text-gray-300 mt-2">
-            {stageValue.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 min-h-0 overflow-y-auto space-y-3">
-          <SortableContext
-            items={opportunities.map((opp) => opp.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {opportunities.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="text-4xl mb-2 opacity-30">📭</div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Aucune opportunité
-                </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                  Glissez-déposez ici
-                </p>
-              </div>
+        <CardHeader className={`pb-3 flex-shrink-0 ${isCollapsed ? 'px-2' : ''}`}>
+          <div className={`flex ${isCollapsed ? 'flex-col' : 'justify-between'} items-center gap-2`}>
+            {isCollapsed ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onToggleCollapse}
+                  className="w-full h-auto p-2 hover:bg-white/10 dark:hover:bg-white/10"
+                  aria-label={`Développer ${stageLabels[stage]}`}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Button>
+                <div className="text-xs font-bold text-gray-900 dark:text-white leading-tight" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                  {stageLabels[stage]}
+                </div>
+                <Badge variant={stageColors[stage]} className="shrink-0 text-xs">
+                  {opportunities.length}
+                </Badge>
+              </>
             ) : (
-              opportunities.map((opportunity) => (
-                <SortableOpportunityCard
-                  key={opportunity.id}
-                  opportunity={opportunity}
-                  onClick={() => onOpportunityClick(opportunity)}
-                />
-              ))
+              <>
+                <div className="flex justify-between items-start gap-2 w-full">
+                  <CardTitle className="text-base font-bold text-gray-900 dark:text-white leading-tight flex-1">
+                    {stageLabels[stage]}
+                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={stageColors[stage]} className="shrink-0">
+                      {opportunities.length}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onToggleCollapse}
+                      className="h-6 w-6 p-0 hover:bg-white/10 dark:hover:bg-white/10"
+                      aria-label={`Réduire ${stageLabels[stage]}`}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </Button>
+                  </div>
+                </div>
+                <CardDescription className="text-sm font-semibold text-gray-700 dark:text-gray-300 mt-2 w-full text-left">
+                  {stageValue.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                    maximumFractionDigits: 0,
+                  })}
+                </CardDescription>
+              </>
             )}
-          </SortableContext>
-        </CardContent>
+          </div>
+        </CardHeader>
+        {!isCollapsed && (
+          <CardContent className="flex-1 min-h-0 overflow-y-auto space-y-3">
+            <SortableContext
+              items={opportunities.map((opp) => opp.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {opportunities.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="text-4xl mb-2 opacity-30">📭</div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Aucune opportunité
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    Glissez-déposez ici
+                  </p>
+                </div>
+              ) : (
+                opportunities.map((opportunity) => (
+                  <SortableOpportunityCard
+                    key={opportunity.id}
+                    opportunity={opportunity}
+                    onClick={() => onOpportunityClick(opportunity)}
+                  />
+                ))
+              )}
+            </SortableContext>
+          </CardContent>
+        )}
       </Card>
     </div>
   );
@@ -265,6 +310,7 @@ export default function OpportunitiesPage() {
     React.useState<Opportunity | null>(null);
   const [activeId, setActiveId] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [collapsedColumns, setCollapsedColumns] = React.useState<Set<OpportunityStage>>(new Set());
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -597,6 +643,18 @@ export default function OpportunitiesPage() {
                   stage={stage}
                   opportunities={opportunitiesByStage[stage]}
                   onOpportunityClick={handleEditOpportunity}
+                  isCollapsed={collapsedColumns.has(stage)}
+                  onToggleCollapse={() => {
+                    setCollapsedColumns((prev) => {
+                      const newSet = new Set(prev);
+                      if (newSet.has(stage)) {
+                        newSet.delete(stage);
+                      } else {
+                        newSet.add(stage);
+                      }
+                      return newSet;
+                    });
+                  }}
                 />
               ))}
             </div>
