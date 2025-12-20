@@ -12,7 +12,6 @@ import {
   updateTask,
   deleteTask,
   getAllTimeEntries,
-  getTimeEntryById,
   createTimeEntry,
   updateTimeEntry,
   deleteTimeEntry,
