@@ -1,4 +1,4 @@
-import { Button, Badge, Card, CardContent, CardHeader, CardTitle } from "@nukleo/ui";
+import { Button, Badge } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getTenantsAction, getTenantsStatsAction } from "./actions";
 import Link from "next/link";

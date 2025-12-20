@@ -1,4 +1,4 @@
-import { Button, Badge, Card, CardContent, CardHeader, CardTitle, Tabs, TabsList, TabsTrigger, TabsContent } from "@nukleo/ui";
+import { Button, Badge, Tabs, TabsList, TabsTrigger, TabsContent } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getSettingsByCategoryAction } from "./actions";
 import Link from "next/link";
