@@ -375,24 +375,24 @@ export default function CommercialDashboardPage() {
         </GlassCardHeader>
         <GlassCardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Link href="/commercial/opportunities/new">
-              <Button variant="primary" className="w-full" aria-label="Créer une opportunité">
-                Nouvelle opportunité
+            <Link href="/commercial/opportunities">
+              <Button variant="primary" className="w-full" aria-label="Voir les opportunités">
+                Opportunités
               </Button>
             </Link>
-            <Link href="/commercial/contacts/new">
-              <Button variant="outline" className="w-full" aria-label="Créer un contact">
-                Nouveau contact
+            <Link href="/commercial/contacts">
+              <Button variant="outline" className="w-full" aria-label="Voir les contacts">
+                Contacts
               </Button>
             </Link>
-            <Link href="/commercial/companies/new">
-              <Button variant="outline" className="w-full" aria-label="Créer une entreprise">
-                Nouvelle entreprise
+            <Link href="/commercial/companies">
+              <Button variant="outline" className="w-full" aria-label="Voir les entreprises">
+                Entreprises
               </Button>
             </Link>
-            <Link href="/commercial/proposals/new">
-              <Button variant="outline" className="w-full" aria-label="Créer une soumission">
-                Nouvelle soumission
+            <Link href="/commercial/proposals">
+              <Button variant="outline" className="w-full" aria-label="Voir les soumissions">
+                Soumissions
               </Button>
             </Link>
           </div>
