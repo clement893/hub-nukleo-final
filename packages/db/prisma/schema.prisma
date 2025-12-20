@@ -101,6 +101,24 @@ enum InvoiceStatus {
   CANCELLED
 }
 
+enum ContractStatus {
+  DRAFT
+  PENDING_SIGNATURE
+  SIGNED
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum ContractType {
+  SERVICE
+  MAINTENANCE
+  LICENSE
+  PARTNERSHIP
+  NDA
+  OTHER
+}
+
 model User {
   id            String        @id @default(cuid())
   email         String        @unique
@@ -136,6 +154,7 @@ model User {
   projectNotes  ProjectNote[]
   activityLogs  ActivityLog[]
   invoices      Invoice[]
+  contracts     Contract[]
 
   @@index([operationsDepartment])
   @@index([roleId])
@@ -249,6 +268,7 @@ model Contact {
   owner         User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   opportunities Opportunity[]
   invoices      Invoice[]
+  contracts     Contract[]
 
   @@index([ownerId])
   @@index([companyId])
@@ -276,6 +296,7 @@ model Company {
   opportunities Opportunity[]
   projects      Project[]
   invoices      Invoice[]
+  contracts     Contract[]
 
   @@index([ownerId])
   @@index([name])
@@ -308,6 +329,7 @@ model Project {
   notes       ProjectNote[]
   activityLogs ActivityLog[]
   invoices    Invoice[]
+  contracts   Contract[]
 
   @@index([managerId])
   @@index([companyId])
@@ -620,6 +642,73 @@ model InvoiceItem {
 
   @@index([invoiceId])
   @@map("invoice_items")
+}
+
+model Contract {
+  id              String         @id @default(cuid())
+  title           String
+  number          String         @unique // CTR-2025-001
+  status          ContractStatus @default(DRAFT)
+  type            ContractType
+
+  // Dates
+  startDate       DateTime
+  endDate         DateTime
+  signedDate      DateTime?
+  renewalDate     DateTime?
+  notificationSent Boolean        @default(false)
+
+  // Relations
+  companyId       String
+  company         Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  contactId       String?
+  contact         Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  projectId       String?
+  project         Project?       @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  // Montants
+  value           Float
+  currency        String         @default("CAD")
+
+  // Documents
+  documentUrl     String?
+  signedDocumentUrl String?
+
+  // Signatures
+  signatures      Signature[]
+
+  // Metadata
+  terms           String?        @db.Text
+  notes           String?        @db.Text
+  autoRenew       Boolean        @default(false)
+  renewalPeriod   Int?           // En mois
+
+  createdById     String
+  createdBy       User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([companyId])
+  @@index([status])
+  @@index([endDate])
+  @@index([type])
+  @@map("contracts")
+}
+
+model Signature {
+  id            String    @id @default(cuid())
+  contractId    String
+  contract      Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  signerName    String
+  signerEmail   String
+  signerRole    String?   // CEO, CFO, Manager, etc.
+  signedAt      DateTime?
+  signatureUrl  String?
+  ipAddress     String?
+  userAgent     String?   @db.Text
+
+  @@index([contractId])
+  @@map("signatures")
 }
 
 
