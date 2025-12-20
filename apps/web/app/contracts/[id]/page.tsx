@@ -64,7 +64,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
       try {
         setIsLoading(true);
         setError(null);
-        const result = await getContractAction(contractId);
+        const result = await getContractAction(contractId as string);
         if (result.success && result.data) {
           setContract(result.data);
         } else {
