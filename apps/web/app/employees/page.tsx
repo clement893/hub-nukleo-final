@@ -144,8 +144,9 @@ export default function EmployeesPage() {
       none: 0,
     };
     employees.forEach((emp) => {
-      if (emp.operationsDepartment) {
-        statsMap[emp.operationsDepartment]++;
+      const dept = emp.operationsDepartment;
+      if (dept && (dept === "BUREAU" || dept === "LAB" || dept === "STUDIO")) {
+        statsMap[dept]++;
       } else {
         statsMap.none++;
       }
