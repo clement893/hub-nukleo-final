@@ -3,7 +3,6 @@ import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/
 import { getContractsAction, getContractsStatsAction, getExpiringContractsAction } from "./actions";
 import Link from "next/link";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@nukleo/ui";
-import { Alert, AlertTitle, AlertDescription } from "@nukleo/ui";
 
 const statusLabels: Record<string, string> = {
   DRAFT: "Brouillon",
@@ -107,10 +106,12 @@ export default async function ContractsPage() {
 
       {/* Expiring Contracts Alert */}
       {expiring.length > 0 && (
-        <Alert variant="warning">
-          <AlertTitle>⚠️ Contrats expirant bientôt</AlertTitle>
-          <AlertDescription>
-            <ul className="space-y-1 mt-2">
+        <GlassCard className="bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+          <GlassCardContent className="pt-6">
+            <h3 className="font-semibold text-red-800 dark:text-red-200 mb-2">
+              ⚠️ Contrats expirant bientôt
+            </h3>
+            <ul className="space-y-1">
               {expiring.map((contract) => (
                 <li key={contract.id} className="text-sm">
                   <Link
@@ -123,8 +124,8 @@ export default async function ContractsPage() {
                 </li>
               ))}
             </ul>
-          </AlertDescription>
-        </Alert>
+          </GlassCardContent>
+        </GlassCard>
       )}
 
       {/* Contracts Table */}
