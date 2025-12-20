@@ -4,6 +4,7 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import { ToastProvider } from "@/lib/toast";
 import { SessionProvider } from "./components/SessionProvider";
 import { SessionManager } from "./components/SessionManager";
+import { AppLayout } from "./components/AppLayout";
 
 export const metadata: Metadata = {
   title: "Hub Nukleo",
@@ -22,7 +23,7 @@ export default function RootLayout({
           <ThemeProvider>
             <ToastProvider>
               <SessionManager />
-              {children}
+              <AppLayout>{children}</AppLayout>
             </ToastProvider>
           </ThemeProvider>
         </SessionProvider>

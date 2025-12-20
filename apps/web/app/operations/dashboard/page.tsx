@@ -226,7 +226,7 @@ export default function OperationsDashboardPage() {
                       <p className="text-sm font-medium">{project._count?.tasks || 0}</p>
                       <p className="text-xs text-gray-500">tâches</p>
                     </div>
-                    <Badge className={statusColors[project.status] || "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"}>
+                    <Badge style={{ backgroundColor: statusColors[project.status] || "#9CA3AF", color: "white" }}>
                       {statusLabels[project.status] || project.status}
                     </Badge>
                   </div>
