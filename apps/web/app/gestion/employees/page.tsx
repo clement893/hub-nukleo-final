@@ -2,10 +2,6 @@
 
 import * as React from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Input,
   Table,
@@ -23,6 +19,7 @@ import {
   DropdownItem,
   DropdownSeparator,
 } from "@nukleo/ui";
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import {
   getEmployeesAction,
   createEmployeeAction,
@@ -312,8 +309,8 @@ export default function EmployeesPage() {
       </div>
 
       {/* Filters */}
-      <Card className="mb-6">
-        <CardContent className="pt-6">
+      <GlassCard className="mb-6">
+        <GlassCardContent className="pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <Input
@@ -335,17 +332,17 @@ export default function EmployeesPage() {
               className="w-full sm:w-48"
             />
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       {/* Employees Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>
+      <GlassCard>
+        <GlassCardHeader>
+          <GlassCardTitle>
             Liste des employés ({filteredEmployees.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </GlassCardTitle>
+        </GlassCardHeader>
+        <GlassCardContent>
           {paginatedEmployees.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500 dark:text-gray-400 mb-4">
@@ -485,8 +482,8 @@ export default function EmployeesPage() {
               )}
             </>
           )}
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       {/* Create/Edit Modal */}
       <Modal
