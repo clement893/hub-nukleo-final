@@ -215,8 +215,6 @@ export async function getEmployeesByDepartment(department: Department) {
       id: true,
       name: true,
       email: true,
-      firstName: true,
-      lastName: true,
       image: true,
       operationsDepartment: true,
     },
