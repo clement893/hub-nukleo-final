@@ -168,7 +168,7 @@ export default function AdminUsersPage() {
             />
             <Select
               value={filterActive}
-              onValueChange={setFilterActive}
+              onChange={(e) => setFilterActive(e.target.value)}
             >
               <option value="all">Tous</option>
               <option value="active">Actifs</option>

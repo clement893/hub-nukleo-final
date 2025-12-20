@@ -166,8 +166,8 @@ export default function AdminAuditPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Select
               value={filters.entity}
-              onValueChange={(value) =>
-                setFilters({ ...filters, entity: value })
+              onChange={(e) =>
+                setFilters({ ...filters, entity: e.target.value })
               }
             >
               <option value="">Toutes les entités</option>
@@ -178,8 +178,8 @@ export default function AdminAuditPage() {
             </Select>
             <Select
               value={filters.action}
-              onValueChange={(value) =>
-                setFilters({ ...filters, action: value })
+              onChange={(e) =>
+                setFilters({ ...filters, action: e.target.value })
               }
             >
               <option value="">Toutes les actions</option>
