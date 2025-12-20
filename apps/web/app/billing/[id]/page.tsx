@@ -46,11 +46,12 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
   const [isUpdating, setIsUpdating] = React.useState(false);
 
   React.useEffect(() => {
+    if (!invoiceId) return;
     async function loadInvoice() {
       try {
         setIsLoading(true);
         setError(null);
-        const result = await getInvoiceAction(params.id);
+        const result = await getInvoiceAction(invoiceId);
         if (result.success && result.data) {
           setInvoice(result.data);
         } else {
@@ -64,12 +65,13 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
       }
     }
     loadInvoice();
-  }, [params.id]);
+  }, [invoiceId]);
 
   const handleMarkAsSent = async () => {
     try {
+      if (!invoiceId) return;
       setIsUpdating(true);
-      const result = await markInvoiceAsSentAction(params.id);
+      const result = await markInvoiceAsSentAction(invoiceId);
       if (result.success) {
         addToast({
           variant: "success",
@@ -154,7 +156,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
     }
   };
 
-  if (isLoading) {
+  if (!invoiceId || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader size="lg" />

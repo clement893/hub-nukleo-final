@@ -54,11 +54,12 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
   const [isUpdating, setIsUpdating] = React.useState(false);
 
   React.useEffect(() => {
+    if (!contractId) return;
     async function loadContract() {
       try {
         setIsLoading(true);
         setError(null);
-        const result = await getContractAction(params.id);
+        const result = await getContractAction(contractId);
         if (result.success && result.data) {
           setContract(result.data);
         } else {
@@ -72,12 +73,13 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
       }
     }
     loadContract();
-  }, [params.id]);
+  }, [contractId]);
 
   const handleSign = async (signatureId: string) => {
+    if (!contractId) return;
     try {
       setIsUpdating(true);
-      const result = await signContractAction(params.id, signatureId, {
+      const result = await signContractAction(contractId, signatureId, {
         signedAt: new Date(),
       });
       if (result.success) {
@@ -87,7 +89,7 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
           description: "Signature enregistrée",
         });
         // Recharger le contrat
-        const reloadResult = await getContractAction(params.id);
+        const reloadResult = await getContractAction(contractId);
         if (reloadResult.success && reloadResult.data) {
           setContract(reloadResult.data);
         }
@@ -110,9 +112,10 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
   };
 
   const handleMarkAsActive = async () => {
+    if (!contractId) return;
     try {
       setIsUpdating(true);
-      const result = await updateContractAction(params.id, {
+      const result = await updateContractAction(contractId, {
         status: "ACTIVE",
       });
       if (result.success) {
@@ -121,7 +124,7 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
           title: "Succès",
           description: "Contrat marqué comme actif",
         });
-        const reloadResult = await getContractAction(params.id);
+        const reloadResult = await getContractAction(contractId);
         if (reloadResult.success && reloadResult.data) {
           setContract(reloadResult.data);
         }
@@ -143,7 +146,7 @@ export default function ContractDetailPage({ params }: { params: { id: string } 
     }
   };
 
-  if (isLoading) {
+  if (!contractId || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader size="lg" />
