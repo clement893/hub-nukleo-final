@@ -28,8 +28,8 @@ export default async function BillingPage() {
     getBillingStatsAction(),
   ]);
 
-  const invoices = invoicesResult.success ? invoicesResult.data : [];
-  const stats = statsResult.success ? statsResult.data : null;
+  const invoices = invoicesResult.success && invoicesResult.data ? invoicesResult.data : [];
+  const stats = statsResult.success && statsResult.data ? statsResult.data : null;
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -104,7 +104,7 @@ export default async function BillingPage() {
           <GlassCardTitle>Liste des factures</GlassCardTitle>
         </GlassCardHeader>
         <GlassCardContent>
-          {invoices.length === 0 ? (
+          {!invoices || invoices.length === 0 ? (
             <div className="text-center py-12 text-gray-500 dark:text-gray-400">
               Aucune facture trouvée
             </div>
