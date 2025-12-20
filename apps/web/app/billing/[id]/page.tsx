@@ -55,6 +55,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       try {
         setIsLoading(true);
         setError(null);
+        if (!invoiceId) return;
         const result = await getInvoiceAction(invoiceId);
         if (result.success && result.data) {
           setInvoice(result.data);
