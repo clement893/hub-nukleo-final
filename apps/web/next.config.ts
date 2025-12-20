@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   
   // Webpack configuration for production builds
   // Turbopack is disabled for production builds via --webpack flag to avoid Windows symlink issues
-  webpack: (config, { isServer, dev }) => {
+  webpack: (config) => {
     // Webpack configuration
     return config;
   },
