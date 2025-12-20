@@ -84,7 +84,12 @@ export default function ProjectDetailPage() {
   const [isNoteModalOpen, setIsNoteModalOpen] = React.useState(false);
   const [selectedTaskId, setSelectedTaskId] = React.useState<string | null>(null);
   const [editingMilestone, setEditingMilestone] = React.useState<any | null>(null);
-  const [milestoneFormData, setMilestoneFormData] = React.useState({
+  const [milestoneFormData, setMilestoneFormData] = React.useState<{
+    title: string;
+    description: string;
+    status: string;
+    dueDate: string;
+  }>({
     title: "",
     description: "",
     status: "PLANNED",
@@ -493,7 +498,7 @@ export default function ProjectDetailPage() {
                           status: milestone.status,
                           dueDate: milestone.dueDate
                             ? new Date(milestone.dueDate).toISOString().split("T")[0]
-                            : "" as string,
+                            : "",
                         });
                         setIsMilestoneModalOpen(true);
                       }}
