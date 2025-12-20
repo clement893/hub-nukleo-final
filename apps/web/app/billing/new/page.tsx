@@ -166,7 +166,7 @@ export default function NewInvoicePage() {
         })),
       });
 
-      if (result.success) {
+      if (result.success && result.data) {
         addToast({
           variant: "success",
           title: "Succès",
