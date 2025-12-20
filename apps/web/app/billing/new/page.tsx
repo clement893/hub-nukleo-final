@@ -30,7 +30,6 @@ export default function NewInvoicePage() {
   const [error, setError] = React.useState<string | null>(null);
   const [companies, setCompanies] = React.useState<Array<{ id: string; name: string }>>([]);
   const [projects, setProjects] = React.useState<Array<{ id: string; name: string }>>([]);
-  const [contacts, setContacts] = React.useState<Array<{ id: string; firstName: string; lastName: string }>>([]);
 
   const [formData, setFormData] = React.useState({
     companyId: "",
