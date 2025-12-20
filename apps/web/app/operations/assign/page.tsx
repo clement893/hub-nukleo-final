@@ -2,10 +2,6 @@
 
 import * as React from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Button,
   Select,
   Badge,
@@ -19,7 +15,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Checkbox,
 } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { useToast } from "@/lib/toast";
@@ -301,15 +296,17 @@ export default function AssignTasksPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">
-                      <Checkbox
+                      <input
+                        type="checkbox"
                         checked={selectedTasks.size === filteredTasks.length && filteredTasks.length > 0}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
+                        onChange={(e) => {
+                          if (e.target.checked) {
                             selectAllFiltered();
                           } else {
                             setSelectedTasks(new Set());
                           }
                         }}
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         aria-label="Sélectionner toutes les tâches"
                       />
                     </TableHead>
@@ -324,9 +321,11 @@ export default function AssignTasksPage() {
                   {filteredTasks.map((task) => (
                     <TableRow key={task.id}>
                       <TableCell>
-                        <Checkbox
+                        <input
+                          type="checkbox"
                           checked={selectedTasks.has(task.id)}
-                          onCheckedChange={() => toggleTaskSelection(task.id)}
+                          onChange={() => toggleTaskSelection(task.id)}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           aria-label={`Sélectionner la tâche ${task.title}`}
                         />
                       </TableCell>
