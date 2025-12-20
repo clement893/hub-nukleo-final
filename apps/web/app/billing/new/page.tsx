@@ -146,8 +146,9 @@ export default function NewInvoicePage() {
         return;
       }
 
-      const issueDate = formData.issueDate || new Date().toISOString().split("T")[0];
-      const dueDate = formData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+      // TypeScript guard: après la vérification ci-dessus, ces valeurs sont garanties d'exister
+      const issueDate: string = formData.issueDate;
+      const dueDate: string = formData.dueDate;
 
       const result = await createInvoiceAction({
         companyId: formData.companyId,
