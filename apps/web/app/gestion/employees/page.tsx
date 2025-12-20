@@ -12,7 +12,6 @@ import type { EmployeeFormData } from "@nukleo/gestion/client";
 import { PageHeader } from "../components/PageHeader";
 import { EmployeeFilters } from "../components/EmployeeFilters";
 import { EmployeeTable, type Employee } from "../components/EmployeeTable";
-import { Pagination } from "../components/Pagination";
 import { EmployeeModal } from "../components/EmployeeModal";
 import { EmployeeDeleteModal } from "../components/EmployeeDeleteModal";
 
