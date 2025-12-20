@@ -23,7 +23,6 @@ import {
   updateMilestone,
   deleteMilestone,
   getAllProjectNotes,
-  getProjectNoteById,
   createProjectNote,
   updateProjectNote,
   deleteProjectNote,
