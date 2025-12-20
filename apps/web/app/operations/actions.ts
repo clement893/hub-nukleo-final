@@ -158,7 +158,6 @@ export async function updateProjectAction(id: string, data: unknown) {
 
 export async function deleteProjectAction(id: string) {
   try {
-    const userId = await getCurrentUserId();
     const project = await getProjectById(id);
     if (!project) {
       return { success: false, error: "Project not found" };
