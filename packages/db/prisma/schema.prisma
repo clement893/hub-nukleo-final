@@ -228,8 +228,9 @@ model Opportunity {
   value             Decimal?          @db.Decimal(10, 2)
   stage             OpportunityStage  @default(IDEAS_CONTACT_PROJECT)
   probability       Int?              @default(0) // 0-100
+  openDate          DateTime?         // Date d'ouverture de l'opportunité
   expectedCloseDate DateTime?
-  actualCloseDate   DateTime?
+  actualCloseDate   DateTime?         // Date de fermeture réelle (closed date)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 
