@@ -19,7 +19,7 @@ import {
   moveTaskToZoneAction,
   getDepartmentStatsAction,
 } from "./actions";
-import type { Department, TaskZone, TaskStatus, TaskPriority } from "@prisma/client";
+import { Department, TaskZone, TaskStatus, TaskPriority } from "@prisma/client";
 
 interface Task {
   id: string;
@@ -210,9 +210,11 @@ export default function OperationsPage() {
         onValueChange={(value) => setDepartment(value as Department)}
       >
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="BUREAU">Bureau</TabsTrigger>
-          <TabsTrigger value="LAB">Lab</TabsTrigger>
-          <TabsTrigger value="STUDIO">Studio</TabsTrigger>
+          {Object.values(Department).map((dept) => (
+            <TabsTrigger key={dept} value={dept}>
+              {departmentLabels[dept]}
+            </TabsTrigger>
+          ))}
         </TabsList>
 
         <TabsContent value={department} className="mt-6">
