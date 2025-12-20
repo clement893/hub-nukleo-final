@@ -91,14 +91,15 @@ export default function NewInvoicePage() {
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: string | number) => {
     const newItems = [...items];
-    const currentItem = newItems[index];
-    if (field === "description") {
-      newItems[index] = { ...currentItem, description: value as string };
-    } else if (field === "quantity") {
-      newItems[index] = { ...currentItem, quantity: value as number };
-    } else if (field === "unitPrice") {
-      newItems[index] = { ...currentItem, unitPrice: value as number };
+    const currentItem = { ...newItems[index] };
+    if (field === "description" && typeof value === "string") {
+      currentItem.description = value;
+    } else if (field === "quantity" && typeof value === "number") {
+      currentItem.quantity = value;
+    } else if (field === "unitPrice" && typeof value === "number") {
+      currentItem.unitPrice = value;
     }
+    newItems[index] = currentItem;
     setItems(newItems);
   };
 
