@@ -50,6 +50,59 @@ export async function getEmployeesAction() {
   }
 }
 
+// Récupère un employé par ID
+export async function getEmployeeByIdAction(employeeId: string) {
+  try {
+    const employee = await prisma.employee.findUnique({
+      where: { id: employeeId },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        name: true,
+        email: true,
+        department: true,
+        linkedin: true,
+        image: true,
+        birthday: true,
+        hireDate: true,
+        title: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!employee) {
+      return {
+        success: false,
+        error: "Employé non trouvé",
+      };
+    }
+
+    // Mapper l'employé pour inclure operationsDepartment
+    const departmentValues: Department[] = ["BUREAU", "LAB", "STUDIO"];
+    const mappedEmployee = {
+      ...employee,
+      firstName: employee.firstName || (employee.name ? employee.name.split(" ")[0] || null : null),
+      lastName: employee.lastName || (employee.name ? employee.name.split(" ").slice(1).join(" ") || null : null),
+      operationsDepartment: (employee.department && departmentValues.indexOf(employee.department as Department) !== -1) 
+        ? (employee.department as Department) 
+        : null,
+      photoKey: null,
+      photoUrl: employee.image || null,
+    };
+
+    return { success: true, data: mappedEmployee };
+  } catch (error) {
+    console.error("Error fetching employee:", error);
+    return {
+      success: false,
+      error: "Impossible de charger l'employé",
+    };
+  }
+}
+
 // Met à jour le département d'un employé
 export async function updateEmployeeDepartmentAction(
   employeeId: string,

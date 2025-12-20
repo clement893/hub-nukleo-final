@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   Button,
   Badge,
@@ -170,13 +171,18 @@ export function EmployeeTable({
                     </TableCell>
                     <TableCell className="font-medium">
                       <div>
-                        <div>{fullName}</div>
+                        <Link 
+                          href={`/employees/${employee.id}`}
+                          className="hover:underline text-gray-900 dark:text-white"
+                        >
+                          {fullName}
+                        </Link>
                         {employee.linkedin && (
                           <a
                             href={employee.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline block mt-1"
                           >
                             LinkedIn
                           </a>
@@ -223,6 +229,14 @@ export function EmployeeTable({
                           </Button>
                         </DropdownTrigger>
                         <DropdownContent>
+                          <Link href={`/employees/${employee.id}`}>
+                            <DropdownItem 
+                              aria-label={`Voir la fiche de ${fullName}`}
+                            >
+                              Voir la fiche
+                            </DropdownItem>
+                          </Link>
+                          <DropdownSeparator />
                           <DropdownItem 
                             onClick={() => onEdit(employee)}
                             aria-label={`Modifier ${fullName}`}

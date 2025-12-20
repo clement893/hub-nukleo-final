@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -48,18 +49,25 @@ export function EmployeeCard({ employee, onUpdateDepartment }: EmployeeCardProps
     <Card className="glass card-shadow hover:card-shadow-hover transition-all duration-300">
       <CardContent className="pt-6">
         <div className="flex flex-col items-center text-center">
-          <EmployeeAvatar
-            firstName={employee.firstName || ""}
-            lastName={employee.lastName || ""}
-            photoKey={employee.photoKey}
-            photoUrl={employee.photoUrl}
-            size="lg"
-          />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-4">
-            {employee.firstName && employee.lastName
-              ? `${employee.firstName} ${employee.lastName}`
-              : employee.name || employee.email}
-          </h3>
+          <Link href={`/employees/${employee.id}`} className="cursor-pointer">
+            <EmployeeAvatar
+              firstName={employee.firstName || ""}
+              lastName={employee.lastName || ""}
+              photoKey={employee.photoKey}
+              photoUrl={employee.photoUrl}
+              size="lg"
+            />
+          </Link>
+          <Link 
+            href={`/employees/${employee.id}`}
+            className="cursor-pointer hover:underline"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-4">
+              {employee.firstName && employee.lastName
+                ? `${employee.firstName} ${employee.lastName}`
+                : employee.name || employee.email}
+            </h3>
+          </Link>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             {employee.email}
           </p>

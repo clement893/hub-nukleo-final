@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -298,7 +299,10 @@ export default function EmployeesPage() {
                   {filteredEmployees.map((employee) => (
                     <TableRow key={employee.id}>
                       <TableCell>
-                        <div className="flex items-center gap-3">
+                        <Link 
+                          href={`/employees/${employee.id}`}
+                          className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
+                        >
                           <EmployeeAvatar
                             firstName={employee.firstName || ""}
                             lastName={employee.lastName || ""}
@@ -307,13 +311,13 @@ export default function EmployeesPage() {
                             size="sm"
                           />
                           <div>
-                            <div className="font-medium text-gray-900 dark:text-white">
+                            <div className="font-medium text-gray-900 dark:text-white hover:underline">
                               {employee.firstName && employee.lastName
                                 ? `${employee.firstName} ${employee.lastName}`
                                 : employee.name || employee.email}
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </TableCell>
                       <TableCell>{employee.email}</TableCell>
                       <TableCell>
