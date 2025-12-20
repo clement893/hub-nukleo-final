@@ -632,7 +632,7 @@ export default function OpportunitiesPage() {
                 stage: editingOpportunity.stage,
                 probability: editingOpportunity.probability ?? undefined,
                 expectedCloseDate: editingOpportunity.expectedCloseDate
-                  ? new Date(editingOpportunity.expectedCloseDate)
+                  ? editingOpportunity.expectedCloseDate.toISOString().split('T')[0]
                   : undefined,
                 companyId: editingOpportunity.company?.id,
                 contactId: editingOpportunity.contact?.id,
