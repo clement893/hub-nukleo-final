@@ -144,7 +144,7 @@ export function ProposalForm({
         <GlassCardHeader>
           <GlassCardTitle>Informations générales</GlassCardTitle>
         </GlassCardHeader>
-        <CardContent className="space-y-4">
+        <GlassCardContent className="space-y-4">
           <div>
             <Select
               {...register("opportunityId")}
@@ -217,7 +217,7 @@ export function ProposalForm({
               aria-label="Date de validité"
             />
           </div>
-        </CardContent>
+        </GlassCardContent>
       </GlassCard>
 
       <GlassCard>
