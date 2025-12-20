@@ -492,13 +492,14 @@ export default function ProjectDetailPage() {
                     <Button
                       onClick={() => {
                         setEditingMilestone(milestone);
+                        const dueDateValue = milestone.dueDate
+                          ? new Date(milestone.dueDate).toISOString().split("T")[0]
+                          : "";
                         setMilestoneFormData({
                           title: milestone.title,
                           description: milestone.description || "",
                           status: milestone.status,
-                          dueDate: milestone.dueDate
-                            ? new Date(milestone.dueDate).toISOString().split("T")[0]
-                            : "",
+                          dueDate: dueDateValue,
                         });
                         setIsMilestoneModalOpen(true);
                       }}
