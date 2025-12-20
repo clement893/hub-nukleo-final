@@ -3,161 +3,167 @@
 ## Structure des Branches
 
 ### Branches Principales
-- **`main`** : Branche de production stable (ne jamais push directement dessus)
-- **`staging`** : Branche d'intégration et de test (fusion des fonctionnalités avant production)
+- **`main`** : Branche de développement active (site en dev)
   - **Utilisée par l'IA** pour optimisations, améliorations et bug fixes
-- **`manus-dev`** : Branche de développement pour Manus (nouvelles fonctionnalités)
+  - **Utilisée par Manus** pour nouvelles fonctionnalités (directement ou via `manus-dev`)
+- **`staging`** : Branche de backup/sauvegarde
+  - Copie de `main` à intervalles réguliers
+  - Point de restauration en cas de problème
+- **`manus-dev`** : Branche de développement optionnelle pour Manus (nouvelles fonctionnalités)
 
 ## Workflow Recommandé
 
 ### Pour Manus (développement continu)
-1. **Travailler sur `manus-dev`** :
-   ```bash
-   git checkout manus-dev
-   git pull origin main  # Récupérer les dernières modifications de main
-   # Faire ses modifications
-   git add .
-   git commit -m "feat: description de la fonctionnalité"
-   git push origin manus-dev
-   ```
 
-2. **Créer des branches de fonctionnalité si nécessaire** :
-   ```bash
-   git checkout manus-dev
-   git checkout -b manus/feature-nom-fonctionnalite
-   # Développer
-   git push origin manus/feature-nom-fonctionnalite
-   ```
+**Option 1 : Travailler directement sur `main`** (recommandé pour petites fonctionnalités)
+```bash
+git checkout main
+git pull origin main
+# Faire ses modifications
+git add .
+git commit -m "feat: description de la fonctionnalité"
+git push origin main
+```
+
+**Option 2 : Travailler sur `manus-dev` puis fusionner dans `main`** (pour fonctionnalités complexes)
+```bash
+git checkout manus-dev
+git pull origin main  # Rester à jour avec main
+# Développer la fonctionnalité
+git add .
+git commit -m "feat: description de la fonctionnalité"
+git push origin manus-dev
+
+# Quand prêt, fusionner dans main
+git checkout main
+git pull origin main
+git merge manus-dev
+git push origin main
+```
 
 ### Pour l'IA (optimisations, améliorations, bug fixes)
-1. **Travailler directement sur `staging`** :
-   ```bash
-   git checkout staging
-   git pull origin staging  # S'assurer d'avoir la dernière version
-   # Faire les optimisations/améliorations/bug fixes
-   git add .
-   git commit -m "fix: description du bug fix" 
-   # ou "perf: optimisation de..." 
-   # ou "refactor: amélioration de..."
-   git push origin staging
-   ```
 
-2. **Pour des changements majeurs, créer une branche dédiée** :
-   ```bash
-   git checkout staging
-   git pull origin staging
-   git checkout -b ai/refactor-nom-changement-majeur
-   # Développer
-   git push origin ai/refactor-nom-changement-majeur
-   # Puis fusionner dans staging une fois prêt
-   ```
+**Travailler directement sur `main`** :
+```bash
+git checkout main
+git pull origin main  # S'assurer d'avoir la dernière version
+# Faire les optimisations/améliorations/bug fixes
+git add .
+git commit -m "fix: description du bug fix" 
+# ou "perf: optimisation de..." 
+# ou "refactor: amélioration de..."
+git push origin main
+```
 
-### Fusion dans Staging (avant production)
-1. **Mettre à jour staging depuis main** (quand nécessaire) :
-   ```bash
-   git checkout staging
-   git pull origin main
-   git push origin staging
-   ```
+**Pour des changements majeurs, créer une branche dédiée** :
+```bash
+git checkout main
+git pull origin main
+git checkout -b ai/refactor-nom-changement-majeur
+# Développer
+git push origin ai/refactor-nom-changement-majeur
+# Puis fusionner dans main une fois prêt
+git checkout main
+git merge ai/refactor-nom-changement-majeur
+git push origin main
+```
 
-2. **Fusionner les nouvelles fonctionnalités de Manus** :
-   ```bash
-   git checkout staging
-   git merge manus-dev
-   # Résoudre les conflits si nécessaire
-   git push origin staging
-   ```
+### Gestion de Staging (Backup)
 
-3. **L'IA travaille directement sur staging** (pas besoin de merge)
+**Créer un backup régulier de `main` dans `staging`** :
+```bash
+git checkout staging
+git pull origin main  # Récupérer les dernières modifications de main
+git reset --hard main  # Copier exactement main dans staging
+git push origin staging --force
+```
 
-4. **Tester sur staging** (Railway peut déployer automatiquement staging)
-
-### Mise en Production
-1. **Une fois staging validée, fusionner dans main** :
-   ```bash
-   git checkout main
-   git pull origin main
-   git merge staging
-   git push origin main
-   ```
-
-2. **Mettre à jour toutes les branches de développement** :
-   ```bash
-   git checkout manus-dev
-   git merge main
-   git push origin manus-dev
-   ```
+**Restauration depuis staging en cas de problème** :
+```bash
+git checkout main
+git reset --hard staging  # Restaurer main depuis staging
+git push origin main --force
+```
 
 ## Règles Importantes
 
 ### ✅ À FAIRE
-- Toujours partir de `main` à jour pour créer une nouvelle branche
+- Toujours `git pull origin main` avant de commencer à travailler
 - Faire des commits fréquents et descriptifs
-- Fusionner régulièrement `main` dans sa branche de développement
-- Tester sur `staging` avant de fusionner dans `main`
-- Communiquer les changements majeurs avant de fusionner
+- Créer des backups réguliers : copier `main` → `staging`
+- Communiquer les changements majeurs avant de push
+- Tester localement avant de push sur `main`
 
 ### ❌ À ÉVITER
-- Ne jamais push directement sur `main` (sauf hotfix urgents)
-- Ne pas fusionner `manus-dev` directement dans `main` sans passer par `staging`
-- Ne pas travailler sur la même branche en même temps
+- Ne pas push sans avoir testé localement
 - Ne pas ignorer les conflits de merge
+- Ne pas oublier de créer des backups réguliers sur `staging`
+- Ne pas travailler sur la même partie du code en même temps sans coordination
 
 ## Gestion des Conflits
 
-Si des conflits surviennent lors d'un merge :
+Si des conflits surviennent lors d'un merge ou d'un pull :
 1. Identifier les fichiers en conflit : `git status`
 2. Ouvrir les fichiers et résoudre les conflits manuellement
 3. Marquer comme résolu : `git add <fichier>`
-4. Finaliser le merge : `git commit`
+4. Finaliser : `git commit` (pour merge) ou continuer le pull
 
 ## Workflow Recommandé pour Manus
 
-**Option 1 : Branche de développement continue (`manus-dev`)**
-- Manus travaille toujours sur `manus-dev`
-- Fusionne régulièrement `main` dans `manus-dev` pour rester à jour
-- Quand une fonctionnalité est prête, fusionne `manus-dev` dans `staging`
+**Pour petites fonctionnalités** :
+- Travailler directement sur `main`
+- Pull avant de commencer
+- Commit et push fréquents
 
-**Option 2 : Branches de fonctionnalité**
-- Manus crée une nouvelle branche pour chaque fonctionnalité : `manus/feature-xxx`
-- Fusionne `main` régulièrement dans sa branche
-- Une fois terminée, fusionne dans `staging`
+**Pour fonctionnalités complexes** :
+- Créer une branche `manus/feature-xxx` depuis `main`
+- Développer sur la branche
+- Fusionner dans `main` quand prêt
 
 ## Workflow Recommandé pour l'IA
 
-**Travail direct sur `staging` pour :**
+**Travail direct sur `main` pour :**
 - ✅ Bug fixes
 - ✅ Optimisations de performance
 - ✅ Améliorations de code (refactoring)
 - ✅ Corrections de types TypeScript
-- ✅ Améliorations UX/UI mineures
+- ✅ Améliorations UX/UI
+- ✅ Corrections de build/erreurs
 
 **Créer une branche dédiée uniquement pour :**
-- 🔄 Refactorings majeurs
+- 🔄 Refactorings majeurs qui nécessitent plusieurs commits
 - 🔄 Changements architecturaux importants
 - 🔄 Nouvelles fonctionnalités complexes
 
 **Processus :**
-1. Toujours partir de `staging` à jour : `git pull origin staging`
-2. Faire les modifications directement sur `staging`
-3. Commit et push sur `staging`
-4. Railway déploie automatiquement pour tester
-5. Une fois validé, fusionner `staging` → `main`
+1. Toujours partir de `main` à jour : `git pull origin main`
+2. Faire les modifications directement sur `main`
+3. Commit et push sur `main`
+4. Railway déploie automatiquement depuis `main`
+
+## Backup Régulier
+
+**Créer un backup de `main` dans `staging`** (à faire régulièrement ou après des changements importants) :
+```bash
+git checkout staging
+git reset --hard main
+git push origin staging --force
+```
+
+Cela permet d'avoir un point de restauration en cas de problème sur `main`.
 
 ## Exemple de Cycle Complet
 
-1. **Manus** développe une nouvelle fonctionnalité sur `manus-dev`
-2. **IA** corrige un bug directement sur `staging` (ou fait une optimisation)
-3. **Manus** fusionne `manus-dev` dans `staging` quand sa fonctionnalité est prête
-4. Tests sur `staging` (déployé automatiquement sur Railway)
-5. Si tout est OK, fusion `staging` → `main`
-6. Mise à jour de `manus-dev` avec `main` pour rester synchronisé
+1. **Manus** développe une fonctionnalité directement sur `main` (ou sur `manus-dev` puis merge)
+2. **IA** corrige un bug directement sur `main`
+3. **Backup** : Copier `main` → `staging` (régulièrement)
+4. Railway déploie automatiquement depuis `main` (site en dev)
+5. Si problème, restaurer depuis `staging`
 
 ## Avantages de ce Workflow
 
-- ✅ **Séparation claire** : Manus = nouvelles fonctionnalités, IA = améliorations/bug fixes
-- ✅ **Pas de conflits** : Chacun travaille sur sa branche dédiée
-- ✅ **Tests automatiques** : `staging` déployée automatiquement sur Railway
-- ✅ **Production stable** : `main` reste toujours stable
-- ✅ **Rapidité** : L'IA peut corriger directement sur `staging` sans étapes supplémentaires
-
+- ✅ **Simplicité** : Tout le monde travaille sur `main` (site en dev)
+- ✅ **Rapidité** : Pas d'étapes supplémentaires, push direct sur `main`
+- ✅ **Backup** : `staging` sert de point de restauration
+- ✅ **Flexibilité** : Manus peut choisir de travailler directement sur `main` ou sur une branche dédiée
+- ✅ **Déploiement automatique** : Railway déploie directement depuis `main`
