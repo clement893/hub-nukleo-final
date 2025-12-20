@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { OpportunityStage } from "@nukleo/db/types";
 
 export const opportunityStageSchema = z.enum([
   "IDEAS_CONTACT_PROJECT",
@@ -13,7 +12,7 @@ export const opportunityStageSchema = z.enum([
   "CLOSED_LOST",
   "RENEWALS_POTENTIAL_UPCOMING",
   "WAITING_OR_SILENT",
-]) as z.ZodType<OpportunityStage>;
+]);
 
 export const opportunitySchema = z.object({
   title: z.string().min(1, "Le titre est requis").max(255, "Le titre est trop long"),
