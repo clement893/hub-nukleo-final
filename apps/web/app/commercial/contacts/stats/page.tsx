@@ -20,7 +20,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getContactsAction } from "../actions";
-import { calculateContactStats, type Contact } from "../../../lib/stats";
+import { calculateContactStats, type Contact } from "@/lib/stats";
 
 export default function ContactsStatsPage() {
   const [contacts, setContacts] = React.useState<Contact[]>([]);
