@@ -170,15 +170,17 @@ export function EmployeeTable({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>{employee.email}</TableCell>
-                    <TableCell>{employee.department || "-"}</TableCell>
-                    <TableCell>{employee.title || "-"}</TableCell>
+                    <TableCell className="text-gray-900 dark:text-white">{employee.email}</TableCell>
+                    <TableCell className="text-gray-900 dark:text-white">{employee.department || "-"}</TableCell>
+                    <TableCell className="text-gray-900 dark:text-white font-medium">
+                      {employee.title || "-"}
+                    </TableCell>
                     <TableCell>
                       <Badge variant={roleColors[employee.role]}>
                         {roleLabels[employee.role]}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-900 dark:text-white">
                       {employee.birthday
                         ? new Date(employee.birthday).toLocaleDateString("fr-FR", {
                             day: "numeric",
@@ -186,9 +188,13 @@ export function EmployeeTable({
                           })
                         : "-"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-900 dark:text-white whitespace-nowrap">
                       {employee.hireDate
-                        ? new Date(employee.hireDate).toLocaleDateString("fr-FR")
+                        ? new Date(employee.hireDate).toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "numeric",
+                          })
                         : "-"}
                     </TableCell>
                     <TableCell className="text-right">
