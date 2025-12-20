@@ -26,12 +26,10 @@ export async function getAllUsers() {
 // ==================== PROJECTS ====================
 
 export async function getAllProjects(userId?: string) {
+  // Return all projects, even if managerId is invalid or points to non-existent user
+  // This ensures projects imported by Manus are visible
+  // The manager relation will be null if managerId is invalid, but the project will still be returned
   return prisma.project.findMany({
-    where: userId
-      ? {
-          managerId: userId,
-        }
-      : undefined,
     orderBy: { createdAt: "desc" },
     include: {
       company: {
@@ -64,6 +62,8 @@ export async function getAllProjects(userId?: string) {
         },
       },
     },
+    // Note: Removed userId filter to show all projects including those imported by Manus
+    // Projects with invalid managerId will have manager: null but will still be visible
   });
 }
 
