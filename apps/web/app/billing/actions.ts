@@ -13,7 +13,7 @@ export async function getInvoicesAction(filters?: {
   projectId?: string;
 }) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const where: any = {};
     if (filters?.status) where.status = filters.status as InvoiceStatus;
