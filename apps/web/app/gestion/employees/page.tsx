@@ -433,7 +433,7 @@ export default function EmployeesPage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
-                            <DropdownTrigger asChild>
+                            <DropdownTrigger>
                               <Button variant="outline" size="sm">
                                 Actions
                               </Button>
