@@ -155,16 +155,9 @@ model User {
   activityLogs  ActivityLog[]
   invoices      Invoice[]
   contracts     Contract[]
-  brandBooks    BrandBook[]
-  appSettings   AppSetting[]
-  
-  tenantId      String?
-  tenant        Tenant?  @relation("UserTenant", fields: [tenantId], references: [id], onDelete: SetNull)
-
   @@index([operationsDepartment])
   @@index([roleId])
   @@index([isActive])
-  @@index([tenantId])
   @@map("users")
 }
 
@@ -303,14 +296,8 @@ model Company {
   projects      Project[]
   invoices      Invoice[]
   contracts     Contract[]
-  brandBooks    BrandBook[]
-  
-  tenantId      String?
-  tenant        Tenant?  @relation("CompanyTenant", fields: [tenantId], references: [id], onDelete: SetNull)
-
   @@index([ownerId])
   @@index([name])
-  @@index([tenantId])
   @@map("companies")
 }
 
@@ -341,10 +328,6 @@ model Project {
   activityLogs ActivityLog[]
   invoices    Invoice[]
   contracts   Contract[]
-  
-  tenantId    String?
-  tenant      Tenant?  @relation("ProjectTenant", fields: [tenantId], references: [id], onDelete: SetNull)
-
   @@index([managerId])
   @@index([companyId])
   @@index([leadId])
@@ -352,7 +335,6 @@ model Project {
   @@index([type])
   @@index([department])
   @@index([startDate])
-  @@index([tenantId])
   @@map("projects")
 }
 
@@ -724,92 +706,6 @@ model Signature {
 
   @@index([contractId])
   @@map("signatures")
-}
-
-// Brand Books Module
-model BrandBook {
-  id          String   @id @default(cuid())
-  name        String
-  description String?  @db.Text
-  companyId   String?  // Optionnel: lié à une entreprise
-  company     Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  
-  // Contenu du brand book
-  logoUrl     String?
-  primaryColor String?  // Couleur principale (hex)
-  secondaryColor String? // Couleur secondaire (hex)
-  typography  Json?    // Configuration typographique
-  colors      Json?    // Palette de couleurs complète
-  spacing     Json?    // Système d'espacement
-  components  Json?    // Composants UI du brand
-  
-  // Documents et ressources
-  documentUrl String?  // PDF ou document principal
-  assets      Json?    // Liens vers assets (images, icônes, etc.)
-  
-  // Metadata
-  createdById String
-  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@index([companyId])
-  @@index([createdById])
-  @@index([isActive])
-  @@map("brand_books")
-}
-
-// Tenants Module (Multi-tenancy)
-model Tenant {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique // URL-friendly identifier
-  domain      String?  @unique // Domaine personnalisé (optionnel)
-  
-  // Informations de l'organisation
-  description String?  @db.Text
-  logoUrl     String?
-  website     String?
-  email       String?
-  phone       String?
-  
-  // Configuration
-  settings    Json?    // Paramètres spécifiques au tenant
-  isActive    Boolean  @default(true)
-  
-  // Relations
-  users       User[]     @relation("UserTenant")
-  companies   Company[]  @relation("CompanyTenant")
-  projects    Project[]  @relation("ProjectTenant")
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@index([slug])
-  @@index([domain])
-  @@index([isActive])
-  @@map("tenants")
-}
-
-// Settings Module
-model AppSetting {
-  id          String   @id @default(cuid())
-  key         String   @unique // Clé unique du paramètre
-  value       Json     // Valeur du paramètre (peut être string, number, boolean, object)
-  category    String   @default("general") // Catégorie: general, email, billing, etc.
-  description String?  @db.Text
-  isPublic    Boolean  @default(false) // Accessible côté client ou seulement serveur
-  
-  // Metadata
-  updatedById String?
-  updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: SetNull)
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
-  
-  @@index([key])
-  @@index([category])
-  @@map("app_settings")
 }
 
 

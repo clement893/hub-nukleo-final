@@ -1,0 +1,23 @@
+{
+  "name": "@nukleo/projects",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nukleo/db": "workspace:*",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@nukleo/config": "workspace:*",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}
