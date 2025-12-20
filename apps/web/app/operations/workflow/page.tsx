@@ -100,8 +100,8 @@ export default function WorkflowPage() {
       ]);
 
       if (tasksResult.success && tasksResult.data) {
-        // Type assertion nécessaire car Prisma retourne un type plus complet
-        setTasks(tasksResult.data as Record<TaskZone, Task[]>);
+        // Type assertion nécessaire car Prisma retourne un type plus complet avec assignee et project
+        setTasks(tasksResult.data as unknown as Record<TaskZone, Task[]>);
       } else {
         addToast({
           variant: "error",
