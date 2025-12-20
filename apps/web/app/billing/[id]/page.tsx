@@ -51,12 +51,12 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
   React.useEffect(() => {
     if (!invoiceId) return;
+    const id = invoiceId; // Capture pour TypeScript
     async function loadInvoice() {
       try {
         setIsLoading(true);
         setError(null);
-        if (!invoiceId) return;
-        const result = await getInvoiceAction(invoiceId);
+        const result = await getInvoiceAction(id);
         if (result.success && result.data) {
           setInvoice(result.data);
         } else {
