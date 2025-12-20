@@ -141,6 +141,11 @@ export default function NewInvoicePage() {
       setIsLoading(true);
       setError(null);
 
+      if (!formData.issueDate || !formData.dueDate) {
+        setError("Les dates d'émission et d'échéance sont requises");
+        return;
+      }
+
       const result = await createInvoiceAction({
         companyId: formData.companyId,
         projectId: formData.projectId || undefined,
