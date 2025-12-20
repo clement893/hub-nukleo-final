@@ -11,6 +11,8 @@ export type {
   ProjectStatus,
   TaskStatus,
   TaskPriority,
+  EventType,
+  EventStatus,
 } from "@prisma/client";
 
 

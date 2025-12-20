@@ -18,7 +18,7 @@ import {
   getContactsForEventsAction,
   getCompaniesForEventsAction,
 } from "./actions";
-import { getUserAction } from "../components/get-user-action";
+import { getCurrentUserAction } from "../components/get-user-action";
 
 export default function AgendaPage() {
   const [currentDate, setCurrentDate] = React.useState(new Date());
@@ -41,7 +41,7 @@ export default function AgendaPage() {
   // Load user
   React.useEffect(() => {
     async function loadUser() {
-      const result = await getUserAction();
+      const result = await getCurrentUserAction();
       if (result.success && result.data) {
         setUser(result.data);
       }
