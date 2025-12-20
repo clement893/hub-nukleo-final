@@ -698,7 +698,7 @@ export default function EmployeesPage() {
           >
             Annuler
           </Button>
-          <Button variant="error" onClick={handleDeleteConfirm}>
+          <Button variant="danger" onClick={handleDeleteConfirm}>
             Supprimer
           </Button>
         </div>
