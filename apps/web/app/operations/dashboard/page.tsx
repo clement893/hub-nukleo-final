@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   Button,
   Badge,
+  Loader,
 } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import { getProjectsAction } from "../actions";
@@ -36,6 +37,7 @@ export default function OperationsDashboardPage() {
   React.useEffect(() => {
     async function loadData() {
       try {
+        setIsLoading(true);
         const result = await getProjectsAction();
         if (result.success && result.data) {
           const mappedProjects = result.data.map((project: any) => ({
@@ -44,19 +46,22 @@ export default function OperationsDashboardPage() {
           }));
           setProjects(mappedProjects);
         } else {
+          console.error("Failed to load projects:", result.error);
           addToast({
             variant: "error",
             title: "Erreur",
             description: result.error || "Impossible de charger les projets",
           });
+          setProjects([]); // Set empty array on error
         }
       } catch (error) {
         console.error("Error loading projects:", error);
         addToast({
           variant: "error",
           title: "Erreur",
-          description: "Une erreur est survenue lors du chargement",
+          description: error instanceof Error ? error.message : "Une erreur est survenue lors du chargement",
         });
+        setProjects([]); // Set empty array on error
       } finally {
         setIsLoading(false);
       }
@@ -65,7 +70,14 @@ export default function OperationsDashboardPage() {
   }, [addToast]);
 
   if (isLoading) {
-    return <p className="text-gray-500">Chargement...</p>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader className="mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">Chargement...</p>
+        </div>
+      </div>
+    );
   }
 
   // Calculate statistics
@@ -141,9 +153,9 @@ export default function OperationsDashboardPage() {
         <GlassCard>
           <GlassCardContent className="pt-6">
             <div className="text-3xl font-bold text-gray-900 dark:text-white">
-              {stats.totalBudget.toLocaleString("fr-FR", {
+              {stats.totalBudget.toLocaleString("en-US", {
                 style: "currency",
-                currency: "EUR",
+                currency: "USD",
                 maximumFractionDigits: 0,
               })}
             </div>
