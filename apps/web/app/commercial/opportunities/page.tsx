@@ -258,7 +258,7 @@ export default function OpportunitiesPage() {
     Array<{ id: string; name: string }>
   >([]);
   const [contacts, setContacts] = React.useState<
-    Array<{ id: string; firstName: string | null; lastName: string | null }>
+    Array<{ id: string; firstName: string; lastName: string }>
   >([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingOpportunity, setEditingOpportunity] =
@@ -300,7 +300,13 @@ export default function OpportunitiesPage() {
         }
 
         if (contactsResult.success && contactsResult.data) {
-          setContacts(contactsResult.data);
+          setContacts(
+            contactsResult.data.map((contact) => ({
+              id: contact.id,
+              firstName: contact.firstName ?? "",
+              lastName: contact.lastName ?? "",
+            }))
+          );
         }
       } catch (error) {
         logger.error("Error loading opportunities data", error instanceof Error ? error : new Error(String(error)));
