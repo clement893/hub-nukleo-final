@@ -130,11 +130,11 @@ const commercialNavigation: NavItem[] = [
   },
 ];
 
-// Navigation items for Projects Module
-const projectsNavigation: NavItem[] = [
+// Navigation items for Operations Module
+const operationsNavigation: NavItem[] = [
   {
-    title: "Projets",
-    href: "/projects",
+    title: "Opérations",
+    href: "/operations",
     icon: (
       <svg
         className="w-5 h-5"
@@ -157,8 +157,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
   const [isCommercialModuleOpen, setIsCommercialModuleOpen] = React.useState(true);
-  const [isProjectsModuleOpen, setIsProjectsModuleOpen] = React.useState(
-    pathname.startsWith("/projects")
+  const [isOperationsModuleOpen, setIsOperationsModuleOpen] = React.useState(
+    pathname.startsWith("/operations")
   );
 
   return (
@@ -324,10 +324,10 @@ export function Sidebar() {
               )}
             </div>
 
-            {/* Module Projet - Sous-menu */}
+            {/* Module Opérations - Sous-menu */}
             <div>
               <button
-                onClick={() => setIsProjectsModuleOpen(!isProjectsModuleOpen)}
+                onClick={() => setIsOperationsModuleOpen(!isOperationsModuleOpen)}
                 className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <div className="flex items-center space-x-3">
@@ -344,12 +344,12 @@ export function Sidebar() {
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  <span>Module Projet</span>
+                  <span>Module Opérations</span>
                 </div>
                 <svg
                   className={cn(
                     "w-4 h-4 text-gray-500 transition-transform",
-                    isProjectsModuleOpen && "rotate-180"
+                    isOperationsModuleOpen && "rotate-180"
                   )}
                   fill="none"
                   stroke="currentColor"
@@ -364,10 +364,10 @@ export function Sidebar() {
                 </svg>
               </button>
 
-              {/* Sous-menu items Projet */}
-              {isProjectsModuleOpen && (
+              {/* Sous-menu items Opérations */}
+              {isOperationsModuleOpen && (
                 <div className="ml-4 mt-2 space-y-1">
-                  {projectsNavigation.map((item) => {
+                  {operationsNavigation.map((item) => {
                     const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                     return (
                       <Link
