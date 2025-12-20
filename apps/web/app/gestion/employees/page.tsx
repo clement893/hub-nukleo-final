@@ -16,6 +16,7 @@ import {
   TableCell,
   Badge,
   Modal,
+  Select,
   DropdownMenu,
   DropdownTrigger,
   DropdownContent,
@@ -324,14 +325,15 @@ export default function EmployeesPage() {
             </div>
             <Select
               value={filterRole}
-              onValueChange={setFilterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+              options={[
+                { value: "all", label: "Tous les rôles" },
+                { value: "ADMIN", label: "Administrateur" },
+                { value: "MANAGER", label: "Manager" },
+                { value: "USER", label: "Utilisateur" },
+              ]}
               className="w-full sm:w-48"
-            >
-              <option value="all">Tous les rôles</option>
-              <option value="ADMIN">Administrateur</option>
-              <option value="MANAGER">Manager</option>
-              <option value="USER">Utilisateur</option>
-            </Select>
+            />
           </div>
         </CardContent>
       </Card>
@@ -627,14 +629,15 @@ export default function EmployeesPage() {
             </label>
             <Select
               value={formData.role}
-              onValueChange={(value) =>
-                setFormData({ ...formData, role: value as "ADMIN" | "MANAGER" | "USER" })
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value as "ADMIN" | "MANAGER" | "USER" })
               }
-            >
-              <option value="USER">Utilisateur</option>
-              <option value="MANAGER">Manager</option>
-              <option value="ADMIN">Administrateur</option>
-            </Select>
+              options={[
+                { value: "USER", label: "Utilisateur" },
+                { value: "MANAGER", label: "Manager" },
+                { value: "ADMIN", label: "Administrateur" },
+              ]}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">
