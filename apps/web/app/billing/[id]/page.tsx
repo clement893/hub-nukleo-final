@@ -37,13 +37,18 @@ const statusColors: Record<string, string> = {
   CANCELLED: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
 };
 
-export default function InvoiceDetailPage({ params }: { params: { id: string } }) {
+export default function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { addToast } = useToast();
+  const [invoiceId, setInvoiceId] = React.useState<string | null>(null);
   const [invoice, setInvoice] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [isUpdating, setIsUpdating] = React.useState(false);
+
+  React.useEffect(() => {
+    params.then((p) => setInvoiceId(p.id));
+  }, [params]);
 
   React.useEffect(() => {
     if (!invoiceId) return;
@@ -79,7 +84,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
           description: "Facture marquée comme envoyée",
         });
         // Recharger la facture
-        const reloadResult = await getInvoiceAction(params.id);
+        const reloadResult = await getInvoiceAction(invoiceId);
         if (reloadResult.success && reloadResult.data) {
           setInvoice(reloadResult.data);
         }
@@ -102,7 +107,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
   };
 
   const handleMarkAsPaid = async () => {
-    if (!invoice) return;
+    if (!invoice || !invoiceId) return;
     
     const paidAmount = window.prompt(
       `Montant payé (Total: ${new Intl.NumberFormat("fr-CA", {
@@ -126,7 +131,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
 
     try {
       setIsUpdating(true);
-      const result = await markInvoiceAsPaidAction(params.id, amount);
+      const result = await markInvoiceAsPaidAction(invoiceId, amount);
       if (result.success) {
         addToast({
           variant: "success",
@@ -134,7 +139,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
           description: "Facture marquée comme payée",
         });
         // Recharger la facture
-        const reloadResult = await getInvoiceAction(params.id);
+        const reloadResult = await getInvoiceAction(invoiceId);
         if (reloadResult.success && reloadResult.data) {
           setInvoice(reloadResult.data);
         }
