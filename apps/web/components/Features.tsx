@@ -53,7 +53,7 @@ export function Features() {
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
             Ce projet utilise les dernières technologies pour offrir une
-            expérience de développement et d&apos;utilisation optimale.
+            expérience de développement et d'utilisation optimale.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
