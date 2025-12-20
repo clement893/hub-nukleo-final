@@ -181,16 +181,18 @@ export default function AssignTasksPage() {
   }, [tasks, filterProject]);
 
   const getPriorityColor = (priority: string): string => {
-    const colors: Record<string, string> = {
+    const colors = {
       LOW: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
       MEDIUM: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
       HIGH: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
       URGENT: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
-    };
-    if (priority in colors && colors[priority]) {
-      return colors[priority];
+    } as const;
+    const defaultColor = colors.MEDIUM;
+    if (priority in colors) {
+      const color = colors[priority as keyof typeof colors];
+      if (color) return color;
     }
-    return colors.MEDIUM;
+    return defaultColor;
   };
 
   if (isLoading) {
