@@ -64,7 +64,7 @@ export function ImportModal({
       const text = e.target?.result as string;
       const lines = text.split("\n").filter((line) => line.trim());
       
-      if (lines.length === 0) {
+      if (lines.length === 0 || !lines[0]) {
         addToast({
           variant: "error",
           title: "Erreur",
@@ -103,7 +103,7 @@ export function ImportModal({
       const text = await file.text();
       const lines = text.split("\n").filter((line) => line.trim());
       
-      if (lines.length < 2) {
+      if (lines.length < 2 || !lines[0]) {
         throw new Error("Le fichier CSV doit contenir au moins un en-tête et une ligne de données");
       }
 
