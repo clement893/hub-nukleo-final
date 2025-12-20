@@ -166,7 +166,7 @@ export default function NewContractPage() {
         })),
       });
 
-      if (result.success) {
+      if (result.success && result.data) {
         addToast({
           variant: "success",
           title: "Succès",
