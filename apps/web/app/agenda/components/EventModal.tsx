@@ -12,8 +12,6 @@ interface EventModalProps {
   initialData?: any;
   opportunities?: Array<{ id: string; title: string }>;
   projects?: Array<{ id: string; name: string }>;
-  contacts?: Array<{ id: string; firstName: string; lastName: string }>;
-  companies?: Array<{ id: string; name: string }>;
 }
 
 const EVENT_TYPES = [
@@ -43,8 +41,6 @@ export function EventModal({
   initialData,
   opportunities = [],
   projects = [],
-  contacts = [],
-  companies = [],
 }: EventModalProps) {
   const [formData, setFormData] = React.useState({
     title: "",
