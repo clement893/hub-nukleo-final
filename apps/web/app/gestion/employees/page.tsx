@@ -2,25 +2,6 @@
 
 import * as React from "react";
 import {
-  Button,
-  Input,
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-  Badge,
-  Modal,
-  Select,
-  DropdownMenu,
-  DropdownTrigger,
-  DropdownContent,
-  DropdownItem,
-  DropdownSeparator,
-} from "@nukleo/ui";
-import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
-import {
   getEmployeesAction,
   createEmployeeAction,
   updateEmployeeAction,
@@ -28,34 +9,25 @@ import {
 } from "./actions";
 import { useToast } from "@/lib/toast";
 import type { EmployeeFormData } from "@nukleo/gestion/client";
+import { PageHeader } from "../components/PageHeader";
+import { EmployeeFilters } from "../components/EmployeeFilters";
+import { EmployeeTable, type Employee } from "../components/EmployeeTable";
+import { Pagination } from "../components/Pagination";
+import { EmployeeModal } from "../components/EmployeeModal";
+import { EmployeeDeleteModal } from "../components/EmployeeDeleteModal";
 
-type Employee = {
-  id: string;
-  email: string;
-  name: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  linkedin: string | null;
-  department: string | null;
-  title: string | null;
-  birthday: Date | null;
-  hireDate: Date | null;
-  role: "ADMIN" | "MANAGER" | "USER";
-  image: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-const roleLabels: Record<string, string> = {
-  ADMIN: "Administrateur",
-  MANAGER: "Manager",
-  USER: "Utilisateur",
-};
-
-const roleColors: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
-  ADMIN: "error",
-  MANAGER: "warning",
-  USER: "default",
+const initialFormData: EmployeeFormData = {
+  email: "",
+  name: "",
+  firstName: "",
+  lastName: "",
+  linkedin: "",
+  department: "",
+  title: "",
+  birthday: "",
+  hireDate: "",
+  role: "USER",
+  image: "",
 };
 
 export default function EmployeesPage() {
@@ -69,22 +41,8 @@ export default function EmployeesPage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(50);
+  const [formData, setFormData] = React.useState<EmployeeFormData>(initialFormData);
   const { addToast } = useToast();
-
-  // Form state
-  const [formData, setFormData] = React.useState<EmployeeFormData>({
-    email: "",
-    name: "",
-    firstName: "",
-    lastName: "",
-    linkedin: "",
-    department: "",
-    title: "",
-    birthday: "",
-    hireDate: "",
-    role: "USER",
-    image: "",
-  });
 
   React.useEffect(() => {
     async function loadData() {
@@ -117,10 +75,11 @@ export default function EmployeesPage() {
   // Filtering
   const filteredEmployees = React.useMemo(() => {
     return employees.filter((employee) => {
-      const fullName = employee.firstName && employee.lastName 
-        ? `${employee.firstName} ${employee.lastName}` 
-        : employee.name || "";
-      
+      const fullName =
+        employee.firstName && employee.lastName
+          ? `${employee.firstName} ${employee.lastName}`
+          : employee.name || "";
+
       const matchesSearch =
         !searchTerm ||
         fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -149,19 +108,7 @@ export default function EmployeesPage() {
 
   const handleCreateEmployee = () => {
     setEditingEmployee(null);
-    setFormData({
-      email: "",
-      name: "",
-      firstName: "",
-      lastName: "",
-      linkedin: "",
-      department: "",
-      title: "",
-      birthday: "",
-      hireDate: "",
-      role: "USER",
-      image: "",
-    });
+    setFormData(initialFormData);
     setIsModalOpen(true);
   };
 
@@ -175,8 +122,12 @@ export default function EmployeesPage() {
       linkedin: employee.linkedin || "",
       department: employee.department || "",
       title: employee.title || "",
-      birthday: employee.birthday ? new Date(employee.birthday).toISOString().split("T")[0] : "",
-      hireDate: employee.hireDate ? new Date(employee.hireDate).toISOString().split("T")[0] : "",
+      birthday: employee.birthday
+        ? new Date(employee.birthday).toISOString().split("T")[0]
+        : "",
+      hireDate: employee.hireDate
+        ? new Date(employee.hireDate).toISOString().split("T")[0]
+        : "",
       role: employee.role,
       image: employee.image || "",
     });
@@ -235,9 +186,7 @@ export default function EmployeesPage() {
       if (result.success && result.data) {
         if (editingEmployee) {
           setEmployees((prev) =>
-            prev.map((emp) =>
-              emp.id === editingEmployee.id ? result.data : emp
-            )
+            prev.map((emp) => (emp.id === editingEmployee.id ? result.data : emp))
           );
           addToast({
             variant: "success",
@@ -254,19 +203,7 @@ export default function EmployeesPage() {
         }
         setIsModalOpen(false);
         setEditingEmployee(null);
-        setFormData({
-          email: "",
-          name: "",
-          firstName: "",
-          lastName: "",
-          linkedin: "",
-          department: "",
-          title: "",
-          birthday: "",
-          hireDate: "",
-          role: "USER",
-          image: "",
-        });
+        setFormData(initialFormData);
       } else {
         addToast({
           variant: "error",
@@ -284,6 +221,12 @@ export default function EmployeesPage() {
     }
   };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingEmployee(null);
+    setFormData(initialFormData);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -294,413 +237,51 @@ export default function EmployeesPage() {
 
   return (
     <>
-      <div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-2">
-            Employés
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg">
-            Gérez les employés de l'entreprise
-          </p>
-        </div>
-        <Button variant="primary" onClick={handleCreateEmployee} className="w-full sm:w-auto">
-          Nouvel employé
-        </Button>
-      </div>
+      <PageHeader
+        title="Employés"
+        description="Gérez les employés de l'entreprise"
+        actionLabel="Nouvel employé"
+        onAction={handleCreateEmployee}
+      />
 
-      {/* Filters */}
-      <GlassCard className="mb-6">
-        <GlassCardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Rechercher par nom ou email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <Select
-              value={filterRole}
-              onChange={(e) => setFilterRole(e.target.value)}
-              options={[
-                { value: "all", label: "Tous les rôles" },
-                { value: "ADMIN", label: "Administrateur" },
-                { value: "MANAGER", label: "Manager" },
-                { value: "USER", label: "Utilisateur" },
-              ]}
-              className="w-full sm:w-48"
-            />
-          </div>
-        </GlassCardContent>
-      </GlassCard>
+      <EmployeeFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        filterRole={filterRole}
+        onRoleFilterChange={setFilterRole}
+      />
 
-      {/* Employees Table */}
-      <GlassCard>
-        <GlassCardHeader>
-          <GlassCardTitle>
-            Liste des employés ({filteredEmployees.length})
-          </GlassCardTitle>
-        </GlassCardHeader>
-        <GlassCardContent>
-          {paginatedEmployees.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
-                Aucun employé trouvé
-              </p>
-              <Button variant="primary" onClick={handleCreateEmployee}>
-                Créer un employé
-              </Button>
-            </div>
-          ) : (
-            <>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Photo</TableHead>
-                      <TableHead>Nom</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Département</TableHead>
-                      <TableHead>Rôle</TableHead>
-                      <TableHead>Anniversaire</TableHead>
-                      <TableHead>Embauche</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedEmployees.map((employee) => {
-                      const fullName = employee.firstName && employee.lastName 
-                        ? `${employee.firstName} ${employee.lastName}` 
-                        : employee.name || "Sans nom";
-                      
-                      return (
-                      <TableRow key={employee.id}>
-                        <TableCell>
-                          {employee.image ? (
-                            <img 
-                              src={employee.image} 
-                              alt={fullName}
-                              className="w-10 h-10 rounded-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                              <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                                {fullName.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                          )}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          <div>
-                            <div>{fullName}</div>
-                            {employee.linkedin && (
-                              <a 
-                                href={employee.linkedin} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                              >
-                                LinkedIn
-                              </a>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>{employee.email}</TableCell>
-                        <TableCell>
-                          {employee.department || "-"}
-                        </TableCell>
-                        <TableCell>
-                          {employee.title || "-"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={roleColors[employee.role]}>
-                            {roleLabels[employee.role]}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {employee.birthday 
-                            ? new Date(employee.birthday).toLocaleDateString("fr-FR", { day: "numeric", month: "numeric" })
-                            : "-"}
-                        </TableCell>
-                        <TableCell>
-                          {employee.hireDate 
-                            ? new Date(employee.hireDate).toLocaleDateString("fr-FR")
-                            : "-"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownTrigger>
-                              <Button variant="outline" size="sm">
-                                Actions
-                              </Button>
-                            </DropdownTrigger>
-                            <DropdownContent>
-                              <DropdownItem onClick={() => handleEditEmployee(employee)}>
-                                Modifier
-                              </DropdownItem>
-                              <DropdownSeparator />
-                              <DropdownItem
-                                onClick={() => handleDeleteClick(employee)}
-                                className="text-red-600 dark:text-red-400"
-                              >
-                                Supprimer
-                              </DropdownItem>
-                            </DropdownContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
+      <EmployeeTable
+        employees={paginatedEmployees}
+        onEdit={handleEditEmployee}
+        onDelete={handleDeleteClick}
+        onCreateClick={handleCreateEmployee}
+      />
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Page {currentPage} sur {totalPages}
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                    >
-                      Précédent
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Suivant
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </GlassCardContent>
-      </GlassCard>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
-      {/* Create/Edit Modal */}
-      <Modal
+      <EmployeeModal
         isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingEmployee(null);
-          setFormData({
-            email: "",
-            name: "",
-            firstName: "",
-            lastName: "",
-            linkedin: "",
-            department: "",
-            title: "",
-            birthday: "",
-            hireDate: "",
-            role: "USER",
-            image: "",
-          });
-        }}
-        title={editingEmployee ? "Modifier l'employé" : "Nouvel employé"}
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Email *
-            </label>
-            <Input
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              required
-              disabled={!!editingEmployee}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Prénom
-              </label>
-              <Input
-                value={formData.firstName || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Nom de famille
-              </label>
-              <Input
-                value={formData.lastName || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Nom complet (si prénom/nom non renseignés)
-            </label>
-            <Input
-              value={formData.name || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              LinkedIn (URL)
-            </label>
-            <Input
-              type="url"
-              value={formData.linkedin || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, linkedin: e.target.value })
-              }
-              placeholder="https://linkedin.com/in/..."
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Département
-            </label>
-            <Input
-              value={formData.department || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, department: e.target.value })
-              }
-              placeholder="Ex: Commercial, Technique, RH..."
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Titre/Poste
-            </label>
-            <Input
-              value={formData.title || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              placeholder="Ex: Développeur Senior, Chef de projet..."
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Anniversaire
-              </label>
-              <Input
-                type="date"
-                value={formData.birthday || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, birthday: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Date d'embauche
-              </label>
-              <Input
-                type="date"
-                value={formData.hireDate || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, hireDate: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Rôle *
-            </label>
-            <Select
-              value={formData.role}
-              onChange={(e) =>
-                setFormData({ ...formData, role: e.target.value as "ADMIN" | "MANAGER" | "USER" })
-              }
-              options={[
-                { value: "USER", label: "Utilisateur" },
-                { value: "MANAGER", label: "Manager" },
-                { value: "ADMIN", label: "Administrateur" },
-              ]}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Photo (URL)
-            </label>
-            <Input
-              type="url"
-              value={formData.image || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, image: e.target.value })
-              }
-              placeholder="https://..."
-            />
-          </div>
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                setIsModalOpen(false);
-                setEditingEmployee(null);
-              }}
-            >
-              Annuler
-            </Button>
-            <Button type="submit" variant="primary">
-              {editingEmployee ? "Modifier" : "Créer"}
-            </Button>
-          </div>
-        </form>
-      </Modal>
+        onClose={handleModalClose}
+        formData={formData}
+        onChange={setFormData}
+        onSubmit={handleSubmit}
+        isEditing={!!editingEmployee}
+      />
 
-      {/* Delete Confirmation Modal */}
-      <Modal
+      <EmployeeDeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => {
           setIsDeleteModalOpen(false);
           setEmployeeToDelete(null);
         }}
-        title="Supprimer l'employé"
-      >
-        <p className="mb-4">
-          Êtes-vous sûr de vouloir supprimer l'employé{" "}
-          <strong>
-            {employeeToDelete?.firstName && employeeToDelete?.lastName
-              ? `${employeeToDelete.firstName} ${employeeToDelete.lastName}`
-              : employeeToDelete?.name || employeeToDelete?.email}
-          </strong> ?
-          Cette action est irréversible.
-        </p>
-        <div className="flex justify-end gap-2">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsDeleteModalOpen(false);
-              setEmployeeToDelete(null);
-            }}
-          >
-            Annuler
-          </Button>
-          <Button variant="danger" onClick={handleDeleteConfirm}>
-            Supprimer
-          </Button>
-        </div>
-      </Modal>
+        employee={employeeToDelete}
+        onConfirm={handleDeleteConfirm}
+      />
     </>
   );
 }
-
