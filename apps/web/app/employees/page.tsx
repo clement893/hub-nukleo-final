@@ -145,8 +145,9 @@ export default function EmployeesPage() {
     };
     employees.forEach((emp) => {
       const dept = emp.operationsDepartment;
-      if (dept && (dept === "BUREAU" || dept === "LAB" || dept === "STUDIO")) {
-        statsMap[dept]++;
+      if (dept === "BUREAU" || dept === "LAB" || dept === "STUDIO") {
+        const key = dept as keyof typeof statsMap;
+        statsMap[key] = (statsMap[key] || 0) + 1;
       } else {
         statsMap.none++;
       }
