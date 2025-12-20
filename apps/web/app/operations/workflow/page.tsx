@@ -55,16 +55,20 @@ type Task = {
   id: string;
   title: string;
   description: string | null;
+  status: string;
   priority: string;
   dueDate: Date | null;
   zone: TaskZone | null;
   department: Department | null;
+  createdAt: Date;
+  updatedAt: Date;
   assignee: {
     id: string;
     name: string | null;
     firstName: string | null;
     lastName: string | null;
     image: string | null;
+    email: string;
   } | null;
   project: {
     id: string;
@@ -96,7 +100,8 @@ export default function WorkflowPage() {
       ]);
 
       if (tasksResult.success && tasksResult.data) {
-        setTasks(tasksResult.data);
+        // Type assertion nécessaire car Prisma retourne un type plus complet
+        setTasks(tasksResult.data as Record<TaskZone, Task[]>);
       } else {
         addToast({
           variant: "error",
