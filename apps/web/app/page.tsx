@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Card, CardHeader, CardTitle, CardContent, Button } from "@nukleo/ui";
+import { Button } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 
 const modules = [
