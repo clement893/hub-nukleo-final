@@ -5,7 +5,45 @@
 @tailwind utilities;
 
 :root {
-  /* Light Mode - Clean and Professional */
+  /* Light Mode - Clean and Professional (Lighter) */
+  --background: #FAFAFA;
+  --foreground: #0F0F0F;
+  --card: #FFFFFF;
+  --card-foreground: #0F0F0F;
+  
+  /* Primary - Nukleo Purple */
+  --primary: #523DC9;
+  --primary-dark: #4532B0;
+  --primary-light: #6B5DD3;
+  --primary-foreground: #FFFFFF;
+  
+  /* Secondary - Deep Violet */
+  --secondary: #5F2B75;
+  --secondary-foreground: #FFFFFF;
+  
+  /* Accent - Only for alerts/errors */
+  --accent: #6B1817;
+  --accent-foreground: #FFFFFF;
+  
+  /* Muted - Light gray, not lavender */
+  --muted: #F5F5F5;
+  --muted-foreground: #737373;
+  
+  /* Border - Subtle gray */
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #523DC9;
+  
+  /* Destructive */
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  
+  /* Radius */
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Dark Mode - Same style as previous light mode */
   --background: #FFFFFF;
   --foreground: #1a1a1a;
   --card: #FFFFFF;
@@ -25,7 +63,7 @@
   --accent: #6B1817;
   --accent-foreground: #FFFFFF;
   
-  /* Muted - Light gray, not lavender */
+  /* Muted - Light gray */
   --muted: #F8F9FA;
   --muted-foreground: #6B7280;
   
@@ -37,66 +75,28 @@
   /* Destructive */
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
-  
-  /* Radius */
-  --radius: 0.5rem;
-}
-
-.dark {
-  /* Dark Mode - Deep and Rich */
-  --background: #0F0F0F;
-  --foreground: #FAFAFA;
-  --card: #1A1A1A;
-  --card-foreground: #FAFAFA;
-  
-  /* Primary - Nukleo Purple (brighter for dark mode) */
-  --primary: #6B5DD3;
-  --primary-dark: #523DC9;
-  --primary-light: #8477DD;
-  --primary-foreground: #FFFFFF;
-  
-  /* Secondary - Deep Violet (brighter for dark mode) */
-  --secondary: #8B5FA8;
-  --secondary-foreground: #FFFFFF;
-  
-  /* Accent - Only for alerts/errors */
-  --accent: #8F2221;
-  --accent-foreground: #FFFFFF;
-  
-  /* Muted */
-  --muted: #262626;
-  --muted-foreground: #A1A1AA;
-  
-  /* Border */
-  --border: #2A2A2A;
-  --input: #2A2A2A;
-  --ring: #6B5DD3;
-  
-  /* Destructive */
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #0F0F0F;
-    --foreground: #FAFAFA;
-    --card: #1A1A1A;
-    --card-foreground: #FAFAFA;
-    --primary: #6B5DD3;
-    --primary-dark: #523DC9;
-    --primary-light: #8477DD;
+    --background: #FFFFFF;
+    --foreground: #1a1a1a;
+    --card: #FFFFFF;
+    --card-foreground: #1a1a1a;
+    --primary: #523DC9;
+    --primary-dark: #4532B0;
+    --primary-light: #6B5DD3;
     --primary-foreground: #FFFFFF;
-    --secondary: #8B5FA8;
+    --secondary: #5F2B75;
     --secondary-foreground: #FFFFFF;
-    --accent: #8F2221;
+    --accent: #6B1817;
     --accent-foreground: #FFFFFF;
-    --muted: #262626;
-    --muted-foreground: #A1A1AA;
-    --border: #2A2A2A;
-    --input: #2A2A2A;
-    --ring: #6B5DD3;
-    --destructive: #EF4444;
+    --muted: #F8F9FA;
+    --muted-foreground: #6B7280;
+    --border: #E5E7EB;
+    --input: #E5E7EB;
+    --ring: #523DC9;
+    --destructive: #DC2626;
     --destructive-foreground: #FFFFFF;
   }
 }
@@ -113,17 +113,17 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Subtle gradient - only purple, no red */
+  /* Subtle gradient - only purple, no red (lighter for light mode) */
   background-image: 
-    radial-gradient(at 0% 0%, rgba(82, 61, 201, 0.03) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(95, 43, 117, 0.03) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(82, 61, 201, 0.02) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(95, 43, 117, 0.02) 0px, transparent 50%);
 }
 
 .dark body {
-  /* Subtle gradient for dark mode */
+  /* Subtle gradient for dark mode (same as previous light mode) */
   background-image: 
-    radial-gradient(at 0% 0%, rgba(107, 93, 211, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(139, 95, 168, 0.08) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(82, 61, 201, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(95, 43, 117, 0.03) 0px, transparent 50%);
 }
 
 /* Typography */
@@ -163,15 +163,15 @@ h3 {
   
   /* Glassmorphism - subtle */
   .glass {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(229, 231, 235, 0.8);
+    border: 1px solid rgba(229, 231, 235, 0.9);
   }
   
   .dark .glass {
-    background: rgba(26, 26, 26, 0.9);
-    border: 1px solid rgba(42, 42, 42, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(229, 231, 235, 0.8);
   }
   
   /* Card shadows - subtle */
@@ -184,11 +184,11 @@ h3 {
   }
   
   .dark .card-shadow {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
   
   .dark .card-shadow-hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   }
   
   /* Gradient text - purple only */
@@ -211,11 +211,11 @@ h3 {
   }
   
   .dark ::-webkit-scrollbar-track {
-    background: #1A1A1A;
+    background: #F8F9FA;
   }
   
   .dark ::-webkit-scrollbar-thumb {
-    background: #3A3A3A;
+    background: #D1D5DB;
     border-radius: 4px;
   }
   
