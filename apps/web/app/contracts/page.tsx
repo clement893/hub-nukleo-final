@@ -38,9 +38,9 @@ export default async function ContractsPage() {
     getExpiringContractsAction(30),
   ]);
 
-  const contracts = contractsResult.success ? contractsResult.data : [];
+  const contracts = contractsResult.success && contractsResult.data ? contractsResult.data : [];
   const stats = statsResult.success ? statsResult.data : null;
-  const expiring = expiringResult.success ? expiringResult.data : [];
+  const expiring = expiringResult.success && expiringResult.data ? expiringResult.data : [];
 
   return (
     <div className="container mx-auto p-6 space-y-6">
