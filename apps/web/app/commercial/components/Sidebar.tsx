@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@nukleo/ui";
 import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { getCurrentUserAction } from "./get-user-action";
 
 interface NavItem {
   title: string;
@@ -307,6 +308,24 @@ export function Sidebar() {
   const [isAdminModuleOpen, setIsAdminModuleOpen] = React.useState(
     pathname.startsWith("/admin")
   );
+  const [currentUser, setCurrentUser] = React.useState<{
+    name?: string | null;
+    email?: string | null;
+  } | null>(null);
+
+  React.useEffect(() => {
+    async function loadUser() {
+      try {
+        const result = await getCurrentUserAction();
+        if (result.success && result.data) {
+          setCurrentUser(result.data);
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
+    }
+    loadUser();
+  }, []);
 
   return (
     <>
@@ -695,7 +714,25 @@ export function Sidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+            {/* User Info */}
+            {currentUser && (
+              <div className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
+                  {(currentUser.name || currentUser.email || "U")[0].toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    {currentUser.name || "Utilisateur"}
+                  </div>
+                  {currentUser.email && (
+                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {currentUser.email}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <Link
               href="/"
               className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"

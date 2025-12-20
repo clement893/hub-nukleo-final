@@ -14,17 +14,17 @@ async function checkPermission(userId: string, permission: string): Promise<bool
 
   if (!user) return false;
 
+  // Vérifier le rôle enum (ADMIN et MANAGER ont tous les droits)
+  if (user.role === "ADMIN" || user.role === "MANAGER") {
+    return true;
+  }
+
   // Si l'utilisateur a un rôle personnalisé avec permissions
   if (user.customRole?.permissions) {
     const permissions = user.customRole.permissions as string[];
     if (permissions.includes(permission) || permissions.includes("admin:access")) {
       return true;
     }
-  }
-
-  // Vérifier le rôle enum (ADMIN a tous les droits)
-  if (user.role === "ADMIN") {
-    return true;
   }
 
   return false;
