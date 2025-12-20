@@ -146,12 +146,15 @@ export default function NewInvoicePage() {
         return;
       }
 
+      const issueDate = formData.issueDate || new Date().toISOString().split("T")[0];
+      const dueDate = formData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
       const result = await createInvoiceAction({
         companyId: formData.companyId,
         projectId: formData.projectId || undefined,
         contactId: formData.contactId || undefined,
-        issueDate: new Date(formData.issueDate),
-        dueDate: new Date(formData.dueDate),
+        issueDate: new Date(issueDate),
+        dueDate: new Date(dueDate),
         paymentTerms: formData.paymentTerms || undefined,
         notes: formData.notes || undefined,
         terms: formData.terms || undefined,
