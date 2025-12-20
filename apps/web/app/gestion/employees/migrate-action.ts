@@ -98,7 +98,10 @@ export async function migrateUsersToEmployeesAction() {
         errors++;
         const errorMessage = error instanceof Error ? error.message : String(error);
         errorMessages.push(`${user.email}: ${errorMessage}`);
-        logger.error(`❌ Erreur lors de la migration de ${user.email}:`, error);
+        logger.error(
+          `❌ Erreur lors de la migration de ${user.email}:`,
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     }
 
@@ -116,7 +119,10 @@ export async function migrateUsersToEmployeesAction() {
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    logger.error("❌ Erreur fatale lors de la migration:", error);
+    logger.error(
+      "❌ Erreur fatale lors de la migration:",
+      error instanceof Error ? error : new Error(String(error))
+    );
     return {
       success: false,
       message: `Erreur lors de la migration: ${errorMessage}`,
