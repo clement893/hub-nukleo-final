@@ -60,7 +60,7 @@ export async function getInvoicesAction(filters?: {
 // Get Invoice
 export async function getInvoiceAction(id: string) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const invoice = await prisma.invoice.findUnique({
       where: { id },
@@ -196,7 +196,7 @@ export async function updateInvoiceAction(
   }
 ) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const invoice = await prisma.invoice.update({
       where: { id },
@@ -218,7 +218,7 @@ export async function updateInvoiceAction(
 // Mark as Sent
 export async function markInvoiceAsSentAction(id: string) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const invoice = await prisma.invoice.update({
       where: { id },
@@ -243,7 +243,7 @@ export async function markInvoiceAsSentAction(id: string) {
 // Mark as Paid
 export async function markInvoiceAsPaidAction(id: string, paidAmount: number) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const invoice = await prisma.invoice.update({
       where: { id },
@@ -269,7 +269,7 @@ export async function markInvoiceAsPaidAction(id: string, paidAmount: number) {
 // Get Companies (for invoice creation)
 export async function getCompaniesAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
     const companies = await prisma.company.findMany({
       select: {
         id: true,
@@ -287,7 +287,7 @@ export async function getCompaniesAction() {
 // Get Projects (for invoice creation)
 export async function getProjectsAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
     const projects = await prisma.project.findMany({
       select: {
         id: true,
@@ -305,7 +305,7 @@ export async function getProjectsAction() {
 // Get Stats
 export async function getBillingStatsAction() {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
 
     const [
       totalInvoices,
