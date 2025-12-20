@@ -19,7 +19,7 @@ import {
   getTasksByDepartmentAction,
   moveTaskToZoneAction,
   getDepartmentStatsAction,
-} from "./kanban-actions";
+} from "./actions";
 import type { Department, TaskZone, TaskStatus, TaskPriority } from "@prisma/client";
 
 interface Task {
