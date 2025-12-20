@@ -24,7 +24,6 @@ import {
   getAllProjectNotes,
   getProjectNoteById,
   createProjectNote,
-  updateProjectNote,
   deleteProjectNote,
   getAllActivityLogs,
   logProjectActivity,
