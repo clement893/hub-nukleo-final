@@ -153,7 +153,8 @@ export async function getSettingsByCategoryAction() {
       if (!acc[setting.category]) {
         acc[setting.category] = [];
       }
-      acc[setting.category].push(setting);
+      const categoryArray = acc[setting.category]!;
+      categoryArray.push(setting);
       return acc;
     }, {} as Record<string, typeof settings>);
 
