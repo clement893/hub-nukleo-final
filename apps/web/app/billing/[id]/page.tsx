@@ -169,6 +169,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
+  if (!invoiceId || isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader size="lg" />
+      </div>
+    );
+  }
+
   if (error || !invoice) {
     return (
       <div className="container mx-auto p-6">
