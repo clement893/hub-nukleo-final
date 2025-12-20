@@ -15,7 +15,7 @@ import {
 import {
   createTimeEntryAction,
   updateTimeEntryAction,
-} from "@/app/projects/actions";
+} from "@/app/operations/actions";
 import { useToast } from "@/lib/toast";
 
 type TimeEntry = {

@@ -17,7 +17,7 @@ import {
   createTaskAction,
   updateTaskAction,
   getUsersAction,
-} from "@/app/projects/actions";
+} from "@/app/operations/actions";
 import { useToast } from "@/lib/toast";
 
 type Task = {
