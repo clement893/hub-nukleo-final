@@ -241,7 +241,15 @@ export default function OpportunitiesPage() {
         }
 
         if (contsResult.success && contsResult.data) {
-          setContacts(contsResult.data);
+          // Filter out contacts with null firstName or lastName and ensure proper typing
+          const validContacts = contsResult.data
+            .filter((contact) => contact.firstName !== null && contact.lastName !== null)
+            .map((contact) => ({
+              id: contact.id,
+              firstName: contact.firstName!,
+              lastName: contact.lastName!,
+            }));
+          setContacts(validContacts);
         }
       } catch (error) {
         logger.error("Error loading data", error instanceof Error ? error : new Error(String(error)));
