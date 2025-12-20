@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday, startOfWeek, endOfWeek } from "date-fns";
-import { fr } from "date-fns/locale";
 
 interface Event {
   id: string;
