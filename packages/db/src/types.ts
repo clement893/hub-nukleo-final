@@ -13,4 +13,8 @@ export type {
   TaskPriority,
 } from "@prisma/client";
 
+// Event types (temporary until Event model is added to schema)
+export type EventType = "MEETING" | "TASK" | "REMINDER" | "OTHER";
+export type EventStatus = "SCHEDULED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
+
 
