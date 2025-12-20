@@ -18,7 +18,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Avatar,
   Select,
   Modal,
   DropdownMenu,
