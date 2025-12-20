@@ -26,7 +26,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border border-border bg-card text-card-foreground shadow-md hover:shadow-lg transition-all duration-200 backdrop-blur-sm",
+      "rounded-lg border border-border bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}
@@ -55,7 +55,8 @@ CardHeader.displayName = "CardHeader";
 /**
  * CardTitle component
  * 
- * The main title of the card. Rendered as an h3 element with large, semibold styling.
+ * Title element for card headers.
+ * Uses semantic heading tag with appropriate styling.
  */
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -63,10 +64,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
-      className
-    )}
+    className={cn("font-semibold leading-none tracking-tight", className)}
     {...props}
   />
 ));
@@ -75,7 +73,8 @@ CardTitle.displayName = "CardTitle";
 /**
  * CardDescription component
  * 
- * A subtitle or description text for the card. Displayed in smaller, muted text.
+ * Description text for card headers.
+ * Provides muted text styling for secondary information.
  */
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -83,7 +82,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-gray-500", className)}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ));
@@ -92,7 +91,8 @@ CardDescription.displayName = "CardDescription";
 /**
  * CardContent component
  * 
- * The main content area of the card. Provides consistent padding and spacing.
+ * Main content area of the card.
+ * Provides consistent padding for card body content.
  */
 const CardContent = React.forwardRef<
   HTMLDivElement,
@@ -105,8 +105,8 @@ CardContent.displayName = "CardContent";
 /**
  * CardFooter component
  * 
- * Footer section of the card, typically used for actions or additional information.
- * Provides consistent spacing and flex layout for footer content.
+ * Footer section of the card, typically for actions or metadata.
+ * Provides flex layout for footer elements.
  */
 const CardFooter = React.forwardRef<
   HTMLDivElement,
@@ -121,4 +121,3 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = "CardFooter";
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
-
