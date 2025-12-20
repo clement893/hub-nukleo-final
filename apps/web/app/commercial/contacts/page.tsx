@@ -42,6 +42,7 @@ import { exportToCSV, exportToPDF } from "../../../lib/export";
 import { calculateContactStats, type Contact } from "../../../lib/stats";
 import { ContactAvatar } from "../../../components/ContactAvatar";
 import { UnifiedSearchBar } from "../../../components/UnifiedSearchBar";
+import { ImportModal } from "../../../components/ImportModal";
 
 export default function ContactsPage() {
   const pathname = usePathname();
@@ -65,55 +66,56 @@ export default function ContactsPage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage] = React.useState(50); // Pagination: 50 items per page
+  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const { addToast } = useToast();
 
-  React.useEffect(() => {
-    async function loadData() {
-      try {
-        const [contactsResult, companiesResult] = await Promise.all([
-          getContactsAction(),
-          getCompaniesAction(),
-        ]);
+  const loadContacts = React.useCallback(async () => {
+    try {
+      const [contactsResult, companiesResult] = await Promise.all([
+        getContactsAction(),
+        getCompaniesAction(),
+      ]);
 
-        if (contactsResult.success && contactsResult.data) {
-          // Filter out contacts with null firstName or lastName and ensure proper typing
-          const validContacts = contactsResult.data
-            .filter((contact) => contact.firstName !== null && contact.lastName !== null)
-            .map((contact) => ({
-              id: contact.id,
-              firstName: contact.firstName!,
-              lastName: contact.lastName!,
-              email: contact.email,
-              phone: contact.phone,
-              position: contact.position,
-              company: contact.company as { id: string; name: string } | null,
-            }));
-          setContacts(validContacts);
-        } else {
-          addToast({
-            variant: "error",
-            title: "Erreur",
-            description: contactsResult.error || "Impossible de charger les contacts",
-          });
-        }
-
-        if (companiesResult.success && companiesResult.data) {
-          setCompanies(companiesResult.data);
-        }
-      } catch (error) {
-        console.error("Error loading data:", error);
+      if (contactsResult.success && contactsResult.data) {
+        // Filter out contacts with null firstName or lastName and ensure proper typing
+        const validContacts = contactsResult.data
+          .filter((contact) => contact.firstName !== null && contact.lastName !== null)
+          .map((contact) => ({
+            id: contact.id,
+            firstName: contact.firstName!,
+            lastName: contact.lastName!,
+            email: contact.email,
+            phone: contact.phone,
+            position: contact.position,
+            company: contact.company as { id: string; name: string } | null,
+          }));
+        setContacts(validContacts);
+      } else {
         addToast({
           variant: "error",
           title: "Erreur",
-          description: "Une erreur est survenue lors du chargement des données",
+          description: contactsResult.error || "Impossible de charger les contacts",
         });
-      } finally {
-        setIsLoading(false);
       }
-    }
 
-    loadData();
+      if (companiesResult.success && companiesResult.data) {
+        setCompanies(companiesResult.data);
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+      addToast({
+        variant: "error",
+        title: "Erreur",
+        description: "Une erreur est survenue lors du chargement des données",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }, [addToast]);
+
+  React.useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
 
   // Advanced filtering
   const filteredContacts = React.useMemo(() => {
@@ -409,6 +411,9 @@ export default function ContactsPage() {
             <Link href="/commercial/contacts/stats" className="w-full sm:w-auto">
               <Button variant="outline" className="w-full sm:w-auto">Statistiques</Button>
             </Link>
+            <Button variant="outline" onClick={() => setIsImportModalOpen(true)} className="w-full sm:w-auto">
+              Importer CSV
+            </Button>
             <DropdownMenu>
               <DropdownTrigger>
                 <Button variant="outline" className="w-full sm:w-auto">Exporter</Button>
@@ -820,6 +825,17 @@ export default function ContactsPage() {
           ? Cette action est irréversible.
         </p>
       </Modal>
+
+      <ImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImportComplete={() => {
+          setIsLoading(true);
+          loadContacts();
+        }}
+        importEndpoint="/api/contacts/import"
+        expectedColumns={["firstName", "lastName", "email", "phone", "position", "companyName"]}
+      />
     </>
   );
 }
