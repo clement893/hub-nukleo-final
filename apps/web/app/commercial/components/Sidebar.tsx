@@ -719,7 +719,7 @@ export function Sidebar() {
             {currentUser && (
               <div className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 flex items-center justify-center text-white text-sm font-semibold">
-                  {(currentUser.name || currentUser.email || "U")[0].toUpperCase()}
+                  {((currentUser.name || currentUser.email || "U")[0] || "U").toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
