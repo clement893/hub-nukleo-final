@@ -15,7 +15,7 @@ export async function getContactsAction() {
     const contacts = await getAllContacts();
     return {
       success: true,
-      data: contacts.map((contact: { id: string; firstName: string | null; lastName: string | null; email: string | null; phone: string | null; position: string | null; company: unknown; photoKey: string | null; createdAt: Date; updatedAt: Date }) => ({
+      data: contacts.map((contact) => ({
         id: contact.id,
         firstName: contact.firstName,
         lastName: contact.lastName,
@@ -23,7 +23,7 @@ export async function getContactsAction() {
         phone: contact.phone,
         position: contact.position,
         photoKey: contact.photoKey,
-        company: contact.company,
+        company: contact.company ? { id: contact.company.id, name: contact.company.name } : null,
       })),
     };
   } catch (error) {
