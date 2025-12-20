@@ -169,26 +169,28 @@ export default function AdminAuditPage() {
               onChange={(e) =>
                 setFilters({ ...filters, entity: e.target.value })
               }
-            >
-              <option value="">Toutes les entités</option>
-              <option value="User">User</option>
-              <option value="Role">Role</option>
-              <option value="Project">Project</option>
-              <option value="Contact">Contact</option>
-            </Select>
+              options={[
+                { value: "", label: "Toutes les entités" },
+                { value: "User", label: "User" },
+                { value: "Role", label: "Role" },
+                { value: "Project", label: "Project" },
+                { value: "Contact", label: "Contact" },
+              ]}
+            />
             <Select
               value={filters.action}
               onChange={(e) =>
                 setFilters({ ...filters, action: e.target.value })
               }
-            >
-              <option value="">Toutes les actions</option>
-              <option value="CREATE">CREATE</option>
-              <option value="UPDATE">UPDATE</option>
-              <option value="DELETE">DELETE</option>
-              <option value="LOGIN">LOGIN</option>
-              <option value="LOGOUT">LOGOUT</option>
-            </Select>
+              options={[
+                { value: "", label: "Toutes les actions" },
+                { value: "CREATE", label: "CREATE" },
+                { value: "UPDATE", label: "UPDATE" },
+                { value: "DELETE", label: "DELETE" },
+                { value: "LOGIN", label: "LOGIN" },
+                { value: "LOGOUT", label: "LOGOUT" },
+              ]}
+            />
             <Input
               type="date"
               value={filters.startDate}

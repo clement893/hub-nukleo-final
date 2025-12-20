@@ -169,11 +169,12 @@ export default function AdminUsersPage() {
             <Select
               value={filterActive}
               onChange={(e) => setFilterActive(e.target.value)}
-            >
-              <option value="all">Tous</option>
-              <option value="active">Actifs</option>
-              <option value="inactive">Inactifs</option>
-            </Select>
+              options={[
+                { value: "all", label: "Tous" },
+                { value: "active", label: "Actifs" },
+                { value: "inactive", label: "Inactifs" },
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
