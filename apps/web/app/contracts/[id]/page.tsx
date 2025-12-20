@@ -45,13 +45,18 @@ const typeLabels: Record<string, string> = {
   OTHER: "Autre",
 };
 
-export default function ContractDetailPage({ params }: { params: { id: string } }) {
+export default function ContractDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { addToast } = useToast();
+  const [contractId, setContractId] = React.useState<string | null>(null);
   const [contract, setContract] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [isUpdating, setIsUpdating] = React.useState(false);
+
+  React.useEffect(() => {
+    params.then((p) => setContractId(p.id));
+  }, [params]);
 
   React.useEffect(() => {
     if (!contractId) return;
