@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build --webpack",
-    "start": "sh scripts/run-migrations.sh; sh scripts/start-server.sh",
+    "start": "sh scripts/run-migrations.sh && sh scripts/start-server.sh",
     "start:direct": "next start",
     "start:next": "next start",
     "lint": "next lint",

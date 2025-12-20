@@ -3,8 +3,8 @@
 # Script to start the Next.js server
 # Railway will provide the PORT environment variable
 
-# Don't exit on error immediately - we want to see what's happening
-set +e
+# Exit on error after logging
+set -e
 
 echo "🚀 Starting Next.js server..."
 
@@ -29,14 +29,28 @@ if [ ! -d ".next" ]; then
   exit 1
 fi
 
+# Check if node_modules exists
+if [ ! -d "node_modules" ]; then
+  echo "❌ Error: node_modules directory not found."
+  echo "📋 Listing current directory:"
+  ls -la
+  exit 1
+fi
+
 # Export PORT so Next.js can use it
 export PORT
 
-# Start Next.js server with explicit port using pnpm exec
-# This ensures we use the local Next.js installation
+# Verify Next.js is available
 echo "✅ Starting Next.js with pnpm exec..."
 echo "🔍 Next.js version:"
-pnpm exec next --version || echo "⚠️  Could not get Next.js version"
+if ! pnpm exec next --version; then
+  echo "❌ Next.js not found. Checking pnpm installation..."
+  pnpm --version || echo "⚠️  pnpm not found"
+  exit 1
+fi
 
+# Start Next.js server with explicit port using pnpm exec
 # Use exec to replace shell process with Next.js
-exec pnpm exec next start -p "$PORT"
+# This ensures Railway can properly manage the process
+echo "🌐 Starting Next.js server on port $PORT..."
+exec pnpm exec next start -p "$PORT" --hostname 0.0.0.0
