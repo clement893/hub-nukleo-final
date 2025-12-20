@@ -87,7 +87,15 @@ export default function NewContractPage() {
 
   const handleSignerChange = (index: number, field: keyof Signer, value: string) => {
     const newSigners = [...signers];
-    newSigners[index] = { ...newSigners[index], [field]: value };
+    const currentSigner = newSigners[index];
+    if (!currentSigner) return;
+    
+    newSigners[index] = {
+      name: currentSigner.name,
+      email: currentSigner.email,
+      role: currentSigner.role,
+      [field]: value,
+    };
     setSigners(newSigners);
   };
 
