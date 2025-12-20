@@ -36,7 +36,6 @@ export function WeekView({
   const getEventsForDayAndHour = (day: Date, hour: number) => {
     return events.filter((event) => {
       const eventStart = new Date(event.startDate);
-      const eventEnd = new Date(event.endDate);
       const eventHour = eventStart.getHours();
       
       return isSameDay(eventStart, day) && eventHour === hour;
