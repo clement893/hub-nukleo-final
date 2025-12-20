@@ -40,7 +40,7 @@ export function RecentActivity({
       title: opp.title,
       subtitle: opp.company?.name || "Sans entreprise",
       value: opp.value,
-      date: opp.createdAt,
+      date: opp.createdAt instanceof Date ? opp.createdAt : new Date(opp.createdAt),
       url: `/commercial/opportunities`,
     })),
     ...contacts.map((contact) => ({
@@ -48,7 +48,7 @@ export function RecentActivity({
       id: contact.id,
       title: `${contact.firstName} ${contact.lastName}`,
       subtitle: contact.company?.name || "Sans entreprise",
-      date: contact.createdAt,
+      date: contact.createdAt instanceof Date ? contact.createdAt : new Date(contact.createdAt),
       url: `/commercial/contacts/${contact.id}`,
     })),
     ...companies.map((company) => ({
@@ -56,11 +56,15 @@ export function RecentActivity({
       id: company.id,
       title: company.name,
       subtitle: "Entreprise",
-      date: company.createdAt,
+      date: company.createdAt instanceof Date ? company.createdAt : new Date(company.createdAt),
       url: `/commercial/companies/${company.id}`,
     })),
   ]
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .sort((a, b) => {
+      const dateA = a.date instanceof Date ? a.date.getTime() : new Date(a.date).getTime();
+      const dateB = b.date instanceof Date ? b.date.getTime() : new Date(b.date).getTime();
+      return dateB - dateA;
+    })
     .slice(0, 10);
 
   return (
@@ -111,7 +115,10 @@ export function RecentActivity({
                     </p>
                   </div>
                   <span className="text-xs text-gray-400 dark:text-gray-500">
-                    {new Date(activity.date).toLocaleDateString("fr-FR", {
+                    {(activity.date instanceof Date 
+                      ? activity.date 
+                      : new Date(activity.date)
+                    ).toLocaleDateString("fr-FR", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",

@@ -100,12 +100,17 @@ export default async function CommercialDashboard() {
                 : Number(opp.value)
               : 0,
             stage: String(opp.stage),
+            createdAt: opp.createdAt instanceof Date ? opp.createdAt : new Date(opp.createdAt),
           }))}
           contacts={recentContacts.map((contact) => ({
             ...contact,
             email: contact.email || "",
+            createdAt: contact.createdAt instanceof Date ? contact.createdAt : new Date(contact.createdAt),
           }))}
-          companies={recentCompanies}
+          companies={recentCompanies.map((company) => ({
+            ...company,
+            createdAt: company.createdAt instanceof Date ? company.createdAt : new Date(company.createdAt),
+          }))}
         />
       </div>
     </>
