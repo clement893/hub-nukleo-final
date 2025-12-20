@@ -37,7 +37,8 @@ export async function updateMilestone(id: string, data: UpdateMilestoneData) {
   // Si le statut passe à COMPLETED, définir completedAt
   if (data.status === "COMPLETED") {
     updateData.completedAt = new Date();
-  } else if (data.status && data.status !== "COMPLETED") {
+  } else if (data.status) {
+    // Si le statut change vers autre chose que COMPLETED, réinitialiser completedAt
     updateData.completedAt = null;
   }
 
