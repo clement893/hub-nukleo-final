@@ -33,7 +33,7 @@ export async function createActivityLog(data: CreateActivityLogData) {
     data: {
       type: data.type,
       description: data.description || null,
-      metadata: data.metadata || null,
+      metadata: data.metadata ?? undefined,
       projectId: data.projectId,
       userId: data.userId,
     },
