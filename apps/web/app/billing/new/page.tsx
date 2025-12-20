@@ -93,11 +93,23 @@ export default function NewInvoicePage() {
     const newItems = [...items];
     const currentItem = newItems[index];
     if (field === "description" && typeof value === "string") {
-      newItems[index] = { ...currentItem, description: value };
+      newItems[index] = {
+        description: value,
+        quantity: currentItem.quantity,
+        unitPrice: currentItem.unitPrice,
+      };
     } else if (field === "quantity" && typeof value === "number") {
-      newItems[index] = { ...currentItem, quantity: value };
+      newItems[index] = {
+        description: currentItem.description,
+        quantity: value,
+        unitPrice: currentItem.unitPrice,
+      };
     } else if (field === "unitPrice" && typeof value === "number") {
-      newItems[index] = { ...currentItem, unitPrice: value };
+      newItems[index] = {
+        description: currentItem.description,
+        quantity: currentItem.quantity,
+        unitPrice: value,
+      };
     }
     setItems(newItems);
   };
