@@ -2,8 +2,8 @@ import { prisma } from "@nukleo/db";
 import type { EmployeeFormData, UpdateEmployeeData } from "../schemas/employee";
 
 export async function getEmployeesStats() {
-  const totalEmployees = await prisma.user.count();
-  const employeesByRole = await prisma.user.groupBy({
+  const totalEmployees = await prisma.employee.count();
+  const employeesByRole = await prisma.employee.groupBy({
     by: ["role"],
     _count: {
       id: true,
@@ -23,7 +23,7 @@ export async function getEmployeesStats() {
 }
 
 export async function getRecentEmployees(limit = 5) {
-  return prisma.user.findMany({
+  return prisma.employee.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
     select: {
@@ -37,9 +37,8 @@ export async function getRecentEmployees(limit = 5) {
 }
 
 export async function getAllEmployees() {
-  // Return all employees (users), even if they have invalid relations
-  // This ensures employees imported by Manus are visible
-  return prisma.user.findMany({
+  // Return all employees from the employees table
+  return prisma.employee.findMany({
     orderBy: [{ lastName: "asc" }, { firstName: "asc" }, { name: "asc" }, { email: "asc" }],
     select: {
       id: true,
@@ -61,7 +60,7 @@ export async function getAllEmployees() {
 }
 
 export async function getEmployeeById(id: string) {
-  return prisma.user.findUnique({
+  return prisma.employee.findUnique({
     where: { id },
     select: {
       id: true,
@@ -83,7 +82,7 @@ export async function getEmployeeById(id: string) {
 }
 
 export async function createEmployee(data: EmployeeFormData) {
-  return prisma.user.create({
+  return prisma.employee.create({
     data: {
       email: data.email,
       name: data.name || (data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : null),
@@ -133,7 +132,7 @@ export async function updateEmployee(id: string, data: UpdateEmployeeData) {
   
   // Mettre à jour le nom complet si prénom ou nom de famille changent
   if (data.firstName !== undefined || data.lastName !== undefined) {
-    const current = await prisma.user.findUnique({ where: { id }, select: { firstName: true, lastName: true } });
+    const current = await prisma.employee.findUnique({ where: { id }, select: { firstName: true, lastName: true } });
     const firstName = data.firstName !== undefined ? data.firstName : current?.firstName;
     const lastName = data.lastName !== undefined ? data.lastName : current?.lastName;
     if (firstName && lastName) {
@@ -141,7 +140,7 @@ export async function updateEmployee(id: string, data: UpdateEmployeeData) {
     }
   }
 
-  return prisma.user.update({
+  return prisma.employee.update({
     where: { id },
     data: updateData,
     select: {
@@ -164,7 +163,7 @@ export async function updateEmployee(id: string, data: UpdateEmployeeData) {
 }
 
 export async function deleteEmployee(id: string) {
-  return prisma.user.delete({
+  return prisma.employee.delete({
     where: { id },
   });
 }

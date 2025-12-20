@@ -86,49 +86,70 @@ enum Department {
 }
 
 enum TaskZone {
-  SHELF // En attente
-  STORAGE // Bloqué
-  DOCK // Prêt
-  ACTIVE // En cours
+  SHELF      // En attente
+  STORAGE    // Bloqué
+  DOCK       // Prêt
+  ACTIVE     // En cours
 }
 
 model User {
-  id                   String      @id @default(cuid())
-  email                String      @unique
-  emailVerified        DateTime?
-  name                 String?
-  firstName            String? // Prénom
-  lastName             String? // Nom de famille
-  linkedin             String? // LinkedIn URL
-  department           String? // Département (ancien champ texte)
+  id            String        @id @default(cuid())
+  email         String        @unique
+  emailVerified DateTime?
+  name          String?
+  firstName     String?       // Prénom
+  lastName      String?       // Nom de famille
+  linkedin      String?       // LinkedIn URL
+  department    String?       // Département (ancien champ texte)
   operationsDepartment Department? // Département Opérations (Bureau, Lab, Studio)
-  title                String? // Titre/Poste
-  birthday             DateTime? // Anniversaire
-  hireDate             DateTime? // Anniversaire embauche
-  password             String?
-  role                 Role        @default(USER)
-  image                String? // Photo
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @updatedAt
+  title         String?       // Titre/Poste
+  birthday      DateTime?     // Anniversaire
+  hireDate      DateTime?     // Anniversaire embauche
+  password      String?
+  role          Role          @default(USER)
+  image         String?       // Photo
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   // NextAuth relations
-  accounts Account[]
-  sessions Session[]
+  accounts      Account[]
+  sessions      Session[]
 
   // Relations
-  opportunities  Opportunity[]
-  contacts       Contact[]
-  companies      Company[]
-  projects       Project[]     @relation("ProjectManager")
-  projectsAsLead Project[]     @relation("ProjectLead")
-  assignedTasks  Task[]        @relation("TaskAssignee")
-  proposals      Proposal[]
-  timeEntries    TimeEntry[]
-  projectNotes   ProjectNote[]
-  activityLogs   ActivityLog[]
+  opportunities Opportunity[]
+  contacts      Contact[]
+  companies     Company[]
+  projects      Project[]     @relation("ProjectManager")
+  projectsAsLead Project[]    @relation("ProjectLead")
+  assignedTasks Task[]         @relation("TaskAssignee")
+  proposals     Proposal[]
+  timeEntries   TimeEntry[]
+  projectNotes  ProjectNote[]
+  activityLogs  ActivityLog[]
 
   @@index([operationsDepartment])
   @@map("users")
+}
+
+model Employee {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?   // Nom complet (pour compatibilité)
+  firstName String?   // Prénom
+  lastName  String?   // Nom de famille
+  linkedin  String?   // LinkedIn URL
+  department String?  // Département
+  title     String?   // Titre/Poste
+  birthday  DateTime? // Anniversaire
+  hireDate  DateTime? // Anniversaire embauche
+  role      Role      @default(USER)
+  image     String?   // Photo
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([department])
+  @@index([role])
+  @@map("employees")
 }
 
 model Account {
@@ -171,25 +192,25 @@ model VerificationToken {
 }
 
 model Opportunity {
-  id                String           @id @default(cuid())
+  id                String            @id @default(cuid())
   title             String
   description       String?
-  value             Decimal?         @db.Decimal(10, 2)
-  stage             OpportunityStage @default(IDEAS_CONTACT_PROJECT)
-  probability       Int?             @default(0) // 0-100
+  value             Decimal?          @db.Decimal(10, 2)
+  stage             OpportunityStage  @default(IDEAS_CONTACT_PROJECT)
+  probability       Int?              @default(0) // 0-100
   expectedCloseDate DateTime?
   actualCloseDate   DateTime?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
   // Relations
-  companyId String?
-  company   Company?   @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  contactId String?
-  contact   Contact?   @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  ownerId   String
-  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  proposals Proposal[]
+  companyId         String?
+  company           Company?          @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  contactId         String?
+  contact           Contact?          @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  ownerId           String
+  owner             User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  proposals         Proposal[]
 
   @@index([ownerId])
   @@index([companyId])
@@ -199,15 +220,15 @@ model Opportunity {
 }
 
 model Contact {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   firstName String
   lastName  String
   email     String?
   phone     String?
   position  String?
-  photoKey  String? // S3 key for contact photo
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  photoKey  String?     // S3 key for contact photo
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   // Relations
   companyId     String?
@@ -223,7 +244,7 @@ model Contact {
 }
 
 model Company {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
   industry  String?
   website   String?
@@ -231,9 +252,9 @@ model Company {
   address   String?
   city      String?
   country   String?
-  logoKey   String? // S3 key for company logo
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  logoKey   String?     // S3 key for company logo
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   // Relations
   ownerId       String
@@ -252,25 +273,25 @@ model Project {
   name        String
   description String?
   status      ProjectStatus @default(PLANNING)
-  type        ProjectType? // Type de projet
+  type        ProjectType?  // Type de projet
   startDate   DateTime?
   endDate     DateTime?
   budget      Decimal?      @db.Decimal(10, 2)
-  department  String? // Département
-  links       Json? // Liens externes (ex: {"github": "...", "figma": "..."})
+  department  String?       // Département
+  links       Json?         // Liens externes (ex: {"github": "...", "figma": "..."})
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
   // Relations
-  companyId    String?
-  company      Company?      @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  managerId    String
-  manager      User          @relation("ProjectManager", fields: [managerId], references: [id], onDelete: Cascade)
-  leadId       String? // Lead du projet
-  lead         User?         @relation("ProjectLead", fields: [leadId], references: [id], onDelete: SetNull)
-  tasks        Task[]
-  milestones   Milestone[]
-  notes        ProjectNote[]
+  companyId   String?
+  company     Company?      @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  managerId   String
+  manager     User          @relation("ProjectManager", fields: [managerId], references: [id], onDelete: Cascade)
+  leadId      String?       // Lead du projet
+  lead        User?         @relation("ProjectLead", fields: [leadId], references: [id], onDelete: SetNull)
+  tasks       Task[]
+  milestones  Milestone[]
+  notes       ProjectNote[]
   activityLogs ActivityLog[]
 
   @@index([managerId])
@@ -284,25 +305,25 @@ model Project {
 }
 
 model Task {
-  id          String       @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String
   description String?
-  status      TaskStatus   @default(TODO)
-  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus    @default(TODO)
+  priority    TaskPriority  @default(MEDIUM)
   dueDate     DateTime?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   // Relations
   projectId   String
-  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   assigneeId  String?
-  assignee    User?       @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  assignee    User?         @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
   timeEntries TimeEntry[]
 
   // Opérations - Nouveau
-  department Department? // Bureau, Lab, Studio
-  zone       TaskZone?   @default(SHELF)
+  department  Department?   // Bureau, Lab, Studio
+  zone        TaskZone?     @default(SHELF)
 
   @@index([projectId])
   @@index([assigneeId])
@@ -322,10 +343,10 @@ model TimeEntry {
   updatedAt   DateTime @updatedAt
 
   // Relations
-  taskId String
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskId      String
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
   @@index([userId])
@@ -349,26 +370,26 @@ enum ProposalItemType {
 }
 
 model Proposal {
-  id              String         @id @default(cuid())
+  id              String            @id @default(cuid())
   title           String
   description     String?
-  status          ProposalStatus @default(DRAFT)
-  totalAmount     Decimal?       @db.Decimal(10, 2)
+  status          ProposalStatus    @default(DRAFT)
+  totalAmount     Decimal?          @db.Decimal(10, 2)
   validUntil      DateTime?
   submittedAt     DateTime?
   acceptedAt      DateTime?
   rejectedAt      DateTime?
   rejectionReason String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
   // Relations
-  opportunityId String?
-  opportunity   Opportunity?      @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
-  createdById   String
-  createdBy     User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
-  sections      ProposalSection[]
-  processes     ProposalProcess[]
+  opportunityId   String?
+  opportunity     Opportunity?      @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+  createdById     String
+  createdBy       User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  sections        ProposalSection[]
+  processes       ProposalProcess[]
 
   @@index([opportunityId])
   @@index([createdById])
@@ -377,17 +398,17 @@ model Proposal {
 }
 
 model ProposalSection {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
   description String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order       Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   // Relations
-  proposalId String
-  proposal   Proposal       @relation(fields: [proposalId], references: [id], onDelete: Cascade)
-  items      ProposalItem[]
+  proposalId  String
+  proposal    Proposal        @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  items       ProposalItem[]
 
   @@index([proposalId])
   @@index([order])
@@ -395,20 +416,20 @@ model ProposalSection {
 }
 
 model ProposalItem {
-  id          String           @id @default(cuid())
+  id          String            @id @default(cuid())
   title       String
   description String?
-  type        ProposalItemType @default(DELIVERABLE)
+  type        ProposalItemType  @default(DELIVERABLE)
   quantity    Int?
-  unitPrice   Decimal?         @db.Decimal(10, 2)
-  totalPrice  Decimal?         @db.Decimal(10, 2)
-  order       Int              @default(0)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  unitPrice   Decimal?          @db.Decimal(10, 2)
+  totalPrice  Decimal?          @db.Decimal(10, 2)
+  order       Int               @default(0)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   // Relations
-  sectionId String
-  section   ProposalSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId   String
+  section     ProposalSection   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   @@index([sectionId])
   @@index([order])
@@ -416,17 +437,17 @@ model ProposalItem {
 }
 
 model ProposalProcess {
-  id                String   @id @default(cuid())
+  id                String      @id @default(cuid())
   title             String
   description       String?
-  order             Int      @default(0)
-  estimatedDuration Int? // Duration in days
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  order             Int         @default(0)
+  estimatedDuration Int?         // Duration in days
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
   // Relations
-  proposalId String
-  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  proposalId        String
+  proposal          Proposal    @relation(fields: [proposalId], references: [id], onDelete: Cascade)
 
   @@index([proposalId])
   @@index([order])
@@ -444,8 +465,8 @@ model Milestone {
   updatedAt   DateTime        @updatedAt
 
   // Relations
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([status])
@@ -454,16 +475,16 @@ model Milestone {
 }
 
 model ProjectNote {
-  id        String   @id @default(cuid())
-  content   String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relations
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  authorId  String
-  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([authorId])
@@ -475,14 +496,14 @@ model ActivityLog {
   id          String       @id @default(cuid())
   type        ActivityType
   description String?      @db.Text
-  metadata    Json? // Données supplémentaires (ex: ancien statut, nouveau statut)
+  metadata    Json?        // Données supplémentaires (ex: ancien statut, nouveau statut)
   createdAt   DateTime     @default(now())
 
   // Relations
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
   @@index([userId])
@@ -490,3 +511,5 @@ model ActivityLog {
   @@index([createdAt])
   @@map("activity_logs")
 }
+
+
