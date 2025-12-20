@@ -15,13 +15,18 @@ import { revalidatePath } from "next/cache";
 export async function getEmployeesAction() {
   try {
     const employees = await getAllEmployees();
+    logger.info(`Fetched ${employees.length} employees`);
     return {
       success: true,
       data: employees,
     };
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     logger.error("Error fetching employees", error instanceof Error ? error : new Error(String(error)));
-    return { success: false, error: "Failed to fetch employees" };
+    return { 
+      success: false, 
+      error: `Failed to fetch employees: ${errorMessage}` 
+    };
   }
 }
 

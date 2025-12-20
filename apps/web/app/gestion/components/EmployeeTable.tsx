@@ -120,18 +120,31 @@ export function EmployeeTable({
                 const fullName = getFullName(employee);
                 const EmployeeAvatar = () => {
                   const [imageError, setImageError] = React.useState(false);
-                  const [imageSrc, setImageSrc] = React.useState(employee.image);
+                  
+                  // Déterminer la source de l'image : si c'est une clé S3 (ne commence pas par http), utiliser l'API
+                  const getImageSrc = () => {
+                    if (!employee.image) return null;
+                    // Si c'est déjà une URL complète (http/https), l'utiliser directement
+                    if (employee.image.startsWith("http://") || employee.image.startsWith("https://")) {
+                      return employee.image;
+                    }
+                    // Sinon, c'est probablement une clé S3, utiliser l'API
+                    return `/api/files/${encodeURIComponent(employee.image)}`;
+                  };
 
-                  React.useEffect(() => {
-                    setImageError(false);
-                    setImageSrc(employee.image);
-                  }, [employee.image]);
+                  const imageSrc = getImageSrc();
 
                   if (!imageSrc || imageError) {
+                    const initials = fullName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                      .slice(0, 2) || "?";
                     return (
                       <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                          {fullName.charAt(0).toUpperCase()}
+                          {initials}
                         </span>
                       </div>
                     );

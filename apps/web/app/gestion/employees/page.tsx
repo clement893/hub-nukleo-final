@@ -47,10 +47,21 @@ export default function EmployeesPage() {
   React.useEffect(() => {
     async function loadData() {
       try {
+        setIsLoading(true);
         const result = await getEmployeesAction();
+        console.log("getEmployeesAction result:", result);
         if (result.success && result.data) {
+          console.log("Employees loaded:", result.data.length);
           setEmployees(result.data);
+          if (result.data.length === 0) {
+            addToast({
+              variant: "info",
+              title: "Information",
+              description: "Aucun employé trouvé dans la base de données",
+            });
+          }
         } else {
+          console.error("Failed to load employees:", result.error);
           addToast({
             variant: "error",
             title: "Erreur",
@@ -62,7 +73,7 @@ export default function EmployeesPage() {
         addToast({
           variant: "error",
           title: "Erreur",
-          description: "Une erreur est survenue lors du chargement des données",
+          description: error instanceof Error ? error.message : "Une erreur est survenue lors du chargement des données",
         });
       } finally {
         setIsLoading(false);
