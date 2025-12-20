@@ -46,6 +46,15 @@ export async function getAllProjects(_userId?: string) {
           email: true,
         },
       },
+      lead: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+        },
+      },
       tasks: {
         include: {
           assignee: {
@@ -60,6 +69,8 @@ export async function getAllProjects(_userId?: string) {
       _count: {
         select: {
           tasks: true,
+          milestones: true,
+          notes: true,
         },
       },
     },
@@ -78,6 +89,15 @@ export async function getProjectById(id: string) {
           id: true,
           name: true,
           email: true,
+        },
+      },
+      lead: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          firstName: true,
+          lastName: true,
         },
       },
       tasks: {
@@ -101,6 +121,41 @@ export async function getProjectById(id: string) {
           },
         },
       },
+      milestones: {
+        orderBy: [{ dueDate: "asc" }, { createdAt: "desc" }],
+      },
+      notes: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+              image: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 10, // Dernières 10 notes
+      },
+      activityLogs: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+              image: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 20, // Derniers 20 logs
+      },
     },
   });
 }
@@ -111,10 +166,14 @@ export async function createProject(data: ProjectFormData, managerId: string) {
       name: data.name,
       description: data.description || null,
       status: data.status,
+      type: data.type || null,
       startDate: data.startDate || null,
       endDate: data.endDate || null,
       budget: data.budget || null,
+      department: data.department || null,
+      links: data.links || null,
       companyId: data.companyId || null,
+      leadId: data.leadId || null,
       managerId,
     },
     include: {
@@ -131,22 +190,38 @@ export async function createProject(data: ProjectFormData, managerId: string) {
           email: true,
         },
       },
+      lead: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+        },
+      },
     },
   });
 }
 
 export async function updateProject(id: string, data: UpdateProjectData) {
+  const updateData: any = {
+    name: data.name,
+    description: data.description !== undefined ? (data.description || null) : undefined,
+    status: data.status,
+    startDate: data.startDate !== undefined ? (data.startDate || null) : undefined,
+    endDate: data.endDate !== undefined ? (data.endDate || null) : undefined,
+    budget: data.budget !== undefined ? (data.budget || null) : undefined,
+    companyId: data.companyId !== undefined ? (data.companyId || null) : undefined,
+  };
+
+  if (data.type !== undefined) updateData.type = data.type || null;
+  if (data.department !== undefined) updateData.department = data.department || null;
+  if (data.links !== undefined) updateData.links = data.links || null;
+  if (data.leadId !== undefined) updateData.leadId = data.leadId || null;
+
   return prisma.project.update({
     where: { id },
-    data: {
-      name: data.name,
-      description: data.description || null,
-      status: data.status,
-      startDate: data.startDate || null,
-      endDate: data.endDate || null,
-      budget: data.budget || null,
-      companyId: data.companyId || null,
-    },
+    data: updateData,
     include: {
       company: {
         select: {
@@ -159,6 +234,15 @@ export async function updateProject(id: string, data: UpdateProjectData) {
           id: true,
           name: true,
           email: true,
+        },
+      },
+      lead: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          firstName: true,
+          lastName: true,
         },
       },
     },

@@ -1,19 +1,25 @@
 import { z } from "zod";
-import { ProjectStatus, TaskStatus, TaskPriority } from "@prisma/client";
+import { ProjectStatus, ProjectType, TaskStatus, TaskPriority } from "@prisma/client";
 
 export const projectSchema = z.object({
   name: z.string().min(1, "Le nom du projet est requis"),
   description: z.string().optional(),
   status: z.nativeEnum(ProjectStatus).default("PLANNING"),
+  type: z.nativeEnum(ProjectType).optional().nullable(),
   startDate: z.date().optional().nullable(),
   endDate: z.date().optional().nullable(),
   budget: z.number().positive().optional().nullable(),
+  department: z.string().optional().nullable(),
+  links: z.record(z.string()).optional().nullable(), // JSON object with string keys and values
   companyId: z.string().optional().nullable(),
+  leadId: z.string().optional().nullable(),
 });
 
 export const updateProjectSchema = projectSchema.extend({
   id: z.string(),
 });
+
+import { Department, TaskZone } from "@prisma/client";
 
 export const taskSchema = z.object({
   title: z.string().min(1, "Le titre de la tâche est requis"),
@@ -23,6 +29,8 @@ export const taskSchema = z.object({
   dueDate: z.date().optional().nullable(),
   projectId: z.string(),
   assigneeId: z.string().optional().nullable(),
+  department: z.nativeEnum(Department).optional().nullable(),
+  zone: z.nativeEnum(TaskZone).optional().nullable(),
 });
 
 export const updateTaskSchema = taskSchema.extend({
