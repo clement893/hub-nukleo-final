@@ -49,8 +49,9 @@ if ! pnpm exec next --version; then
   exit 1
 fi
 
-# Start Next.js server with explicit port using pnpm exec
+# Start Next.js server with explicit port
 # Use exec to replace shell process with Next.js
 # This ensures Railway can properly manage the process
 echo "🌐 Starting Next.js server on port $PORT..."
-exec pnpm exec next start -p "$PORT" --hostname 0.0.0.0
+# Use node_modules/.bin/next directly to avoid pnpm exec issues
+exec node_modules/.bin/next start -p "$PORT" --hostname 0.0.0.0
