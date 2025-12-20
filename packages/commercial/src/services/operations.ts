@@ -219,8 +219,6 @@ export async function getEmployeesByDepartment(department: Department) {
       operationsDepartment: true,
     },
     orderBy: [
-      { lastName: "asc" },
-      { firstName: "asc" },
       { name: "asc" },
     ],
   });
