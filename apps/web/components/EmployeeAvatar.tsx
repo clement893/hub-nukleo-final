@@ -19,7 +19,14 @@ export function EmployeeAvatar({
   size = "md",
   className,
 }: EmployeeAvatarProps) {
-  const fallback = `${firstName[0] || ""}${lastName[0] || ""}`.toUpperCase();
+  const fallback = React.useMemo(() => {
+    const first = firstName?.[0] || "";
+    const last = lastName?.[0] || "";
+    if (first || last) {
+      return `${first}${last}`.toUpperCase();
+    }
+    return "?";
+  }, [firstName, lastName]);
   
   // Priorité: photoKey via API, puis photoUrl (qui peut être image depuis Employee), puis fallback
   const src = React.useMemo(() => {

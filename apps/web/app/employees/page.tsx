@@ -31,6 +31,7 @@ interface Employee {
   id: string;
   firstName: string | null;
   lastName: string | null;
+  name: string | null;
   email: string;
   department: string | null;
   operationsDepartment: Department | null;
@@ -129,6 +130,7 @@ export default function EmployeesPage() {
         (e) =>
           e.firstName?.toLowerCase().includes(query) ||
           e.lastName?.toLowerCase().includes(query) ||
+          e.name?.toLowerCase().includes(query) ||
           e.email.toLowerCase().includes(query)
       );
     }
@@ -301,11 +303,14 @@ export default function EmployeesPage() {
                             firstName={employee.firstName || ""}
                             lastName={employee.lastName || ""}
                             photoKey={employee.photoKey}
+                            photoUrl={employee.photoUrl}
                             size="sm"
                           />
                           <div>
                             <div className="font-medium text-gray-900 dark:text-white">
-                              {employee.firstName} {employee.lastName}
+                              {employee.firstName && employee.lastName
+                                ? `${employee.firstName} ${employee.lastName}`
+                                : employee.name || employee.email}
                             </div>
                           </div>
                         </div>

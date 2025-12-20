@@ -13,6 +13,7 @@ interface Employee {
   id: string;
   firstName: string | null;
   lastName: string | null;
+  name: string | null;
   email: string;
   operationsDepartment: Department | null;
   linkedin: string | null;
@@ -51,10 +52,13 @@ export function EmployeeCard({ employee, onUpdateDepartment }: EmployeeCardProps
             firstName={employee.firstName || ""}
             lastName={employee.lastName || ""}
             photoKey={employee.photoKey}
+            photoUrl={employee.photoUrl}
             size="lg"
           />
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-4">
-            {employee.firstName} {employee.lastName}
+            {employee.firstName && employee.lastName
+              ? `${employee.firstName} ${employee.lastName}`
+              : employee.name || employee.email}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             {employee.email}

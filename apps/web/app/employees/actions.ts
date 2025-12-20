@@ -6,13 +6,11 @@ import type { Department } from "@prisma/client";
 export async function getEmployeesAction() {
   try {
     const employees = await prisma.employee.findMany({
-      where: {
-        firstName: { not: null },
-      },
       select: {
         id: true,
         firstName: true,
         lastName: true,
+        name: true,
         email: true,
         department: true,
         linkedin: true,
@@ -20,15 +18,21 @@ export async function getEmployeesAction() {
         birthday: true,
         hireDate: true,
       },
-      orderBy: {
-        firstName: "asc",
-      },
+      orderBy: [
+        { firstName: "asc" },
+        { lastName: "asc" },
+        { name: "asc" },
+        { email: "asc" },
+      ],
     });
     
     // Mapper les employés pour inclure operationsDepartment (convertir department String en Department enum)
     const departmentValues: Department[] = ["BUREAU", "LAB", "STUDIO"];
     const mappedEmployees = employees.map((emp) => ({
       ...emp,
+      // Utiliser firstName/lastName si disponibles, sinon name
+      firstName: emp.firstName || (emp.name ? emp.name.split(" ")[0] || null : null),
+      lastName: emp.lastName || (emp.name ? emp.name.split(" ").slice(1).join(" ") || null : null),
       operationsDepartment: (emp.department && departmentValues.indexOf(emp.department as Department) !== -1) 
         ? (emp.department as Department) 
         : null,
