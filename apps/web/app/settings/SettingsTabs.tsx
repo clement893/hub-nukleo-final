@@ -56,7 +56,7 @@ export function SettingsTabs({ categories, settingsByCategory }: SettingsTabsPro
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {settingsByCategory[category].map((setting) => (
+                  {(settingsByCategory[category] || []).map((setting) => (
                     <TableRow key={setting.id}>
                       <TableCell className="font-medium">
                         <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
