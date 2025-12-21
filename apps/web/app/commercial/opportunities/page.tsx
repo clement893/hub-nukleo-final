@@ -439,8 +439,8 @@ export default function OpportunitiesPage() {
   };
 
   const handleEditOpportunity = (opportunity: Opportunity) => {
-    setEditingOpportunity(opportunity);
-    setIsModalOpen(true);
+    // Navigate to detail page instead of opening modal
+    window.location.href = `/commercial/opportunities/${opportunity.id}`;
   };
 
   const handleModalSubmit = async (data: OpportunityFormData) => {

@@ -2,6 +2,7 @@
 
 import {
   getAllOpportunities,
+  getOpportunityById,
   updateOpportunityStage,
   createOpportunity,
   updateOpportunity,
@@ -43,6 +44,19 @@ export async function getOpportunitiesAction() {
     // Return empty array instead of failing completely
     // This ensures the UI can still load even if there's a database issue
     return { success: false, error: "Failed to fetch opportunities", data: [] };
+  }
+}
+
+export async function getOpportunityByIdAction(id: string) {
+  try {
+    const opportunity = await getOpportunityById(id);
+    if (!opportunity) {
+      return { success: false, error: "Opportunité non trouvée" };
+    }
+    return { success: true, data: opportunity };
+  } catch (error) {
+    logger.error("Error fetching opportunity", error instanceof Error ? error : new Error(String(error)));
+    return { success: false, error: "Failed to fetch opportunity" };
   }
 }
 

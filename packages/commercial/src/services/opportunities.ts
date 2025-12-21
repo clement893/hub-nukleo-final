@@ -85,6 +85,19 @@ export async function getAllOpportunities() {
   });
 }
 
+export async function getOpportunityById(id: string) {
+  return prisma.opportunity.findUnique({
+    where: { id },
+    include: {
+      company: true,
+      contact: true,
+      owner: {
+        select: { id: true, name: true, email: true },
+      },
+    },
+  });
+}
+
 export async function updateOpportunityStage(
   id: string,
   stage: string

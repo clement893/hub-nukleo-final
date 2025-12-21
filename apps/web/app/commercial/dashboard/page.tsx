@@ -381,7 +381,7 @@ export default function CommercialDashboardPage() {
                 {recentOpportunities.map((opp) => (
                   <Link
                     key={opp.id}
-                    href={`/commercial/opportunities`}
+                    href={`/commercial/opportunities/${opp.id}`}
                     className="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:card-shadow-hover transition-all duration-300"
                   >
                     <div className="flex justify-between items-start">
