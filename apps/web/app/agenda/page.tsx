@@ -11,12 +11,8 @@ import {
   getEventsAction,
   createEventAction,
   updateEventAction,
-  deleteEventAction,
-  getUsersForEventsAction,
   getOpportunitiesForEventsAction,
   getProjectsForEventsAction,
-  getContactsForEventsAction,
-  getCompaniesForEventsAction,
 } from "./actions";
 import { getCurrentUserAction } from "../components/get-user-action";
 
