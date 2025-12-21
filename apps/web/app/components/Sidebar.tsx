@@ -958,8 +958,7 @@ export function Sidebar() {
                 />
               </svg>
               <span>📅 Calendrier</span>
-            </Link
-            >
+            </Link>
 
             {/* Suppression du sous-menu collapsible */}
             {false && (
