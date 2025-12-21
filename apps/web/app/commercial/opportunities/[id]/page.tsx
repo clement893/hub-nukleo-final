@@ -81,7 +81,13 @@ export default function OpportunityDetailPage() {
         }
 
         if (contactsResult.success && contactsResult.data) {
-          setContacts(contactsResult.data);
+          setContacts(
+            contactsResult.data.map((contact) => ({
+              id: contact.id,
+              firstName: contact.firstName ?? "",
+              lastName: contact.lastName ?? "",
+            }))
+          );
         }
       } catch (err) {
         console.error("Error loading opportunity:", err);
