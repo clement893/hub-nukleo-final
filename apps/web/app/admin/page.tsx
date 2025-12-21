@@ -1,16 +1,62 @@
-import { Card, CardContent } from "@nukleo/ui";
+"use client";
+
+import * as React from "react";
+import { Card, CardContent, Loader, ErrorAlert } from "@nukleo/ui";
 import { getSystemStatsAction } from "./actions";
 import Link from "next/link";
 
-export default async function AdminPage() {
-  const stats = await getSystemStatsAction();
+export default function AdminPage() {
+  const [stats, setStats] = React.useState<{
+    success: boolean;
+    data?: {
+      totalUsers: number;
+      activeUsers: number;
+      totalRoles: number;
+      recentLogins: number;
+    };
+    error?: string;
+  } | null>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  if (!stats.success) {
+  React.useEffect(() => {
+    async function loadStats() {
+      try {
+        setIsLoading(true);
+        const result = await getSystemStatsAction();
+        setStats(result);
+      } catch (error) {
+        console.error("Error loading admin stats:", error);
+        setStats({
+          success: false,
+          error: error instanceof Error ? error.message : "Erreur lors du chargement des statistiques",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadStats();
+  }, []);
+
+  if (isLoading) {
     return (
       <div className="container mx-auto p-6">
-        <div className="text-red-600 dark:text-red-400">
-          {stats.error || "Erreur lors du chargement des statistiques"}
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Loader className="mb-4" />
+            <p className="text-gray-500 dark:text-gray-400">Chargement...</p>
+          </div>
         </div>
+      </div>
+    );
+  }
+
+  if (!stats || !stats.success) {
+    return (
+      <div className="container mx-auto p-6">
+        <ErrorAlert
+          title="Erreur"
+          description={stats?.error || "Erreur lors de la récupération des statistiques"}
+        />
       </div>
     );
   }
