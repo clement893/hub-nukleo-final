@@ -28,11 +28,8 @@ export default function AgendaPage() {
   const [editingEvent, setEditingEvent] = React.useState<any>(null);
   
   // Dropdown data
-  const [users, setUsers] = React.useState<any[]>([]);
   const [opportunities, setOpportunities] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
-  const [contacts, setContacts] = React.useState<any[]>([]);
-  const [companies, setCompanies] = React.useState<any[]>([]);
 
   // Load user
   React.useEffect(() => {
@@ -48,19 +45,13 @@ export default function AgendaPage() {
   // Load dropdown data
   React.useEffect(() => {
     async function loadDropdownData() {
-      const [usersResult, oppsResult, projectsResult, contactsResult, companiesResult] = await Promise.all([
-        getUsersForEventsAction(),
+      const [oppsResult, projectsResult] = await Promise.all([
         getOpportunitiesForEventsAction(),
         getProjectsForEventsAction(),
-        getContactsForEventsAction(),
-        getCompaniesForEventsAction(),
       ]);
 
-      if (usersResult.success) setUsers(usersResult.data || []);
       if (oppsResult.success) setOpportunities(oppsResult.data || []);
       if (projectsResult.success) setProjects(projectsResult.data || []);
-      if (contactsResult.success) setContacts(contactsResult.data || []);
-      if (companiesResult.success) setCompanies(companiesResult.data || []);
     }
 
     loadDropdownData();
