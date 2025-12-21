@@ -236,11 +236,8 @@ export default function AgendaPage() {
         }}
         onSubmit={handleModalSubmit}
         initialData={editingEvent}
-        users={users}
         opportunities={opportunities}
         projects={projects}
-        contacts={contacts}
-        companies={companies}
       />
     </div>
   );
