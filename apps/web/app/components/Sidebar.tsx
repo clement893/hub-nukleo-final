@@ -1008,7 +1008,6 @@ export function Sidebar() {
               )}
             </div>
 
-
           </nav>
 
           {/* Footer */}
