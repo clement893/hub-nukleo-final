@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  Clock,
   User,
   Building2,
   MessageSquare,
