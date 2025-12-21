@@ -157,6 +157,9 @@ model User {
   contracts     Contract[]
   createdEvents Event[]       @relation("EventCreator")
   participatingEvents Event[] @relation("EventParticipants")
+  createdTickets Ticket[]     @relation("TicketCreator")
+  assignedTickets Ticket[]    @relation("TicketAssignee")
+  ticketComments TicketComment[]
   @@index([operationsDepartment])
   @@index([roleId])
   @@index([isActive])
@@ -273,6 +276,7 @@ model Contact {
   invoices      Invoice[]
   contracts     Contract[]
   events        Event[]
+  tickets       Ticket[]
 
   @@index([ownerId])
   @@index([companyId])
@@ -302,6 +306,7 @@ model Company {
   invoices      Invoice[]
   contracts     Contract[]
   events        Event[]
+  tickets       Ticket[]
   @@index([ownerId])
   @@index([name])
   @@map("companies")
@@ -784,4 +789,97 @@ model Event {
   @@index([companyId])
   @@index([taskId])
   @@map("events")
+}
+
+// ============================================
+// TICKETS/SUPPORT MODULE
+// ============================================
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCategory {
+  BUG
+  FEATURE_REQUEST
+  QUESTION
+  TECHNICAL_ISSUE
+  BILLING
+  OTHER
+}
+
+model Ticket {
+  id              String           @id @default(cuid())
+  title           String
+  description     String           @db.Text
+  priority        TicketPriority   @default(MEDIUM)
+  status          TicketStatus     @default(OPEN)
+  category        TicketCategory   @default(QUESTION)
+  
+  // Relations
+  createdById     String
+  createdBy       User             @relation("TicketCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  
+  assignedToId    String?
+  assignedTo      User?            @relation("TicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  
+  // Lien optionnel vers un contact/entreprise
+  contactId       String?
+  contact         Contact?         @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  
+  companyId       String?
+  company         Company?         @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  
+  // Commentaires/réponses
+  comments        TicketComment[]
+  
+  // Métadonnées
+  resolvedAt      DateTime?
+  closedAt        DateTime?
+  dueDate         DateTime?
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  @@index([createdById])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([priority])
+  @@index([category])
+  @@index([contactId])
+  @@index([companyId])
+  @@index([createdAt])
+  @@map("tickets")
+}
+
+model TicketComment {
+  id              String    @id @default(cuid())
+  content         String    @db.Text
+  isInternal      Boolean   @default(false) // Commentaire interne (non visible par le client)
+  
+  // Relations
+  ticketId        String
+  ticket          Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  authorId        String
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([ticketId])
+  @@index([authorId])
+  @@index([createdAt])
+  @@map("ticket_comments")
 }

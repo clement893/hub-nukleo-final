@@ -936,6 +936,32 @@ export function Sidebar() {
               <span>📅 Calendrier</span>
             </Link>
 
+            {/* Module Tickets */}
+            <Link
+              href="/tickets"
+              className={cn(
+                "flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-semibold transition-colors",
+                pathname.startsWith("/tickets")
+                  ? "bg-primary text-white"
+                  : "text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700"
+              )}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                />
+              </svg>
+              <span>🎫 Tickets</span>
+            </Link>
+
 
           </nav>
 
