@@ -341,28 +341,7 @@ const contractsNavigation: NavItem[] = [
   },
 ];
 
-// Navigation items for Agenda Module
-const agendaNavigation: NavItem[] = [
-  {
-    title: "Calendrier",
-    href: "/agenda",
-    icon: (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-        />
-      </svg>
-    ),
-  },
-];
+
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -382,9 +361,6 @@ export function Sidebar() {
   );
   const [isContractsModuleOpen, setIsContractsModuleOpen] = React.useState(
     pathname.startsWith("/contracts")
-  );
-  const [isAgendaModuleOpen, setIsAgendaModuleOpen] = React.useState(
-    pathname.startsWith("/agenda")
   );
   const [currentUser, setCurrentUser] = React.useState<{
     name?: string | null;
@@ -934,77 +910,33 @@ export function Sidebar() {
               )}
             </div>
 
-            {/* Module Agenda - Sous-menu */}
-            <div>
-              <button
-                onClick={() => setIsAgendaModuleOpen(!isAgendaModuleOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                <div className="flex items-center space-x-3">
-                  <svg
-                    className="w-5 h-5 text-gray-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span>Module Agenda</span>
-                </div>
-                <svg
-                  className={cn(
-                    "w-4 h-4 text-gray-500 transition-transform",
-                    isAgendaModuleOpen && "rotate-180"
-                  )}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              {/* Sous-menu items Agenda */}
-              {isAgendaModuleOpen && (
-                <div className="ml-4 mt-2 space-y-1">
-                  {agendaNavigation.map((item) => {
-                    const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setIsMobileOpen(false)}
-                        className={cn(
-                          "flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group",
-                          isActive
-                            ? "bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 text-blue-700 dark:text-blue-300 shadow-sm border border-blue-200/50 dark:border-blue-700/50"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50/80 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white hover:translate-x-1"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
-                          )}
-                        >
-                          {item.icon}
-                        </span>
-                        <span>{item.title}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
+            {/* Module Calendrier */}
+            <Link
+              href="/agenda"
+              className={cn(
+                "flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-semibold transition-colors",
+                pathname.startsWith("/agenda")
+                  ? "bg-primary text-white"
+                  : "text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700"
               )}
-            </div>
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <span>📅 Calendrier</span>
+            </Link>
+
+
           </nav>
 
           {/* Footer */}
