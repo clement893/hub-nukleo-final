@@ -60,16 +60,16 @@ export function PipelineChart({ pipelineByStage }: PipelineChartProps) {
               />
               <YAxis
                 tickFormatter={(value) =>
-                  `${(value / 1000).toFixed(0)}k €`
+                  `$${(value / 1000).toFixed(0)}k`
                 }
                 stroke="#6b7280"
                 className="dark:stroke-gray-400"
               />
               <Tooltip
                 formatter={(value: number) => [
-                  `${value.toLocaleString("fr-FR", {
+                  `${value.toLocaleString("en-US", {
                     style: "currency",
-                    currency: "EUR",
+                    currency: "USD",
                   })}`,
                   "Montant",
                 ]}

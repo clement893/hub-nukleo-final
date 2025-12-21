@@ -9,6 +9,19 @@ import {
 } from "@nukleo/ui";
 import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from "@/components/GlassCard";
 import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import {
   getDashboardStatsAction,
   getRecentOpportunitiesAction,
   getRecentProposalsAction,
@@ -256,6 +269,94 @@ export default function CommercialDashboardPage() {
           value={formatCurrency(stats.proposals.totalAmount)}
           variant="success"
         />
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Opportunities by Stage Chart */}
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Répartition des opportunités par étape</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={Object.entries(stats.opportunities.byStage)
+                  .filter(([_, count]) => count > 0)
+                  .map(([stage, count]) => ({
+                    name: stageLabels[stage as OpportunityStage] || stage,
+                    count,
+                  }))}
+              >
+                <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+                <XAxis
+                  dataKey="name"
+                  angle={-45}
+                  textAnchor="end"
+                  height={100}
+                  interval={0}
+                  className="text-xs"
+                />
+                <YAxis />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--background)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "8px",
+                  }}
+                />
+                <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </GlassCardContent>
+        </GlassCard>
+
+        {/* Proposals Status Pie Chart */}
+        <GlassCard>
+          <GlassCardHeader>
+            <GlassCardTitle>Statut des soumissions</GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: "Brouillon", value: stats.proposals.draft, color: "#6b7280" },
+                    { name: "Soumis", value: stats.proposals.submitted, color: "#3b82f6" },
+                    { name: "Accepté", value: stats.proposals.accepted, color: "#10b981" },
+                    { name: "Rejeté", value: stats.proposals.rejected, color: "#ef4444" },
+                  ].filter((item) => item.value > 0)}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {[
+                    { name: "Brouillon", value: stats.proposals.draft, color: "#6b7280" },
+                    { name: "Soumis", value: stats.proposals.submitted, color: "#3b82f6" },
+                    { name: "Accepté", value: stats.proposals.accepted, color: "#10b981" },
+                    { name: "Rejeté", value: stats.proposals.rejected, color: "#ef4444" },
+                  ]
+                    .filter((item) => item.value > 0)
+                    .map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--background)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "8px",
+                  }}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </GlassCardContent>
+        </GlassCard>
       </div>
 
       {/* Recent Opportunities and Proposals */}
