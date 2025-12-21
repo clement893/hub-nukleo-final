@@ -957,35 +957,7 @@ export function Sidebar() {
               <span>📅 Calendrier</span>
             </Link>
 
-            {/* Suppression du sous-menu collapsible */}
-            {false && (
-              <div>
-                {agendaNavigation.map((item) => {
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                        onClick={() => setIsMobileOpen(false)}
-                        className={cn(
-                          "flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group",
-                          isActive
-                            ? "bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 text-blue-700 dark:text-blue-300 shadow-sm border border-blue-200/50 dark:border-blue-700/50"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50/80 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white hover:translate-x-1"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
-                          )}
-                        >
-                          {item.icon}
-                        </span>
-                        <span>{item.title}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
+
           </nav>
 
           {/* Footer */}
