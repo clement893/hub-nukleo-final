@@ -2,8 +2,14 @@
 
 import * as React from "react";
 import { Button, Input, Select, Textarea } from "@nukleo/ui";
-import { X } from "lucide-react";
 import { format } from "date-fns";
+
+// Icon as SVG component
+const X = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
 
 interface EventModalProps {
   isOpen: boolean;

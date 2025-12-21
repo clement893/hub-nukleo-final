@@ -2,7 +2,25 @@
 
 import * as React from "react";
 import { Button } from "@nukleo/ui";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+
+// Icons as SVG components
+const ChevronLeft = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+  </svg>
+);
+
+const ChevronRight = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+);
+
+const Plus = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+  </svg>
+);
 
 export type CalendarView = "month" | "week" | "day";
 
