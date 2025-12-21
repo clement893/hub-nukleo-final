@@ -29,6 +29,7 @@ import {
   CardContent,
   Button,
   Badge,
+  Loader,
 } from "@nukleo/ui";
 import {
   OpportunityCard,
@@ -307,6 +308,7 @@ export default function OpportunitiesPage() {
     React.useState<Opportunity | null>(null);
   const [activeId, setActiveId] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
   const [collapsedColumns, setCollapsedColumns] = React.useState<Set<OpportunityStage>>(new Set());
 
   const sensors = useSensors(
@@ -321,13 +323,18 @@ export default function OpportunitiesPage() {
   );
 
   React.useEffect(() => {
+    let isMounted = true;
+
     async function loadData() {
       try {
+        setIsLoading(true);
         const [oppsResult, companiesResult, contactsResult] = await Promise.all([
           getOpportunitiesAction(),
           getCompaniesForOpportunitiesAction(),
           getContactsForOpportunitiesAction(),
         ]);
+
+        if (!isMounted) return;
 
         if (oppsResult.success && oppsResult.data) {
           setOpportunities(
@@ -336,10 +343,18 @@ export default function OpportunitiesPage() {
               value: opp.value ? Number(opp.value) : null,
             }))
           );
+          setError(null);
+        } else {
+          console.error("Failed to load opportunities:", oppsResult.error);
+          setOpportunities([]);
+          setError(oppsResult.error || "Impossible de charger les opportunités");
         }
 
         if (companiesResult.success && companiesResult.data) {
           setCompanies(companiesResult.data);
+        } else {
+          console.error("Failed to load companies:", companiesResult.error);
+          setCompanies([]);
         }
 
         if (contactsResult.success && contactsResult.data) {
@@ -350,15 +365,30 @@ export default function OpportunitiesPage() {
               lastName: contact.lastName ?? "",
             }))
           );
+        } else {
+          console.error("Failed to load contacts:", contactsResult.error);
+          setContacts([]);
         }
       } catch (error) {
         console.error("Error loading opportunities data", error);
+        if (isMounted) {
+          setOpportunities([]);
+          setCompanies([]);
+          setContacts([]);
+          setError(error instanceof Error ? error.message : "Une erreur est survenue lors du chargement");
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
 
     loadData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -552,9 +582,35 @@ export default function OpportunitiesPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-500 dark:text-gray-400">Chargement du pipeline...</p>
+          <Loader size="lg" />
+          <p className="text-gray-500 dark:text-gray-400 mt-4">Chargement du pipeline...</p>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Card className="max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-red-600 dark:text-red-400 font-semibold mb-2">Erreur de chargement</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">{error}</p>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setError(null);
+                  setIsLoading(true);
+                  window.location.reload();
+                }}
+                className="mt-4"
+              >
+                Réessayer
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

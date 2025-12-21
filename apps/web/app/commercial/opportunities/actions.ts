@@ -28,8 +28,10 @@ export async function getOpportunitiesAction() {
         description: opp.description,
         value: opp.value ? Number(opp.value) : null,
         stage: opp.stage,
-        probability: opp.probability,
+        probability: opp.probability ?? null,
         expectedCloseDate: opp.expectedCloseDate,
+        openDate: opp.openDate,
+        actualCloseDate: opp.actualCloseDate,
         company: opp.company,
         contact: opp.contact,
         // Include owner info if available (may be null for Manus-imported opportunities)
