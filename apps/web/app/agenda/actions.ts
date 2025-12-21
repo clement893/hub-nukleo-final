@@ -210,7 +210,7 @@ export async function createEventAction(
         startDate: new Date(data.startDate),
         endDate: new Date(data.endDate),
         allDay: data.allDay ?? false,
-        type: data.type ?? "MEETING",
+        type: (data.type ?? "MEETING") as EventType,
         location: data.location,
         notes: data.notes,
         color: data.color,

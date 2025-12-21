@@ -11,12 +11,10 @@ export type {
   ProjectStatus,
   TaskStatus,
   TaskPriority,
-  EventType,
-  EventStatus,
 } from "@prisma/client";
 
-// Event types (temporary until Event model is added to schema)
-export type EventType = "MEETING" | "TASK" | "REMINDER" | "OTHER";
+// Event types - matching Prisma schema
+export type EventType = "MEETING" | "CALL" | "DEADLINE" | "REMINDER" | "TASK_DUE" | "PERSONAL" | "OTHER";
 export type EventStatus = "SCHEDULED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
 
 
