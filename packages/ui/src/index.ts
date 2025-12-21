@@ -41,11 +41,23 @@ export {
   Alert,
   AlertTitle,
   AlertDescription,
+  SuccessAlert,
+  WarningAlert,
+  ErrorAlert,
+  InfoAlert,
+  type AlertProps,
 } from "./components/Alert";
 export { Badge, badgeVariants, type BadgeProps } from "./components/Badge";
 export { Progress, type ProgressProps } from "./components/Progress";
 
-export { Toast, type ToastProps } from "./components/Toast";
+export {
+  Toast,
+  SuccessToast,
+  WarningToast,
+  ErrorToast,
+  InfoToast,
+  type ToastProps,
+} from "./components/Toast";
 export {
   Tabs,
   TabsList,
