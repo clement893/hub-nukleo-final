@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
   User,
-  Building2,
   MessageSquare,
   Edit2,
   Trash2,
