@@ -12,10 +12,11 @@ export const metadata = {
 export default async function TicketDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const [ticket, users, contacts, companies] = await Promise.all([
-    getTicket(params.id),
+    getTicket(id),
     getUsers(),
     getContacts(),
     getCompanies(),

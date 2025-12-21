@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { db } from "@nukleo/db";
+import { prisma } from "@nukleo/db";
 import { auth } from "@/auth";
 import type { TicketPriority, TicketStatus, TicketCategory } from "@nukleo/db";
 
@@ -11,7 +11,7 @@ export async function getTickets() {
     throw new Error("Non autorisé");
   }
 
-  const tickets = await db.ticket.findMany({
+  const tickets = await prisma.ticket.findMany({
     include: {
       createdBy: {
         select: {
@@ -65,7 +65,7 @@ export async function getTicket(id: string) {
     throw new Error("Non autorisé");
   }
 
-  const ticket = await db.ticket.findUnique({
+  const ticket = await prisma.ticket.findUnique({
     where: { id },
     include: {
       createdBy: {
@@ -134,7 +134,7 @@ export async function createTicket(data: {
     throw new Error("Non autorisé");
   }
 
-  const ticket = await db.ticket.create({
+  const ticket = await prisma.ticket.create({
     data: {
       ...data,
       createdById: session.user.id,
@@ -175,7 +175,7 @@ export async function updateTicket(
     updateData.closedAt = new Date();
   }
 
-  const ticket = await db.ticket.update({
+  const ticket = await prisma.ticket.update({
     where: { id },
     data: updateData,
   });
@@ -191,7 +191,7 @@ export async function deleteTicket(id: string) {
     throw new Error("Non autorisé");
   }
 
-  await db.ticket.delete({
+  await prisma.ticket.delete({
     where: { id },
   });
 
@@ -208,7 +208,7 @@ export async function addTicketComment(data: {
     throw new Error("Non autorisé");
   }
 
-  const comment = await db.ticketComment.create({
+  const comment = await prisma.ticketComment.create({
     data: {
       ...data,
       authorId: session.user.id,
@@ -226,7 +226,7 @@ export async function deleteTicketComment(id: string, ticketId: string) {
     throw new Error("Non autorisé");
   }
 
-  await db.ticketComment.delete({
+  await prisma.ticketComment.delete({
     where: { id },
   });
 
@@ -239,7 +239,7 @@ export async function getUsers() {
     throw new Error("Non autorisé");
   }
 
-  const users = await db.user.findMany({
+  const users = await prisma.user.findMany({
     where: {
       isActive: true,
     },
@@ -263,7 +263,7 @@ export async function getContacts() {
     throw new Error("Non autorisé");
   }
 
-  const contacts = await db.contact.findMany({
+  const contacts = await prisma.contact.findMany({
     select: {
       id: true,
       firstName: true,
@@ -290,7 +290,7 @@ export async function getCompanies() {
     throw new Error("Non autorisé");
   }
 
-  const companies = await db.company.findMany({
+  const companies = await prisma.company.findMany({
     select: {
       id: true,
       name: true,
