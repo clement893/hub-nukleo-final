@@ -138,6 +138,10 @@ model User {
   lastLoginAt   DateTime?
   auditLogs    AuditLog[]
 
+  // Relation avec Employee
+  employeeId    String?
+  employee      Employee?     @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+
   // NextAuth relations
   accounts      Account[]
   sessions      Session[]
@@ -158,6 +162,7 @@ model User {
   @@index([operationsDepartment])
   @@index([roleId])
   @@index([isActive])
+  @@index([employeeId])
   @@map("users")
 }
 
@@ -176,6 +181,9 @@ model Employee {
   image     String?   // Photo
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  // Relation avec User
+  users     User[]
 
   @@index([department])
   @@index([role])
