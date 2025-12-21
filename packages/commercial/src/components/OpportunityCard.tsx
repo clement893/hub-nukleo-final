@@ -10,7 +10,6 @@ export interface OpportunityCardProps {
   company?: string | null;
   contact?: { firstName: string | null; lastName: string | null } | null;
   value?: number | null;
-  probability?: number | null;
   expectedCloseDate?: Date | null;
   stage: OpportunityStage;
   onClick?: () => void;
@@ -21,7 +20,6 @@ export function OpportunityCard({
   company,
   contact,
   value,
-  probability,
   expectedCloseDate,
   onClick,
 }: OpportunityCardProps) {
@@ -56,33 +54,18 @@ export function OpportunityCard({
         </div>
       )}
 
-      {/* Footer: Probability and Date */}
-      <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-        {probability !== null && probability !== undefined ? (
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-medium text-gray-900 dark:text-white">
-              {probability}%
-            </span>
-            <span className="text-xs text-gray-600 dark:text-gray-400">
-              chance
-            </span>
-          </div>
-        ) : (
-          <div></div>
-        )}
-        
-        {expectedCloseDate && (
-          <div className="flex items-center gap-1 text-xs">
-            <span className="text-gray-400 dark:text-gray-500">📅</span>
-            <span className="font-medium text-gray-900 dark:text-white">
-              {expectedCloseDate.toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-              })}
-            </span>
-          </div>
-        )}
-      </div>
+      {/* Footer: Date */}
+      {expectedCloseDate && (
+        <div className="flex items-center gap-1 text-xs pt-2 border-t border-gray-200 dark:border-gray-700">
+          <span className="text-gray-400 dark:text-gray-500">📅</span>
+          <span className="font-medium text-gray-900 dark:text-white">
+            {expectedCloseDate.toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "short",
+            })}
+          </span>
+        </div>
+      )}
     </Card>
   );
 }

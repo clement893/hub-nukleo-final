@@ -125,7 +125,6 @@ interface Opportunity {
   description?: string | null;
   value?: number | null;
   stage: OpportunityStage;
-  probability?: number | null;
   openDate?: Date | null;
   expectedCloseDate?: Date | null;
   actualCloseDate?: Date | null;
@@ -165,7 +164,6 @@ function SortableOpportunityCard({
         company={opportunity.company?.name}
         contact={opportunity.contact}
         value={opportunity.value ? Number(opportunity.value) : undefined}
-        probability={opportunity.probability ?? undefined}
         expectedCloseDate={opportunity.expectedCloseDate ?? undefined}
         stage={opportunity.stage}
         onClick={onClick}
@@ -423,7 +421,6 @@ export default function OpportunitiesPage() {
           description: data.description,
           value: data.value,
           stage: data.stage as OpportunityStage,
-          probability: data.probability,
           expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
           contactId: data.contactId,
@@ -439,7 +436,6 @@ export default function OpportunitiesPage() {
                     description: data.description,
                     value: data.value ?? null,
                     stage: data.stage,
-                    probability: data.probability,
                     expectedCloseDate: data.expectedCloseDate
                       ? new Date(data.expectedCloseDate)
                       : null,
@@ -473,7 +469,6 @@ export default function OpportunitiesPage() {
           description: data.description,
           value: data.value,
           stage: data.stage as OpportunityStage,
-          probability: data.probability,
           expectedCloseDate: data.expectedCloseDate,
           companyId: data.companyId,
           contactId: data.contactId,
@@ -487,7 +482,6 @@ export default function OpportunitiesPage() {
               description: result.data!.description,
               value: result.data!.value ? Number(result.data!.value) : null,
               stage: result.data!.stage,
-              probability: result.data!.probability,
               expectedCloseDate: result.data!.expectedCloseDate,
               company: companies.find((c) => c.id === data.companyId)
                 ? {
@@ -671,7 +665,6 @@ export default function OpportunitiesPage() {
                       ? Number(activeOpportunity.value)
                       : undefined
                   }
-                  probability={activeOpportunity.probability ?? undefined}
                   expectedCloseDate={
                     activeOpportunity.expectedCloseDate ?? undefined
                   }
@@ -697,7 +690,6 @@ export default function OpportunitiesPage() {
                 description: editingOpportunity.description || undefined,
                 value: editingOpportunity.value ?? undefined,
                 stage: editingOpportunity.stage,
-                probability: editingOpportunity.probability ?? undefined,
                 expectedCloseDate: editingOpportunity.expectedCloseDate
                   ? editingOpportunity.expectedCloseDate.toISOString().split('T')[0]
                   : undefined,

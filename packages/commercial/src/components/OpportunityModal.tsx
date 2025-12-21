@@ -132,14 +132,6 @@ export function OpportunityModal({
             error={errors.value?.message}
           />
 
-          <Input
-            label="Probabilité (%)"
-            type="number"
-            min="0"
-            max="100"
-            {...register("probability", { valueAsNumber: true })}
-            error={errors.probability?.message}
-          />
         </div>
 
         <Controller
