@@ -2,12 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@nukleo/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/auth";
 import type { TicketPriority, TicketStatus, TicketCategory } from "@nukleo/db";
 
 export async function getTickets() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -61,7 +60,7 @@ export async function getTickets() {
 }
 
 export async function getTicket(id: string) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -130,7 +129,7 @@ export async function createTicket(data: {
   companyId?: string;
   dueDate?: Date;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -160,7 +159,7 @@ export async function updateTicket(
     dueDate?: Date | null;
   }
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -187,7 +186,7 @@ export async function updateTicket(
 }
 
 export async function deleteTicket(id: string) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -204,7 +203,7 @@ export async function addTicketComment(data: {
   content: string;
   isInternal?: boolean;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -222,7 +221,7 @@ export async function addTicketComment(data: {
 }
 
 export async function deleteTicketComment(id: string, ticketId: string) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -235,7 +234,7 @@ export async function deleteTicketComment(id: string, ticketId: string) {
 }
 
 export async function getUsers() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -259,7 +258,7 @@ export async function getUsers() {
 }
 
 export async function getContacts() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
@@ -286,7 +285,7 @@ export async function getContacts() {
 }
 
 export async function getCompanies() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Non autorisé");
   }
