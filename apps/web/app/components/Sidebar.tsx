@@ -383,9 +383,6 @@ export function Sidebar() {
   const [isContractsModuleOpen, setIsContractsModuleOpen] = React.useState(
     pathname.startsWith("/contracts")
   );
-  const [isAgendaModuleOpen, setIsAgendaModuleOpen] = React.useState(
-    pathname.startsWith("/agenda")
-  );
   const [currentUser, setCurrentUser] = React.useState<{
     name?: string | null;
     email?: string | null;
