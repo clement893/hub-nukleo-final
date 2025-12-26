@@ -41,7 +41,7 @@
     "@nukleo/tailwind-config": "workspace:*",
     "@nukleo/typescript-config": "workspace:*",
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^20",
+    "@types/node": "^25",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@testing-library/react": "^16.0.1",
